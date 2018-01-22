@@ -55,7 +55,7 @@ public class GuessingGame {
      */
     public boolean inRange(int guess){
         boolean isRange = false;
-        if(guess <= high && guess >= low){
+        if(guess <= this.high && guess >= this.low){
             isRange = true;
         }
         return isRange;
