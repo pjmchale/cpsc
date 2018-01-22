@@ -1,3 +1,7 @@
+/**
+ * A random number is selected between a range and the user have to guess what the number is
+ */
+
 import java.util.Random;
 import java.util.Scanner;
 
