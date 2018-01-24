@@ -31,9 +31,7 @@ public class BankAccount{
    * @param amount amount of money to withdraw from account
    */
   void withdraw(double amount){
-    if(amount < 0 ){
-      System.out.println("[*] Cannot withdraw a negative amount");
-    } else if(amount <= (balance + overdraftAmount) && amount > 0){
+    if(amount <= (balance + overdraftAmount) && amount > 0){
       this.balance -= amount;
     } else {
       System.out.println("[*] Cannot withdraw $" + amount + " (balance: " + this.balance 
