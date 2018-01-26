@@ -9,7 +9,7 @@ public class BankAccount {
 	 * @return the current balance
 	*/
 	public double getBalance() {
-		return this.balance;
+		return balance;
 	}
 
 	/**
@@ -26,7 +26,7 @@ public class BankAccount {
 	*/
 	public void deposit(double depositAmount) {
 		if (depositAmount > 0.0) {
-			this.balance += depositAmount;
+			balance += depositAmount;
 		} else {
 			System.out.println("You can't deposit an amount less than 0");
 		}
@@ -37,9 +37,9 @@ public class BankAccount {
 	 * @param double: The withdraw amount
 	*/
 	public void withdraw(double withdrawAmount) {
-		double withdrawLimit = this.balance + this.overdraftAmount;
+		double withdrawLimit = balance + overdraftAmount;
 		if (withdrawAmount <= withdrawLimit) {
-			this.balance -= withdrawAmount;
+			balance -= withdrawAmount;
 		} else {
 			System.out.println("You ain't got that kind of cash!");
 		}
