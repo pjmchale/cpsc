@@ -9,7 +9,6 @@ public class BankAccount{
      * @param dep is the desired deposit amount
      */
     public void deposit(double dep){
-        getBalance();
         if (dep >= 0){
             balance += dep;
         }
@@ -20,7 +19,6 @@ public class BankAccount{
      * @param wit is the desired withdraw amount
      */
     public void withdraw(double wit){
-        getBalance();
         if ((wit - balance) <= overdraftAmount){
             balance -= wit;
         }
