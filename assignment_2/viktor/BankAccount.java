@@ -30,6 +30,8 @@ public class BankAccount{
         }
         else if ((amount - balance) <= overdraftAmount){
             balance -= amount;
+        } else{
+          System.out.println("Not enough money in account");
         }
     }
 
