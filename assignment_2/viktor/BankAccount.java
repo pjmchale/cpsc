@@ -36,7 +36,7 @@ public class BankAccount{
     }
 
     /**
-     *
+     * Return the current balance in the account
      * @return the current balance
      */
     public double getBalance(){
@@ -45,7 +45,7 @@ public class BankAccount{
     }
 
     /**
-     * Sets the overdraftAmount
+     * Sets the overdraftAmount for the account
      * @param value is the maximum overdraftAmount
      */
     public void setOverdraftAmount(double value){
