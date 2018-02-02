@@ -1,4 +1,118 @@
+import java.lang.Math;
+import java.util.Arrays;
+import java.util.Scanner;
+import org.apache.commons.lang3.ArrayUtils;
 public class Combat{
+	private Dice dice;
+	private Player attacker;
+	private Player defender;
+	private Country attackingCountry;
+	private Country defendingCountry;
+	private int numAttackers;
+	private int numDefenders;
+	Combat(Country attackingCountry, Country defendingCountry){
+		dice = new Dice();
+		this.attackingCountry = attackingCountry;
+		this.defendingCountry = defendingCountry;
+		attacker = attackingCountry.getOwner();
+		defender = defendingCountry.getOwner();
+		
+		
+	}
+	public boolean attackerWin(int attackerDice, int defenderDice) {
+		boolean attackWin = false;
+		if(attackerDice > defenderDice) {
+			atackWin = true;
+		}
+		return attackWin;
+	}
+	public int[] rollDice(int numDice) {
+		int dices[] = Dice.rolllDices(numDices);
+		return dices;
+		
+	}
+	public void countryLose(Country country) {
+		Scanner kb = new Scanner(System.in);
+		//country loses 1 unit
+		
+		//check if country has (0) units left
+		//if true, prompt the attacker to move units to newly owned country
+		if(true) {
+			int units = kb.nextInt();
+			attacker.moveUnits(attackingCountry, defendingCountry);
+		}
+	}
+	public int[] sortFromHighest(int[]arr) {
+		Arrays.sort(arr);
+		int arrLength = arr.length-1;
+		int[]desendingArray = new int[arrLength];
+		for (int i = 0; i < desendingArray.length; i++) {
+			desendingArray[i] = arr[arrLength-i];
+		}
+		return desendingArray;
+		
+	}
+	public void simulateBattle() {
+		//prompt attacker and defender to select amount of units
+		int[] atkDices = rollDice(numAttackers);
+		int[] defDices = rollDice(numDefenders)
+		int defending[] = sortFromHighest(defDices);
+		int attacking[] = sortFromHighest(atkDices);
+		int minimumDice = Math.min(defending.length, attacking.length);
+		for (int i = 0; i <minimumDice; i++) {
+			if(attackerWin(attacking[i], defending[i])) {
+				//defending country loses 1 unit
+				countryLose(defendingCountry);
+			}else {
+				//attacking country loses 1 unit
+				countryLose(attackingCountry);
+			}
+		}
+		
+	}
 	
+	//getters and setters
+	public Dice getDice() {
+		return dice;
+	}
+	public void setDice(Dice dice) {
+		this.dice = dice;
+	}
+	public Player getAttacker() {
+		return attacker;
+	}
+	public void setAttacker(Player attacker) {
+		this.attacker = attacker;
+	}
+	public Player getDefender() {
+		return defender;
+	}
+	public void setDefender(Player defender) {
+		this.defender = defender;
+	}
+	public Country getAttackingCountry() {
+		return attackingCountry;
+	}
+	public void setAttackingCountry(Country attackingCountry) {
+		this.attackingCountry = attackingCountry;
+	}
+	public Country getDefendingCountry() {
+		return defendingCountry;
+	}
+	public void setDefendingCountry(Country defendingCountry) {
+		this.defendingCountry = defendingCountry;
+	}
+	public int getNumAttackers() {
+		return numAttackers;
+	}
+	public void setNumAttackers(int numAttackers) {
+		this.numAttackers = numAttackers;
+	}
+	public int getNumDefenders() {
+		return numDefenders;
+	}
+	public void setNumDefenders(int numDefenders) {
+		this.numDefenders = numDefenders;
+	}
 	
 }

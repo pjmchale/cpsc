@@ -16,7 +16,7 @@ public class Customer{
 		this.customerID = customerID;
 	}
 	/**
-	 * returns the name
+	 * gets the name
 	 */
 	public String getName() {
 		return name;
@@ -30,7 +30,7 @@ public class Customer{
 		this.name = name;
 	}
 	/**
-	 * returns the customerID
+	 * gets the customerID
 	 */
 	public int getCustomerID() {
 		return customerID;
