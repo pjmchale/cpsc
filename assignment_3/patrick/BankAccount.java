@@ -9,12 +9,19 @@ public class BankAccount{
     private Customer customer;
 
     /**
+     * Constructor with no input arguments. Sets the balance to 0.0
+     */
+    BankAccount(){
+      balance = 0.0;
+    }
+
+    /**
      * Constructor with input arguments of Customer and balance and sets the corresponding instance variables
      * @param inputCustomer the input Customer class
      * @param @inputBalance the input balance to set the account balance to
      */
     BankAccount(Customer inputCustomer, double inputBalance){
-      setCustomer(inputCustomer);
+      customer = inputCustomer;
       if(inputBalance < 0){
         System.out.println("Cannot initialize with negative balance");
       } else{
@@ -22,12 +29,6 @@ public class BankAccount{
       }
     }
 
-    /**
-     * Constructor with no input arguments. Sets the balance to 0.0
-     */
-    BankAccount(){
-      balance = 0.0;
-    }
 
     /**
      * sets the Customer class instance variable
