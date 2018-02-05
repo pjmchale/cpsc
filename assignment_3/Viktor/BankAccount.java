@@ -8,44 +8,17 @@ public class BankAccount{
     private double overdraftAmount = 100.0;
     private Customer customer;
 
-    /**
-     * Constructor with no input arguments. Sets the balance to 0.0
-     */
-    BankAccount(){
-      balance = 0.0;
+    public BankAccount(Customer newCustomer, double startBalance) {
+        balance = startBalance;
+        customer = newCustomer;
     }
-
-    /**
-     * Constructor with input arguments of Customer and balance and sets the corresponding instance variables
-     * @param inputCustomer the input Customer class
-     * @param @inputBalance the input balance to set the account balance to
-     */
-    BankAccount(Customer inputCustomer, double inputBalance){
-      customer = inputCustomer;
-      if(inputBalance < 0){
-        System.out.println("Cannot initialize with negative balance");
-      } else{
-        balance = inputBalance;
-      }
+    public BankAccount(){
+        balance = 0.0;
+        customer = new Customer();
     }
-
-
-    /**
-     * sets the Customer class instance variable
-     * @param inputCustomer
-     */
-    void setCustomer(Customer inputCustomer){
-      customer = inputCustomer;
+    public void setCustomer(String name, int ID){
+        customer = new Customer(name, ID);
     }
-
-    /**
-     * return the customer Class associated with the account
-     * @return customer
-     */
-    Customer getCustomer(){
-      return customer;
-    }
-
     /**
      * Adds the requested deposit to the balance
      * @param amount is the desired deposit amount
@@ -69,8 +42,6 @@ public class BankAccount{
         }
         else if ((amount - balance) <= overdraftAmount){
             balance -= amount;
-        } else{
-          System.out.println("Not enough money in account");
         }
     }
 
@@ -91,6 +62,4 @@ public class BankAccount{
         overdraftAmount = value;
     }
 
-
 }
-
