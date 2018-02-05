@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Scanner;
 /**
  * Class representing a player
  */
@@ -12,6 +13,7 @@ public class Player{
      * Constructors for a player
      * @param name
      */
+
     public void Player(String name){
         this.name = name;
         totalUnits = 0;
@@ -19,7 +21,11 @@ public class Player{
         countriesOwned = new ArrayList<Country>();
     }
 
-    public void getCountriesOwned(){
+    public String getName(){
+        return name;
+    }
+
+    public ArrayList<Country> getCountriesOwned(){
         return countriesOwned;
     }
 
@@ -28,49 +34,70 @@ public class Player{
     }
 
     public void loseCountry(Country countryLost){
-        countriesOwned = ArrayUtils.remove(countriesOwned, countryLost);
+        countriesOwned = countriesOwned.remove(countryLost);
     }
 
 
+
+    //public void placeUnits(Country country, int units){
+        //add units, remove from available units
+    //    if (hasCountry(country)){
+    //        if (units <= availableUnits) {
+    //            country.addUnits(units);
+    //            availableUnits -= units;
+    //        }
+    //    }
+    //}
 
     public void placeUnits(Country country, int units){
-        //add units, remove from available units
-        if (hasCountry(country)){
-            if (units <= availableUnits) {
-                country.addUnits(units);
-                availableUnits -= units;
+        if (country.getOwner() == this){
+            if (units <= availableUnits && units >= 0) {
+                            country.addUnits(units);
+                            availableUnits -= units;
             }
         }
     }
-    public void attack(Country fromCountry, Country toCountry){
-        //if (hasCountry(fromCountry)){
-        //    if (!hasCountry(toCountry)){
-        //        if fromcountry.isNeighbhour(toCountry){
-        Combat battle = new Combat(fromCountry, toCountry);
-        battle.simulateCombat();
+    public boolean attack(Country fromCountry, Country toCountry){
+        if (fromCountry.getOwner() == this ){
+            if fromCountry.isNeighbhour(toCountry){
+                Combat battle = new Combat(fromCountry, toCountry);
+                battle.simulateCombat();
+                return True;
         //        }
-        //    }
-        //}
+            }
+        }
+        else {
+            return False;
+        }
     }
-    public void moveUnits(Country fromCountry, Country toCountry, int units){
+
+    public void moveUnits(Country fromCountry, Country toCountry){
         //
-        if (hasCountry(fromCountry)){
-            if fromcountry.isNeighbhour(toCountry){
-                if (fromcountry.getNumUnits() - units > 0){
-                    toCountry.addUnits(units);
-                    fromCountry.addUnits(-units);
+        do{
+            int units = receiveInt("How many units would you like to move?")
+            if (fromcountry.getNumUnits() - units > 0 %% units >= 0){
+                toCountry.addUnits(units);
+                fromCountry.addUnits(-units);
                 }
+                if else (units < 0){
+                    System.out.println("Can't move a negative amount");
+                }
+                else {
+                    System.out.println("1 unit has to be left behind");
+                }
+            } while(fromcountry.getNumUnits() - units > 0);
             }
         }
     }
 
-    public boolean hasCountry(Country country){
-        for (Country n : countriesOwned) { if (country == n) { return true; } }
-        return false;
-    }
+//    public boolean hasCountry(Country country){
+//        for (Country n : countriesOwned) { if (country == n) { return true; } }
+//        return false;
+//    }
 
     public void setAvailableUnits(int availableUnits) {
         this.availableUnits = availableUnits;
+        totalUnits += availableUnits;
     }
 
     public int getAvailableUnits() {
@@ -79,6 +106,20 @@ public class Player{
 
     void public setTotalUnits(int units){
         totalUnits = units;
+    }
+
+
+
+    private int receiveInt(String displayString){
+        Scanner kb = new Scanner(System.in);
+
+        System.out.print(displayString);
+        while(!kb.hasNextInt()){
+            System.out.println("Please enter a valid integer...");
+            System.out.print(displayString);
+            kb.next();
+        }
+        return kb.nextInt();
     }
 
 }
