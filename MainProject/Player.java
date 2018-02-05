@@ -59,7 +59,7 @@ public class Player{
     }
     public boolean attack(Country fromCountry, Country toCountry){
         if (fromCountry.getOwner() == this ){
-            if fromCountry.isNeighbhour(toCountry){
+            if (fromCountry.isNeighbour(toCountry)){
                 Combat battle = new Combat(fromCountry, toCountry);
                 battle.simulateCombat();
                 return True;
@@ -74,21 +74,20 @@ public class Player{
     public void moveUnits(Country fromCountry, Country toCountry){
         //
         do{
-            int units = receiveInt("How many units would you like to move?")
+            int units = receiveInt("How many units would you like to move?");
             if (fromcountry.getNumUnits() - units > 0 %% units >= 0){
                 toCountry.addUnits(units);
                 fromCountry.addUnits(-units);
                 }
-                if else (units < 0){
+                else if (units < 0){
                     System.out.println("Can't move a negative amount");
                 }
                 else {
                     System.out.println("1 unit has to be left behind");
                 }
             } while(fromcountry.getNumUnits() - units > 0);
-            }
-        }
     }
+
 
 //    public boolean hasCountry(Country country){
 //        for (Country n : countriesOwned) { if (country == n) { return true; } }
