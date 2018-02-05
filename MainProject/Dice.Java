@@ -7,6 +7,10 @@ public class Dice{
 		random = new Random();
 		this.sides = sides;
 	}
+	Dice(){
+		random = new Random();
+		this.sides = 0;
+	}
 	public void setSides(int sides){
 		this.sides = sides;
 	}
