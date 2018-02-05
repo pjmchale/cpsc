@@ -31,29 +31,39 @@ public class Combat{
 		return dices;
 		
 	}
-	public void countryLose(Country country) {
+	public void countryLose(Country country , player attacker) {
 		Scanner kb = new Scanner(System.in);
+		Player player = country.getOwner();
+		System.out.println(country.getName() + "["+player.getName()+"] lost a unit");
 		//country loses 1 unit
-		
 		//check if country has (0) units left
 		//if true, prompt the attacker to move units to newly owned country
-		if(true) {
-			int units = kb.nextInt();
+		if(country.getNumUnits() <= 0) {
+			System.out.println(player.getName()+" has lost " + country.getName() +
+					"/n New owner is " + attacker.getName());
+			player.loseCountry(country);
+			attacker.gainCountry(country);
+			country.setOwner(attacker);
 			attacker.moveUnits(attackingCountry, defendingCountry);
 		}
 	}
 	public int[] sortFromHighest(int[]arr) {
 		Arrays.sort(arr);
-		int arrLength = arr.length-1;
+		int arrLength = arr.length;
 		int[]desendingArray = new int[arrLength];
 		for (int i = 0; i < desendingArray.length; i++) {
-			desendingArray[i] = arr[arrLength-i];
+			desendingArray[i] = arr[arrLength-i-1];
 		}
 		return desendingArray;
 		
 	}
 	public void simulateBattle() {
+		System.out.println(attackingCountry.getName().toUpperCase() + " ATTACKING "+defendingCountry.getName().toUpperCase());
 		//prompt attacker and defender to select amount of units
+		System.out.print(attacker.getName() + " (attacker): ");
+		numAttackers = attackingCountry.selectUnitAmount();
+		System.out.print(defender.getName() + " (defender): ");
+		numDefenders = defendingCountry.selectUnitAmount();
 		int[] atkDices = rollDice(numAttackers);
 		int[] defDices = rollDice(numDefenders)
 		int defending[] = sortFromHighest(defDices);
@@ -61,11 +71,9 @@ public class Combat{
 		int minimumDice = Math.min(defending.length, attacking.length);
 		for (int i = 0; i <minimumDice; i++) {
 			if(attackerWin(attacking[i], defending[i])) {
-				//defending country loses 1 unit
-				countryLose(defendingCountry);
+				countryLose(defendingCountry , attacker);
 			}else {
-				//attacking country loses 1 unit
-				countryLose(attackingCountry);
+				countryLose(attackingCountry , defender);
 			}
 		}
 		
