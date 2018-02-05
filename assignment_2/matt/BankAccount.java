@@ -1,6 +1,5 @@
 public class BankAccount {
 
-	// Instance Variables
 	double balance;
 	double overdraftAmount = 100.0;
 	

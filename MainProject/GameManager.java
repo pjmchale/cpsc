@@ -3,10 +3,10 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.ArrayList;
 
-// TEMP
+//// TEMP
 //class Player{
 //  String name = "temp name";
-//  Country[] countriesOwned;
+//  ArrayList<Country> countriesOwned;
 //  int availableUnits;
 //  Player(){
 //    //System.out.println("Name?:");
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 //}
 //
 //class Map{
-//  Country[] countries = new Country[5];
+//  ArrayList<Country> countries = new ArrayList<Country>;
 //  
 //  Map(){
 //    for(int i=0;i<5;i++){
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 //    }
 //  }
 //
-//  public Country[] getCountries(){
+//  public ArrayList<Country> getCountries(){
 //    return countries;
 //  }
 //
@@ -62,7 +62,7 @@ import java.util.ArrayList;
 //  }
 //
 //}
-// END TEMP
+// //END TEMP
 
 /**
  * This is the class which runs the entire game
@@ -106,10 +106,10 @@ public class GameManager{
    */
   public boolean isGameOver(){
     boolean gameOver = false;
-    Country[] allCountries = map.getCountries();
+    ArrayList<Country> allCountries = map.getCountries();
 
     for(int i=0; i < players.length ; i++){
-      if(players[i].countriesOwned.length == allCountries.length){
+      if(players[i].getCountriesOwned.size() == allCountries.size()){
         gameOver = true;
         break;
       }
@@ -170,9 +170,10 @@ public class GameManager{
     int i;
     int numUnits;
     int userChoice;
-    Country[] allCountries;
-    ArrayList<Integer> availableCountryIndex;
-    boolean validChoice;
+    ArrayList<Country> allCountries;
+    Country selectedCountry;
+    ArrayList<Integer> countryIndex;
+    boolean validChoice, allUnitsDistributed;
 
     switch(numPlayers){
       case 2: numUnits = 40;
@@ -185,17 +186,20 @@ public class GameManager{
       players[i].setAvailableUnits(numUnits);
     }
 
+    // This loop distributes the initial units allowing players to select their initial countries
     allCountries = map.getCountries();
     for(i=0; i < allCountries.length; i++){
         printTurn();
-        availableCountryIndex = printCountriesAvailable();
+        countryIndex = printCountriesAvailable();
 
         validChoice = false;
         while(!validChoice){
           userChoice = receiveInt("Enter Country # to place unit: ");
-          if(userChoice <= availableCountryIndex.size() && userChoice > 0){
-            allCountries[availableCountryIndex.get(userChoice-1)].setOwner(currentPlayer);
-            currentPlayer.placeUnits(allCountries[availableCountryIndex.get(userChoice-1)], 1);
+          if(userChoice <= countryIndex.size() && userChoice > 0){
+            selectedCountry = allCountries.get(countryIndex.get(userChoice-1));
+            player.gainCountry(selectedCountry);
+            selectedCountry.setOwner(currentPlayer);
+            currentPlayer.placeUnits(selectedCountry, 1);
             validChoice = true;
           }
         }
@@ -203,6 +207,42 @@ public class GameManager{
         nextTurn();
         
     }
+
+    // This loop allows players to fortify their selected countries with the rest
+    // of their available units
+    while(!allUnitsDistributed){
+
+      // Check if any player has available units
+      allUnitsDistributed = true;
+      for(i=0; i < players.length; i++){
+        if(players[i].getAvailableUnits() != 0){
+          allUnitsDistributed = false;
+          break;
+        }
+      }
+
+      if(currentPlayer.availableUnits == 0){
+        nextTurn();
+        continue;
+      }
+
+      printCountriesOwned(currentPlayer);
+      allCountries = currentPlayer.getCountriesOwned();
+      validChoice = false;
+      while(!validChoice){
+        userChoice = receiveInt("Select country # to place units: ");
+        if(userChoice < allCountries.size() && userChoice > 0){
+          selectedCountry = allCountries.get(userChoice-1);
+          currentPlayer.placeUnits(selectedCountry, 1);
+          validChoice = true;
+        }
+
+      }
+
+    }
+
+
+
   }
 
   /**
@@ -250,7 +290,7 @@ public class GameManager{
    */
   private ArrayList<Integer> printCountriesAvailable(){
     int k=1;
-    Country[] allCountries;
+    ArrayList<Country> allCountries;
     allCountries = map.getCountries();
     ArrayList<Integer> availableIndex = new ArrayList<Integer>();
 
@@ -266,6 +306,23 @@ public class GameManager{
     return availableIndex;
 
   }
+
+  private ArrayList<Integer> printCountriesOwned(Player player){
+    int k=1;
+    ArrayList<Country> countriesOwned;
+    countriesOwned = player.getCountriesOwned();
+
+    System.out.println(player.getName() + "'s countries:");
+    for(int i=0; i < countriesOwned.length; i++){
+        System.out.println("\t" + k + ". " + countriesOwned[i].getName());
+        k++;
+        availableIndex.add(i);
+      }
+    }
+
+    return availableIndex;
+  }
+
 
 
   /**

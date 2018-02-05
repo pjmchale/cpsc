@@ -32,15 +32,17 @@ public class Combat{
 		
 	}
 	public void countryLose(Country country , player attacker) {
-		Scanner kb = new Scanner(System.in);
 		Player player = country.getOwner();
+		System.out.println("      ---------       ");
 		System.out.println(country.getName() + "["+player.getName()+"] lost a unit");
+		System.out.println("      ---------       ");
 		//country loses 1 unit
 		//check if country has (0) units left
 		//if true, prompt the attacker to move units to newly owned country
 		if(country.getNumUnits() <= 0) {
 			System.out.println(player.getName()+" has lost " + country.getName() +
 					"/n New owner is " + attacker.getName());
+			System.out.println("      ---------       ");
 			player.loseCountry(country);
 			attacker.gainCountry(country);
 			country.setOwner(attacker);
@@ -70,6 +72,9 @@ public class Combat{
 		int attacking[] = sortFromHighest(atkDices);
 		int minimumDice = Math.min(defending.length, attacking.length);
 		for (int i = 0; i <minimumDice; i++) {
+			System.out.println("      ---------       ");
+			System.out.println(attacker.getName() +" roles: " + numAttackers);
+			System.out.println(defender.getName() +" roles: " + numDefenders);
 			if(attackerWin(attacking[i], defending[i])) {
 				countryLose(defendingCountry , attacker);
 			}else {
