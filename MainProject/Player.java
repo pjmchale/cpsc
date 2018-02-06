@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.Scanner;
+
 /**
  * Class representing a player
  */
@@ -11,9 +12,8 @@ public class Player{
 
     /**
      * Constructors for a player
-     * @param name
+     * @param name is the name of the player
      */
-
     public void Player(String name){
         this.name = name;
         totalUnits = 0;
@@ -21,6 +21,9 @@ public class Player{
         countriesOwned = new ArrayList<Country>();
     }
 
+    /**
+     * Getter and Setters for needed instance variables
+     */
     public String getName(){
         return name;
     }
@@ -29,6 +32,29 @@ public class Player{
         return countriesOwned;
     }
 
+    public void setTotalUnits(int units){
+        totalUnits = units;
+    }
+
+    public int getTotalUnits(){
+        return totalUnits;
+    }
+
+    public void setAvailableUnits(int units) {
+        availableUnits = units;
+//        totalUnits += units;
+    }
+
+    public int getAvailableUnits() {
+        return availableUnits;
+    }
+
+
+    /**
+     * Methods to gain and lose a country
+     * @param countryWon is a country to be added to the countries owned by player
+     * @param countryLost is a country to be lost by the player
+     */
     public void gainCountry(Country countryWon){
         countriesOwned.add(countryWon);
     }
@@ -38,32 +64,42 @@ public class Player{
     }
 
 
-
-    //public void placeUnits(Country country, int units){
-        //add units, remove from available units
-    //    if (hasCountry(country)){
-    //        if (units <= availableUnits) {
-    //            country.addUnits(units);
-    //            availableUnits -= units;
-    //        }
-    //    }
-    //}
-
+    /**
+     * Places a number of units at a owned country
+     * @param country represents what country the units will be placed at
+     * @param units represents how many units to be added
+     */
     public void placeUnits(Country country, int units){
         if (country.getOwner() == this){
             if (units <= availableUnits && units >= 0) {
-                            country.addUnits(units);
-                            availableUnits -= units;
+                country.addUnits(units);
+                availableUnits -= units;
+            }
+            else if (units < 0){
+                System.out.println("Can't move a negative amount");
+            }
+            else {
+                System.out.println("You do not have that many units available.");
             }
         }
+        else {
+            System.out.println("Please select a country you own");
+        }
     }
-    public boolean attack(Country fromCountry, Country toCountry){
-        if (fromCountry.getOwner() == this ){
-            if (fromCountry.isNeighbour(toCountry)){
-                Combat battle = new Combat(fromCountry, toCountry);
+
+
+    /**
+     * Attack a country form a owned country, simulate the battle
+     * @param fromCountry represents the attacking country
+     * @param toCountry represents the defending country
+     * @return a boolean to signify if the attack was a valid attack
+     */
+    public boolean attack(Country attackingCountry, Country defendingCountry){
+        if (attackingCountry.getOwner() == this ){
+            if (attackingCountry.isNeighbour(defendingCountry)){
+                Combat battle = new Combat(attackingCountry, defendingCountry);
                 battle.simulateCombat();
                 return True;
-        //        }
             }
         }
         else {
@@ -71,46 +107,33 @@ public class Player{
         }
     }
 
+
+    /**
+     * Takes two countries as variables and moves units between the two.
+     * @param fromCountry represents the country the units are moving from
+     * @param toCountry represents the country the units are moving to
+     */
     public void moveUnits(Country fromCountry, Country toCountry){
         //
         do{
             int units = receiveInt("How many units would you like to move?");
-            if (fromcountry.getNumUnits() - units > 0 %% units >= 0){
-                toCountry.addUnits(units);
-                fromCountry.addUnits(-units);
-                }
-                else if (units < 0){
-                    System.out.println("Can't move a negative amount");
-                }
-                else {
-                    System.out.println("1 unit has to be left behind");
-                }
-            } while(fromcountry.getNumUnits() - units > 0);
+            if (fromcountry.getNumUnits() - units <= 0){
+                System.out.println("1 unit has to be left behind");
+            }
+            else if (units < 0){
+                System.out.println("Can't move a negative amount");
+            }
+
+        } while(fromcountry.getNumUnits() - units <= 0 || units < 0);
+        toCountry.addUnits(units);
+        fromCountry.addUnits(-units);
     }
 
-
-//    public boolean hasCountry(Country country){
-//        for (Country n : countriesOwned) { if (country == n) { return true; } }
-//        return false;
-//    }
-
-    public void setAvailableUnits(int availableUnits) {
-        this.availableUnits = availableUnits;
-        totalUnits += availableUnits;
-    }
-
-    public int getAvailableUnits() {
-        return availableUnits;
-    }
-
-    void public setTotalUnits(int units){
-        totalUnits = units;
-    }
-
-    int public getTotalUnits(){
-        return totalUnits;
-    }
-
+    /**
+     * Temporary method for getting an int from user
+     * @param displayString is the string displayed for input
+     * @return the next Int inputed into the console
+     */
     private int receiveInt(String displayString){
         Scanner kb = new Scanner(System.in);
 
