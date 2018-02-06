@@ -107,7 +107,9 @@ public class Player{
         totalUnits = units;
     }
 
-
+    int public getTotalUnits(){
+        return totalUnits;
+    }
 
     private int receiveInt(String displayString){
         Scanner kb = new Scanner(System.in);
