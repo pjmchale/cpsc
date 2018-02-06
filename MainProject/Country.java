@@ -18,6 +18,41 @@ public class Country {
 		countryID = id;
 	}
 
+	public String getName(){
+		return name;
+	}
+	public setName(String newName){
+		name = newName;
+	}
+
+	public void addUnits(int units) {
+		numUnits = numUnits + units;
+	}
+
+	public void setUnits(int units){
+		numUnits = units;
+	}
+
+	public int getUnits(){
+		return numUnits;
+	}
+
+	public void setOwner(Player player) {
+		owner = player;
+	}
+
+	public Player getOwner(){
+		return owner;
+	}
+
+	public void setCountryID(int id) {
+		countryID = id;
+	}
+
+	public int getCountryID(){
+		return countryID;
+	}
+
 	public boolean isOwner(Player player) {
 		return Player.equals(player);
 	}
@@ -39,25 +74,6 @@ public class Country {
 		return Arrays.asList(countryNeighbours).contains(possibleNeighbour);
 	}
 
-	public void addUnits(int units) {
-		numUnits = numUnits + units;
-	}
-
-	public void setOwner(Player player) {
-		owner = player;
-	}
-
-	public Player getOwner(){
-		return owner;
-	}
-
-	public void setCountryID(int id) {
-		countryID = id;
-	}
-
-	public int getCountryID(){
-		return countryID;
-	}
 
 	public int selectUnitAmount(){
 		System.out.println("How many units do you want to send? ");
