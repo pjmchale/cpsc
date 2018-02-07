@@ -123,10 +123,18 @@ public class GameManager{
     boolean validChoice, allUnitsDistributed;
 
     switch(numPlayers){
-      case 2: numUnits = 10;
-      case 3: numUnits = 7;
-      case 4: numUnits = 5;
-      default: numUnits = 5;
+      case 2: 
+        numUnits = 10;
+        break;
+      case 3: 
+        numUnits = 7;
+        break;
+      case 4: 
+        numUnits = 5;
+        break;
+      default: 
+        numUnits = 5;
+
       /*
       case 2: numUnits = 40;
       case 3: numUnits = 35;
