@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -16,6 +16,13 @@ public class Player{
      */
     public void Player(String name){
         this.name = name;
+        totalUnits = 0;
+        availableUnits = 0;
+        countriesOwned = new ArrayList<Country>();
+    }
+
+    public void Player(){
+        name = "none";
         totalUnits = 0;
         availableUnits = 0;
         countriesOwned = new ArrayList<Country>();
@@ -76,7 +83,7 @@ public class Player{
                 availableUnits -= units;
             }
             else if (units < 0){
-                System.out.println("Can't move a negative amount");
+                System.out.println("Can't place a negative amount");
             }
             else {
                 System.out.println("You do not have that many units available.");
@@ -99,12 +106,12 @@ public class Player{
             if (attackingCountry.isNeighbour(defendingCountry)){
                 Combat battle = new Combat(attackingCountry, defendingCountry);
                 battle.simulateCombat();
-                return True;
+                return true;
             }
         }
-        return False;
-        }
+        return false;
     }
+
 
 
     /**
@@ -114,9 +121,10 @@ public class Player{
      */
     public void moveUnits(Country fromCountry, Country toCountry){
         //
+        int units;
         do{
-            int units = receiveInt("How many units would you like to move?");
-            if (fromcountry.getNumUnits() - units <= 0){
+            units = receiveInt("How many units would you like to move?");
+            if (fromCountry.getNumUnits() - units <= 0){
                 System.out.println("1 unit has to be left behind");
             }
             else if (units < 0){
