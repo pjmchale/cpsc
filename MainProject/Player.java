@@ -101,16 +101,16 @@ public class Player{
      * @param defendingCountry represents the defending country
      * @return a boolean to signify if the attack was a valid attack
      */
-    public boolean attack(Country attackingCountry, Country defendingCountry){
+    public void attack(Country attackingCountry, Country defendingCountry){
         if (attackingCountry.getOwner() == this ){
             if (attackingCountry.isNeighbour(defendingCountry)){
                 Combat battle;
                 battle = new Combat(attackingCountry, defendingCountry);
                 battle.simulateBattle();
-                return true;
+                //return true;
             }
         }
-        return false;
+        //return false;
     }
 
 
