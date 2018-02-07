@@ -20,7 +20,7 @@ public class Map {
 		country.setOwner(player);
 	}
 
-	public void initMap() {
+	public void initializeMap() {
 
 	}
 
@@ -51,7 +51,7 @@ public class Map {
 		// countries.put(key, value);
 		Country country = new Country(id, neighbours, name);
 		if (countries == null){
-			countries = new ArrayList<Country>(Arrays.asList(country))
+			countries = new ArrayList<Country>(Arrays.asList(country));
 			
 		} else {
 			countries.add(country);
