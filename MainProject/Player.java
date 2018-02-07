@@ -21,6 +21,13 @@ public class Player{
         countriesOwned = new ArrayList<Country>();
     }
 
+    public void Player(){
+        name = "none";
+        totalUnits = 0;
+        availableUnits = 0;
+        countriesOwned = new ArrayList<Country>();
+    }
+
     /**
      * Getter and Setters for needed instance variables
      */
@@ -76,7 +83,7 @@ public class Player{
                 availableUnits -= units;
             }
             else if (units < 0){
-                System.out.println("Can't move a negative amount");
+                System.out.println("Can't place a negative amount");
             }
             else {
                 System.out.println("You do not have that many units available.");
@@ -103,8 +110,8 @@ public class Player{
             }
         }
         return False;
-        }
     }
+
 
 
     /**
