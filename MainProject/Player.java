@@ -109,9 +109,12 @@ public class Player{
                 battle.simulateBattle();
                 //return true;
             }
+            else {
+                System.out.println("Something went wrong 113");
+            }
         }
         else {
-            System.out.println("Something went wrong 114");
+            System.out.println("Something went wrong 117");
         }
         //return false;
     }
