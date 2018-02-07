@@ -110,6 +110,9 @@ public class Player{
                 //return true;
             }
         }
+        else {
+            System.out.println("Something went wrong 114");
+        }
         //return false;
     }
 
