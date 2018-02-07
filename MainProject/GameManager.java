@@ -80,13 +80,14 @@ public class GameManager{
    */
   GameManager(){
     initGameState();
-    playTurn();
+    playGame();
   }
 
   /**
    * initializes game, creates players, map, turn order and distributes board units
    */
   private void initGameState(){
+    Player firstTurn;
 
     printAsciiArt();
 
@@ -95,9 +96,11 @@ public class GameManager{
     initializeMap();
 
     initializeTurn();
+    firstTurn = currentPlayer;
 
     distributeUnits();
 
+    currentPlayer = firstTurn;
   }
 
   /**
@@ -109,7 +112,7 @@ public class GameManager{
     ArrayList<Country> allCountries = map.getCountries();
 
     for(int i=0; i < players.length ; i++){
-      if(players[i].getCountriesOwned.size() == allCountries.size()){
+      if(players[i].getCountriesOwned().size() == allCountries.size()){
         gameOver = true;
         break;
       }
@@ -188,7 +191,7 @@ public class GameManager{
 
     // This loop distributes the initial units allowing players to select their initial countries
     allCountries = map.getCountries();
-    for(i=0; i < allCountries.length; i++){
+    for(i=0; i < allCountries.size(); i++){
         printTurn();
         countryIndex = printCountriesAvailable();
 
@@ -197,7 +200,7 @@ public class GameManager{
           userChoice = receiveInt("Enter Country # to place unit: ");
           if(userChoice <= countryIndex.size() && userChoice > 0){
             selectedCountry = allCountries.get(countryIndex.get(userChoice-1));
-            player.gainCountry(selectedCountry);
+            currentPlayer.gainCountry(selectedCountry);
             selectedCountry.setOwner(currentPlayer);
             currentPlayer.placeUnits(selectedCountry, 1);
             validChoice = true;
@@ -221,7 +224,7 @@ public class GameManager{
         }
       }
 
-      if(currentPlayer.availableUnits == 0){
+      if(currentPlayer.getAvailableUnits() == 0){
         nextTurn();
         continue;
       }
@@ -239,9 +242,8 @@ public class GameManager{
 
       }
 
+      nextTurn();
     }
-
-
 
   }
 
@@ -255,9 +257,138 @@ public class GameManager{
   }
 
   /**
-   * Function for playing turn WRITE MORE HERE
+   * Function for playing turn
    */
+  private void playGame(){
+    int userChoice;
+
+    while(true){
+      printTurn();
+      playTurn();
+      nextTurn();
+    }
+        
+
+  }
+
   private void playTurn(){
+    boolean turnOver = false;
+    int userChoice;
+
+    while(!turnOver){
+
+      placeNewTurnUnits();
+
+      printTurnMenu();
+      userChoice = receiveInt("Please select menu option: ");
+
+      switch(userChoice){
+        case 1:
+          attack();
+        case 2:
+          fortify();
+          turnOver = true;
+        case 3:
+          printPlayerInfo();
+        case 4:
+          printMap();
+        case 5:
+          turnOver = true;
+        case 6:
+          exitGame();
+
+        default:
+          System.out.println("invalid menu option");
+    }
+
+  }
+
+  private void placeNewTurnUnits(){
+
+
+  }
+
+  /**
+   * Prints the menu for available options during players turn
+   */
+  private void printTurnMenu(){
+    System.out.println("----------------------------\n"
+                      +"\t [1] Attack               \n"
+                      +"\t [2] Fortify              \n"
+                      +"\t [3] Display Player Info  \n"
+                      +"\t [4] Display Map          \n"
+                      +"\t [5] End Turn             \n"
+                      +"\t [6] Exit Game            \n"
+                      +"----------------------------\n");
+  }
+  
+  /**
+   * Prints to stdout the players whos turn it currently is
+   */
+  private void printTurn(){
+    System.out.println("[*] " + currentPlayer.getName() + "'s turn.");
+  }
+
+  /**
+   * Sets up combat between two countries, current players selects attacking and defending country
+   */
+  private void attack(){
+    int userChoice;
+    ArrayList<Country> countries;
+    Country attackingCountry, defendingCountry;
+
+    System.out.println("Attack");
+    System.out.println("----------------------------------------");
+
+    printCountriesOwned(currentPlayer);
+    userChoice = receiveInt("Select country to attack from: ");
+
+    countries = currentPlayer.getCountriesOwned();
+    attackingCountry = countries.get(userChoice-1);
+
+    printAllCountries();
+    userChoice = receiveInt("Select country to attack: ");
+    countries = map.getCountries();
+
+    defendingCountry = countries.get(userChoice-1);
+
+    currentPlayer.attack(attackingCountry, defendingCountry);
+
+  }
+
+  /**
+   * Allows user to move units from one country they own to another neighboring country
+   */
+  private void fortify(){
+    int userChoice;
+    int numUnits;
+    ArrayList<Country> countries;
+    Country fromCountry, toCountry;
+
+    System.out.println("Fortify");
+    System.out.println("----------------------------------------");
+    countries = currentPlayer.getCountriesOwned();
+
+    printCountriesOwned(currentPlayer);
+    userChoice = receiveInt("Select country to move units from: ");
+    fromCountry = countries.get(userChoice-1);
+
+    userChoice = receiveInt("Select country to move units to: ");
+    toCountry = countries.get(userChoice-1);
+
+    currentPlayer.moveUnits(fromCountry, toCountry);
+
+  }
+
+  private void printMap(){
+    System.out.println("Map");
+    System.out.println("----------------------------------------");
+    map.printMap();
+  }
+
+  private void printPlayerInfo(){
+    System.out.println(currentPlayer.getName() + "'s Player Information:");
+    System.out.println("----------------------------------------");
 
   }
 
@@ -277,12 +408,7 @@ public class GameManager{
       return kb.nextInt();
   }
 
-  /**
-   * Prints to stdout the players whos turn it currently is
-   */
-  private void printTurn(){
-    System.out.println(currentPlayer.getName() + "'s turn.");
-  }
+  
 
   /**
    * Prints a list of the countries available i.e. Countries which currently have no owner
@@ -295,9 +421,9 @@ public class GameManager{
     ArrayList<Integer> availableIndex = new ArrayList<Integer>();
 
     System.out.println("Available countries:\n");
-    for(int i=0; i < allCountries.length; i++){
-      if(allCountries[i].getOwner() == null){
-        System.out.println("\t" + k + ". " + allCountries[i].getName());
+    for(int i=0; i < allCountries.size(); i++){
+      if(allCountries.get(i).getOwner() == null){
+        System.out.println("\t" + k + ". " + allCountries.get(i).getName());
         k++;
         availableIndex.add(i);
       }
@@ -307,22 +433,27 @@ public class GameManager{
 
   }
 
-  private ArrayList<Integer> printCountriesOwned(Player player){
-    int k=1;
+  private void printCountriesOwned(Player player){
     ArrayList<Country> countriesOwned;
     countriesOwned = player.getCountriesOwned();
 
     System.out.println(player.getName() + "'s countries:");
-    for(int i=0; i < countriesOwned.length; i++){
-        System.out.println("\t" + k + ". " + countriesOwned[i].getName());
-        k++;
-        availableIndex.add(i);
-      }
+    for(int i=0; i < countriesOwned.size(); i++){
+        System.out.println("\t" + (i+1) + ". " + countriesOwned.get(i).getName());
     }
 
-    return availableIndex;
   }
 
+  private void printAllCountries(){
+    ArrayList<Country> allCountries;
+    allCountries = map.getAllCountries();
+
+    System.out.println("All Countries:");
+    for(int i=0; i < allCountries.size(); i++){
+        System.out.println("\t" + (i+1) + ". " + allCountries.get(i).getName());
+    }
+
+  }
 
 
   /**
