@@ -3,67 +3,6 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.ArrayList;
 
-//// TEMP
-//class Player{
-//  String name = "temp name";
-//  ArrayList<Country> countriesOwned;
-//  int availableUnits;
-//  Player(){
-//    //System.out.println("Name?:");
-//    //Scanner kb = new Scanner(System.in);
-//    //name = kb.next();
-//  }
-//
-//  public String getName(){
-//    return name;
-//  }
-//
-//  public void setAvailableUnits(int num){
-//    availableUnits = num;
-//  }
-//
-//  public void placeUnits(Country country, int units){
-//  }
-//
-//    
-//
-//}
-//
-//class Map{
-//  ArrayList<Country> countries = new ArrayList<Country>;
-//  
-//  Map(){
-//    for(int i=0;i<5;i++){
-//      countries[i] = new Country();
-//    }
-//  }
-//
-//  public ArrayList<Country> getCountries(){
-//    return countries;
-//  }
-//
-//}
-//
-//class Country{
-//  String name = "Country name";
-//  Player owner;
-//  int numUnits;
-//
-//  public String getName(){
-//    return name;
-//  }
-//
-//  public Player getOwner(){
-//    return owner;
-//  }
-//
-//  public void setOwner(Player player){
-//    owner = player;
-//  }
-//
-//}
-// //END TEMP
-
 /**
  * This is the class which runs the entire game
  *
@@ -229,7 +168,7 @@ public class GameManager{
         continue;
       }
 
-      printCountriesOwned(currentPlayer);
+      printCountriesOwned();
       allCountries = currentPlayer.getCountriesOwned();
       validChoice = false;
       while(!validChoice){
@@ -271,6 +210,10 @@ public class GameManager{
 
   }
 
+  /**
+   * Allows play to play his turn with several menu options until player
+   * decides to pass the turn onto the next player
+   */
   private void playTurn(){
     boolean turnOver = false;
     int userChoice;
@@ -303,7 +246,32 @@ public class GameManager{
 
   }
 
+  }
+
   private void placeNewTurnUnits(){
+    int numNewUnits = 3;
+    int numUnits;
+    int userChoice;
+    ArrayList<Country> countriesOwned;
+    Country country;
+
+    countriesOwned = currentPlayer.getCountriesOwned();
+
+    if(countriesOwned.size() > numNewUnits){
+      numNewUnits = countriesOwned.size();
+    }
+
+    System.out.println("Gained " + numNewUnits + " new units!");
+    currentPlayer.setAvailableUnits(numNewUnits);
+    
+    while(currentPlayer.getAvailableUnits() != 0){
+      printCountriesOwned();
+      userChoice = receiveInt("Select country to place units: ");
+      country = countriesOwned.get(userChoice-1);
+      numUnits = receiveInt("How many units? (" + currentPlayer.getAvailableUnits() + " available): ");
+
+      currentPlayer.placeUnits(country, numUnits);
+    }
 
 
   }
@@ -340,7 +308,7 @@ public class GameManager{
     System.out.println("Attack");
     System.out.println("----------------------------------------");
 
-    printCountriesOwned(currentPlayer);
+    printCountriesOwned();
     userChoice = receiveInt("Select country to attack from: ");
 
     countries = currentPlayer.getCountriesOwned();
@@ -369,7 +337,7 @@ public class GameManager{
     System.out.println("----------------------------------------");
     countries = currentPlayer.getCountriesOwned();
 
-    printCountriesOwned(currentPlayer);
+    printCountriesOwned();
     userChoice = receiveInt("Select country to move units from: ");
     fromCountry = countries.get(userChoice-1);
 
@@ -433,11 +401,11 @@ public class GameManager{
 
   }
 
-  private void printCountriesOwned(Player player){
+  private void printCountriesOwned(){
     ArrayList<Country> countriesOwned;
-    countriesOwned = player.getCountriesOwned();
+    countriesOwned = currentPlayer.getCountriesOwned();
 
-    System.out.println(player.getName() + "'s countries:");
+    System.out.println(currentPlayer.getName() + "'s countries:");
     for(int i=0; i < countriesOwned.size(); i++){
         System.out.println("\t" + (i+1) + ". " + countriesOwned.get(i).getName());
     }
