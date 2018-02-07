@@ -1,7 +1,6 @@
 import java.lang.Math;
 import java.util.Arrays;
 import java.util.Scanner;
-import org.apache.commons.lang3.ArrayUtils;
 public class Combat{
 	private Dice dice;
 	private Player attacker;
@@ -27,11 +26,11 @@ public class Combat{
 		return attackWin;
 	}
 	public int[] rollDice(int numDice) {
-		int dices[] = Dice.rolllDices(numDice);
+		int dices[] = dice.rollDices(numDice);
 		return dices;
 		
 	}
-	public void countryLose(Country country , player attacker) {
+	public void countryLose(Country country , Player attacker) {
 		Player player = country.getOwner();
 		System.out.println("      ---------       ");
 		System.out.println(country.getName() + "["+player.getName()+"] lost a unit");
@@ -67,7 +66,7 @@ public class Combat{
 		System.out.print(defender.getName() + " (defender): ");
 		numDefenders = defendingCountry.selectUnitAmount();
 		int[] atkDices = rollDice(numAttackers);
-		int[] defDices = rollDice(numDefenders)
+		int[] defDices = rollDice(numDefenders);
 		int defending[] = sortFromHighest(defDices);
 		int attacking[] = sortFromHighest(atkDices);
 		int minimumDice = Math.min(defending.length, attacking.length);

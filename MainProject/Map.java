@@ -17,7 +17,7 @@ public class Map {
 	}
 
 	public void setOwnerTo(Country country, Player player) {
-		country.getOwner() = player;
+		country.setOwner(player);
 	}
 
 	public void initMap() {
@@ -26,19 +26,19 @@ public class Map {
 
 	Map(){		
 		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2,4));
-		buildMap(1, neighbours, "RUSSIA");
+		buildMap(1, neighbours, "CANADA");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(1,5,6,3));
-		buildMap(2, neighbours, "USA");
+		buildMap(2, neighbours, "SWEDEN");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(2,6,7));
-		buildMap(3, neighbours, "CANADA");
+		buildMap(3, neighbours, "RUSSIA");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(1,2,5));
-		buildMap(4, neighbours, "CHINA");
+		buildMap(4, neighbours, "USA");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(1,2,6));
-		buildMap(5, neighbours, "SWEDEN");
+		buildMap(5, neighbours, "CHINA");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(2,5,7));
 		buildMap(6, neighbours, "JAPAN");
@@ -59,21 +59,21 @@ public class Map {
 	+ "	  |        |   ----------------------------------------/ \n"
 	+ "	 /         |                 \\                       /  \n"
 	+ "	 |     1    \\        2        |           3          |  \n"
-	+ "	/   RUISSIA  |       USA      \\        CANADA        |  \n"
+	+ "	/   CANADA   |      SWEDEN    \\        RUSSIA        |  \n"
 	+ "	|----__      |                |                       |  \n"
 	+ "	|      ______|                \\                      |  \n"
 	+ "	|            -----------       \\                     | \n"
 	+ "	 |             |       |        |                     |\n"
-	+ "	 |     4       |   5   |        |                     |\\n"
-	+ "	  |  CHINA     | SWEDEN --------| _____________________ /\n"
+	+ "	 |     4       |   5   |        |                     |\n"
+	+ "	  |   USA      | CHINA  --------| _____________________\n"
 	+ "	  |_           |       |         |                   /\n"
 	+ "	    \\         |       |         |                  /\n"
 	+ "	     ----      |       |    6    \\        7       /\n"
-	+ "	         ---_  | ______|  JAPAN  |     AUSTRALIA  \\n"
-	+ "	             `---  \\            |     __________  \\n"
-	+ "	                    \\\\      /--------         |  \\n"
-	+ "	                        \\    /                   \\  |\n"
-	+ "	                         \\  |                     '\\'\n"
+	+ "	         ---_  | ______|  JAPAN  |     AUSTRALIA  /\n"
+	+ "	             ----  \\            |     __________/\n"
+	+ "	                    \\\\      /--------         \n"
+	+ "	                        \\    /                  \n"
+	+ "	                         \\  |                   \n"
 	+ "	                          --- \n");
 	}
 

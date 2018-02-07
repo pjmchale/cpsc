@@ -9,7 +9,7 @@ public class Dice{
 	}
 	Dice(){
 		random = new Random();
-		this.sides = 0;
+		this.sides = 6;
 	}
 	public void setSides(int sides){
 		this.sides = sides;

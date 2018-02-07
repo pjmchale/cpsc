@@ -3,7 +3,7 @@ import java.util.*;
 // Public first 
 // Private second
 public class Country {
-	private String name;
+	private String name = "";
 	private int countryID;
 	private Player owner;
 	private int numUnits;
@@ -21,7 +21,7 @@ public class Country {
 	public String getName(){
 		return name;
 	}
-	public setName(String newName){
+	public void setName(String newName){
 		name = newName;
 	}
 
@@ -54,24 +54,19 @@ public class Country {
 	}
 
 	public boolean isOwner(Player player) {
-		return Player.equals(player);
+		return owner.equals(player);
 	}
 
 	public boolean isNeighbour(Country country) {
-		boolean isANeighbour = false;
-		// Check if country.countryID is in the list of Map.countries.get(countryID);
-		// Check if possibleNeighbour is isn the list countryNeighbours
-		ArrayList<Integer> countryNeighbours = Map.countries.get(countryID);
-		int possibleNeighbour = country.countryID;
+		ArrayList<Integer> countryNeighbours = neighbours;
+		int possibleNeighbour = country.getCountryID();
 
 		if(Arrays.asList(countryNeighbours).contains(possibleNeighbour)){
-			// This is a neighbour
 			return true;
 		} else {
 			return false;
 		}
 
-		return Arrays.asList(countryNeighbours).contains(possibleNeighbour);
 	}
 
 
