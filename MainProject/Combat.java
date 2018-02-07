@@ -22,12 +22,12 @@ public class Combat{
 	public boolean attackerWin(int attackerDice, int defenderDice) {
 		boolean attackWin = false;
 		if(attackerDice > defenderDice) {
-			atackWin = true;
+			attackWin = true;
 		}
 		return attackWin;
 	}
 	public int[] rollDice(int numDice) {
-		int dices[] = Dice.rolllDices(numDices);
+		int dices[] = Dice.rolllDices(numDice);
 		return dices;
 		
 	}
@@ -39,7 +39,7 @@ public class Combat{
 		//country loses 1 unit
 		//check if country has (0) units left
 		//if true, prompt the attacker to move units to newly owned country
-		if(country.getNumUnits() <= 0) {
+		if(country.getUnits() <= 0) {
 			System.out.println(player.getName()+" has lost " + country.getName() +
 					"/n New owner is " + attacker.getName());
 			System.out.println("      ---------       ");
