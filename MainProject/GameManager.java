@@ -251,17 +251,23 @@ public class GameManager{
       switch(userChoice){
         case 1:
           attack();
+          break;
         case 2:
           fortify();
           turnOver = true;
+          break;
         case 3:
           printPlayerInfo();
+          break;
         case 4:
           printMap();
+          break;
         case 5:
           turnOver = true;
+          break;
         case 6:
           exitGame();
+          break;
 
         default:
           System.out.println("invalid menu option");
