@@ -152,6 +152,7 @@ public class GameManager{
 
     // This loop allows players to fortify their selected countries with the rest
     // of their available units
+    allUnitsDistributed = false;
     while(!allUnitsDistributed){
 
       // Check if any player has available units
@@ -414,7 +415,7 @@ public class GameManager{
 
   private void printAllCountries(){
     ArrayList<Country> allCountries;
-    allCountries = map.getAllCountries();
+    allCountries = map.getCountries();
 
     System.out.println("All Countries:");
     for(int i=0; i < allCountries.size(); i++){
