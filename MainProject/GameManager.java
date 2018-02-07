@@ -97,6 +97,7 @@ public class GameManager{
    * initializes turn order randomly
    */
   private void initializeTurn(){
+    System.out.println("Randomizing first turn...");
     Random rand = new Random();
     turnIndex = rand.nextInt(numPlayers);
     currentPlayer = players[turnIndex];
@@ -152,6 +153,7 @@ public class GameManager{
     allCountries = map.getCountries();
     for(i=0; i < allCountries.size(); i++){
         printTurn();
+        printMap();
         countryIndex = printCountriesAvailable();
 
         validChoice = false;
@@ -251,6 +253,7 @@ public class GameManager{
       switch(userChoice){
         case 1:
           attack();
+          isGameOver();
           break;
         case 2:
           fortify();
@@ -310,6 +313,7 @@ public class GameManager{
    */
   private void printTurnMenu(){
     System.out.println("----------------------------\n"
+                      +"Turn Menu:                  \n"
                       +"\t [1] Attack               \n"
                       +"\t [2] Fortify              \n"
                       +"\t [3] Display Player Info  \n"
