@@ -121,9 +121,10 @@ public class Player{
      */
     public void moveUnits(Country fromCountry, Country toCountry){
         //
+        int units;
         do{
-            int units = receiveInt("How many units would you like to move?");
-            if (fromcountry.getNumUnits() - units <= 0){
+            units = receiveInt("How many units would you like to move?");
+            if (fromCountry.getNumUnits() - units <= 0){
                 System.out.println("1 unit has to be left behind");
             }
             else if (units < 0){
