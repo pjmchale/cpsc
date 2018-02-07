@@ -75,6 +75,8 @@ public class GameManager{
    */
   private void initializePlayers(){
     boolean success = false;
+    String name;
+    Scanner kb;
 
     while (!success){
       numPlayers = receiveInt("Please enter number of players (2-4): ");
@@ -82,9 +84,12 @@ public class GameManager{
       else numPlayers = 0;
     }
     
+    kb = new Scanner(System.in);
     players = new Player[numPlayers];
     for(int i=0; i < numPlayers; i++){
-      players[i] = new Player();
+      System.out.print("Player " + (i+1) + " what is your name: ");
+      name = kb.next();
+      players[i] = new Player(name);
     }
   }
 
@@ -118,10 +123,17 @@ public class GameManager{
     boolean validChoice, allUnitsDistributed;
 
     switch(numPlayers){
+      case 2: numUnits = 10;
+      case 3: numUnits = 7;
+      case 4: numUnits = 5;
+      default: numUnits = 5;
+      /*
       case 2: numUnits = 40;
       case 3: numUnits = 35;
       case 4: numUnits = 30;
       default: numUnits = 30;
+      */
+
     }
 
     for(i=0; i < players.length; i++){
@@ -169,12 +181,14 @@ public class GameManager{
         continue;
       }
 
+      printTurn();
+      System.out.println("Units left: " + currentPlayer.getAvailableUnits());
       printCountriesOwned();
       allCountries = currentPlayer.getCountriesOwned();
       validChoice = false;
       while(!validChoice){
-        userChoice = receiveInt("Select country # to place units: ");
-        if(userChoice < allCountries.size() && userChoice > 0){
+        userChoice = receiveInt("Select country # to place unit: ");
+        if(userChoice <= allCountries.size() && userChoice > 0){
           selectedCountry = allCountries.get(userChoice-1);
           currentPlayer.placeUnits(selectedCountry, 1);
           validChoice = true;
@@ -295,7 +309,8 @@ public class GameManager{
    * Prints to stdout the players whos turn it currently is
    */
   private void printTurn(){
-    System.out.println("[*] " + currentPlayer.getName() + "'s turn.");
+    System.out.println("----------------------------------");
+    System.out.println(currentPlayer.getName() + "'s turn.");
   }
 
   /**
