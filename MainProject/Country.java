@@ -54,7 +54,7 @@ public class Country {
 	}
 
 	public boolean isOwner(Player player) {
-		return owner.equals(player);
+		return owner == player;
 	}
 
 	public boolean isNeighbour(Country country) {
