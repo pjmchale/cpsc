@@ -89,9 +89,9 @@ public class Player{
 
 
     /**
-     * Attack a country form a owned country, simulate the battle
-     * @param fromCountry represents the attacking country
-     * @param toCountry represents the defending country
+     * Attack a country from an owned country, simulate the battle
+     * @param attackingCountry represents the attacking country
+     * @param defendingCountry represents the defending country
      * @return a boolean to signify if the attack was a valid attack
      */
     public boolean attack(Country attackingCountry, Country defendingCountry){
@@ -102,8 +102,7 @@ public class Player{
                 return True;
             }
         }
-        else {
-            return False;
+        return False;
         }
     }
 
