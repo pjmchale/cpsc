@@ -6,7 +6,7 @@ import java.util.Scanner;
  */
 public class Player{
     private String name;
-    private ArrayList<Country>countriesOwned;
+    private ArrayList<Country>countriesOwned = new ArrayList<Country>();
     private int totalUnits;
     private int availableUnits;
 
@@ -18,14 +18,12 @@ public class Player{
         this.name = name;
         totalUnits = 0;
         availableUnits = 0;
-        countriesOwned = new ArrayList<Country>();
     }
 
     public void Player(){
         name = "none";
         totalUnits = 0;
         availableUnits = 0;
-        countriesOwned = new ArrayList<Country>();
     }
 
     /**
