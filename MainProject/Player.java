@@ -122,19 +122,21 @@ public class Player{
      */
     public void moveUnits(Country fromCountry, Country toCountry){
         //
-        int units;
-        do{
-            units = receiveInt("How many units would you like to move?");
-            if (fromCountry.getUnits() - units <= 0){
-                System.out.println("1 unit has to be left behind");
-            }
-            else if (units < 0){
-                System.out.println("Can't move a negative amount");
-            }
+        if (fromCountry.isNeighbour(toCountry) && fromCountry.getOwner() == this){
+            int units;
+            do{
+                units = receiveInt("How many units would you like to move?");
+                if (fromCountry.getUnits() - units <= 0){
+                    System.out.println("1 unit has to be left behind");
+                }
+                else if (units < 0){
+                    System.out.println("Can't move a negative amount");
+                }
 
-        } while(fromCountry.getUnits() - units <= 0 || units < 0);
-        toCountry.addUnits(units);
-        fromCountry.addUnits(-units);
+            } while(fromCountry.getUnits() - units <= 0 || units < 0);
+            toCountry.addUnits(units);
+            fromCountry.addUnits(-units);
+        }
     }
 
     /**
