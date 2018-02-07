@@ -54,24 +54,19 @@ public class Country {
 	}
 
 	public boolean isOwner(Player player) {
-		return Player.equals(player);
+		return owner.equals(player);
 	}
 
 	public boolean isNeighbour(Country country) {
-		boolean isANeighbour = false;
-		// Check if country.countryID is in the list of Map.countries.get(countryID);
-		// Check if possibleNeighbour is isn the list countryNeighbours
-		ArrayList<Integer> countryNeighbours = Map.countries.get(countryID);
-		int possibleNeighbour = country.countryID;
+		ArrayList<Integer> countryNeighbours = neighbours;
+		int possibleNeighbour = country.getCountryID();
 
 		if(Arrays.asList(countryNeighbours).contains(possibleNeighbour)){
-			// This is a neighbour
 			return true;
 		} else {
 			return false;
 		}
 
-		return Arrays.asList(countryNeighbours).contains(possibleNeighbour);
 	}
 
 
