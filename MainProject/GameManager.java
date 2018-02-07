@@ -241,9 +241,9 @@ public class GameManager{
     boolean turnOver = false;
     int userChoice;
 
-    while(!turnOver){
+    placeNewTurnUnits();
 
-      placeNewTurnUnits();
+    while(!turnOver){
 
       printTurnMenu();
       userChoice = receiveInt("Please select menu option: ");
