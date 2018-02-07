@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -106,10 +106,10 @@ public class Player{
             if (attackingCountry.isNeighbour(defendingCountry)){
                 Combat battle = new Combat(attackingCountry, defendingCountry);
                 battle.simulateCombat();
-                return True;
+                return true;
             }
         }
-        return False;
+        return false;
     }
 
 
