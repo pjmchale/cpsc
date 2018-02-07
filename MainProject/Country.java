@@ -9,7 +9,7 @@ public class Country {
 	private int numUnits;
 	private ArrayList<Integer> neighbours;
 
-	Country(int id, ArrayList<Integer> newNeighbours, String, newName){
+	Country(int id, ArrayList<Integer> newNeighbours, String newName){
 		// Set neighbours
 		neighbours = newNeighbours;
 		// Set Name 
@@ -93,7 +93,7 @@ public class Country {
 		// Units
 		String numUnitsString = Integer.toString(numUnits);
 		String countryIDString = Integer.toString(countryID);
-		return "Name: " + name + "(" + countryIDString +  ")" + "\n" + "Owner: " + owner.name + "\n" + "Units: " + numUnitsString;
+		return "Name: " + name + "(" + countryIDString +  ")" + "\n" + "Owner: " + owner.getName() + "\n" + "Units: " + numUnitsString;
 	}
 
 }
