@@ -50,7 +50,12 @@ public class Map {
 	private void buildMap(int id, ArrayList<Integer> neighbours, String name) {
 		// countries.put(key, value);
 		Country country = new Country(id, neighbours, name);
-		countries.add(country);
+		if (countries == null){
+			countries = new ArrayList<Country>(Arrays.asList(country))
+			
+		} else {
+			countries.add(country);
+		}
 	}
 
 	public void printMap(){
