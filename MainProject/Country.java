@@ -61,7 +61,7 @@ public class Country {
 		ArrayList<Integer> countryNeighbours = neighbours;
 		int possibleNeighbour = country.getCountryID();
 
-		if(Arrays.asList(countryNeighbours).contains(possibleNeighbour)){
+		if(countryNeighbours.contains(possibleNeighbour)){
 			return true;
 		} else {
 			return false;
