@@ -32,15 +32,16 @@ public class Combat{
 	}
 	public void countryLose(Country country , Player attacker) {
 		Player player = country.getOwner();
-		System.out.println("      ---------       ");
+		System.out.println("-[===> ---------------------- <===]-");
 		System.out.println(country.getName() + "["+player.getName()+"] lost a unit");
-		System.out.println("      ---------       ");
+		System.out.println("-[===> ---------------------- <===]-");
 		
 		country.addUnits(-1);
 		if(country.getUnits() <= 0) {
 			System.out.println(player.getName()+" has lost " + country.getName() +
 					"/n New owner is " + attacker.getName());
-			System.out.println("      ---------       ");
+			
+			System.out.println("-[===> ---------------------- <===]-");
 			player.loseCountry(country);
 			attacker.gainCountry(country);
 			country.setOwner(attacker);
