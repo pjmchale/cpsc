@@ -37,7 +37,6 @@ public class Combat{
 		System.out.println("      ---------       ");
 		
 		country.addUnits(-1);
-		System.out.println("                  "+country.getUnits());
 		if(country.getUnits() <= 0) {
 			System.out.println(player.getName()+" has lost " + country.getName() +
 					"/n New owner is " + attacker.getName());
