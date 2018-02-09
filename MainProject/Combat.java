@@ -35,9 +35,9 @@ public class Combat{
 		System.out.println("      ---------       ");
 		System.out.println(country.getName() + "["+player.getName()+"] lost a unit");
 		System.out.println("      ---------       ");
-		//country loses 1 unit
-		//check if country has (0) units left
-		//if true, prompt the attacker to move units to newly owned country
+		
+		country.addUnits(-1);
+		System.out.println("                  "+country.getUnits());
 		if(country.getUnits() <= 0) {
 			System.out.println(player.getName()+" has lost " + country.getName() +
 					"/n New owner is " + attacker.getName());
@@ -63,17 +63,20 @@ public class Combat{
 		//prompt attacker and defender to select amount of units
 		System.out.print(attacker.getName() + " (attacker): ");
 		numAttackers = attackingCountry.selectUnitAmount();
+		
 		System.out.print(defender.getName() + " (defender): ");
 		numDefenders = defendingCountry.selectUnitAmount();
+		
 		int[] atkDices = rollDice(numAttackers);
 		int[] defDices = rollDice(numDefenders);
 		int defending[] = sortFromHighest(defDices);
 		int attacking[] = sortFromHighest(atkDices);
 		int minimumDice = Math.min(defending.length, attacking.length);
+		
 		for (int i = 0; i <minimumDice; i++) {
 			System.out.println("      ---------       ");
-			System.out.println(attacker.getName() +" roles: " + numAttackers);
-			System.out.println(defender.getName() +" roles: " + numDefenders);
+			System.out.println(attacker.getName() +" roles: " + attacking[i]);
+			System.out.println(defender.getName() +" roles: " + defending[i]);
 			if(attackerWin(attacking[i], defending[i])) {
 				countryLose(defendingCountry , attacker);
 			}else {
