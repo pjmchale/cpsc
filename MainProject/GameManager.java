@@ -46,18 +46,18 @@ public class GameManager{
    * Checks if player has won the game i.e. owns every territory on the map
    * @return gameOver true if player owns every territory otherwise false
    */
-  public boolean isGameOver(){
-    boolean gameOver = false;
+  public void checkIfGameOver(){
     ArrayList<Country> allCountries = map.getCountries();
 
     for(int i=0; i < players.length ; i++){
       if(players[i].getCountriesOwned().size() == allCountries.size()){
-        gameOver = true;
+        System.out.println("Congratulations " + currentPlayer.getName() + "! You have won the game!");
+        System.exit(0);
         break;
       }
     }
 
-    return gameOver;
+    
 
   }
 
@@ -80,7 +80,7 @@ public class GameManager{
 
     while (!success){
       numPlayers = receiveInt("Please enter number of players (2-4): ");
-      if(numPlayers > 1 || numPlayers <= 4) success = true;
+      if(numPlayers > 1 && numPlayers <= 4) success = true;
       else numPlayers = 0;
     }
     
@@ -97,10 +97,19 @@ public class GameManager{
    * initializes turn order randomly
    */
   private void initializeTurn(){
-    System.out.println("Randomizing first turn...");
+    System.out.println("\nRandomizing first turn...\n");
+
+    // sleep for 1 second
+    try{
+      Thread.sleep(1000);
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+
     Random rand = new Random();
     turnIndex = rand.nextInt(numPlayers);
     currentPlayer = players[turnIndex];
+
   }
 
   /**
@@ -158,7 +167,7 @@ public class GameManager{
 
         validChoice = false;
         while(!validChoice){
-          userChoice = receiveInt("Enter Country # to place unit: ");
+          userChoice = receiveInt("\nEnter Country # to place unit: ");
           if(userChoice <= countryIndex.size() && userChoice > 0){
             selectedCountry = allCountries.get(countryIndex.get(userChoice-1));
             currentPlayer.gainCountry(selectedCountry);
@@ -232,7 +241,6 @@ public class GameManager{
       nextTurn();
     }
         
-
   }
 
   /**
@@ -253,7 +261,7 @@ public class GameManager{
       switch(userChoice){
         case 1:
           attack();
-          isGameOver();
+          checkIfGameOver();
           break;
         case 2:
           fortify();
@@ -264,6 +272,7 @@ public class GameManager{
           break;
         case 4:
           printMap();
+          printMapInfo();
           break;
         case 5:
           turnOver = true;
@@ -312,7 +321,7 @@ public class GameManager{
    * Prints the menu for available options during players turn
    */
   private void printTurnMenu(){
-    System.out.println("----------------------------\n"
+    System.out.println("\n----------------------------\n"
                       +"Turn Menu:                  \n"
                       +"\t [1] Attack               \n"
                       +"\t [2] Fortify              \n"
@@ -327,8 +336,9 @@ public class GameManager{
    * Prints to stdout the players whos turn it currently is
    */
   private void printTurn(){
-    System.out.println("----------------------------------");
+    System.out.println("\n--------------------------------------------------------------------------------");
     System.out.println(currentPlayer.getName() + "'s turn.");
+    System.out.println("--------------------------------------------------------------------------------");
   }
 
   /**
@@ -339,8 +349,9 @@ public class GameManager{
     ArrayList<Country> countries;
     Country attackingCountry, defendingCountry;
 
+    printMap();
     System.out.println("Attack");
-    System.out.println("----------------------------------------");
+    System.out.println("--------------------------------------------------------------------------------");
 
     printCountriesOwned();
     userChoice = receiveInt("Select country to attack from: ");
@@ -348,9 +359,8 @@ public class GameManager{
     countries = currentPlayer.getCountriesOwned();
     attackingCountry = countries.get(userChoice-1);
 
-    printAllCountries();
+    countries = printCountriesNotOwned();
     userChoice = receiveInt("Select country to attack: ");
-    countries = map.getCountries();
 
     defendingCountry = countries.get(userChoice-1);
 
@@ -367,8 +377,9 @@ public class GameManager{
     ArrayList<Country> countries;
     Country fromCountry, toCountry;
 
+    printMap();
     System.out.println("Fortify");
-    System.out.println("----------------------------------------");
+    System.out.println("--------------------------------------------------------------------------------");
     countries = currentPlayer.getCountriesOwned();
 
     printCountriesOwned();
@@ -382,15 +393,47 @@ public class GameManager{
 
   }
 
+  /**
+   * Displays the Map for the game
+   */
   private void printMap(){
-    System.out.println("Map");
-    System.out.println("----------------------------------------");
+    System.out.println();
     map.printMap();
   }
 
+  /**
+   * Displays the Map for the game
+   */
+  private void printMapInfo(){
+    ArrayList<Country> allCountries;
+    allCountries = map.getCountries();
+
+    System.out.println("\nMap Information");
+    System.out.println("--------------------------------------------------------------------------------");
+    System.out.println("\t Countries: ");
+    for(int i=0;i < allCountries.size(); i++){
+      System.out.println("\t\t" + allCountries.get(i).getName() + " (Owner: "
+                         + allCountries.get(i).getOwner().getName() + ", " 
+                         + allCountries.get(i).getUnits() + " Units)");
+    }
+
+  }
+
+  /**
+   * Displays various information relating to the current players status in the game
+   */
   private void printPlayerInfo(){
-    System.out.println(currentPlayer.getName() + "'s Player Information:");
-    System.out.println("----------------------------------------");
+    ArrayList<Country> countriesOwned;
+    countriesOwned = currentPlayer.getCountriesOwned();
+
+    System.out.println("\nPlayer Info");
+    System.out.println("--------------------------------------------------------------------------------");
+    System.out.println("\t Player Name: " + currentPlayer.getName());
+    //System.out.println("\t Total Number of Units: " + currentPlayer.getTotalUnits());
+    System.out.println("\t Countries: ");
+    for(int i=0;i < countriesOwned.size(); i++){
+      System.out.println("\t\t" + countriesOwned.get(i).getName() + " (" + countriesOwned.get(i).getUnits() + " Units)");
+    }
 
   }
 
@@ -435,26 +478,42 @@ public class GameManager{
 
   }
 
+  /**
+   * Prints the countries owned by the current player
+   */
   private void printCountriesOwned(){
     ArrayList<Country> countriesOwned;
     countriesOwned = currentPlayer.getCountriesOwned();
 
     System.out.println(currentPlayer.getName() + "'s countries:");
     for(int i=0; i < countriesOwned.size(); i++){
-        System.out.println("\t" + (i+1) + ". " + countriesOwned.get(i).getName());
+        System.out.println("\t" + (i+1) + ". " + countriesOwned.get(i).getName()
+                           + " (" + countriesOwned.get(i).getUnits() + " Units)");
     }
 
   }
 
-  private void printAllCountries(){
-    ArrayList<Country> allCountries;
+  /**
+   * Prints all the countries in the entire map
+   * @return returns ArrayList of countries not owned by current player
+   */
+  private ArrayList<Country> printCountriesNotOwned(){
+    ArrayList<Country> notOwnedCountries, allCountries;
     allCountries = map.getCountries();
 
-    System.out.println("All Countries:");
+    notOwnedCountries = new ArrayList<Country>();
+
+    System.out.println("Other Countries:");
     for(int i=0; i < allCountries.size(); i++){
-        System.out.println("\t" + (i+1) + ". " + allCountries.get(i).getName());
+      if(allCountries.get(i).getOwner() != currentPlayer){
+        notOwnedCountries.add(allCountries.get(i));
+        System.out.println("\t" + notOwnedCountries.size() + ". " + allCountries.get(i).getName() + " (Owner: "
+                           + allCountries.get(i).getOwner().getName() + ", " 
+                           + allCountries.get(i).getUnits() + " Units)");
+      }
     }
 
+    return notOwnedCountries;
   }
 
 
