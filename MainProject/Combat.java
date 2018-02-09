@@ -73,7 +73,7 @@ public class Combat{
 		int minimumDice = Math.min(defending.length, attacking.length);
 		
 		for (int i = 0; i <minimumDice; i++) {
-			System.out.println("      ---------       ");
+			System.out.println("-[===> ---------------------- <===]-");
 			System.out.println(attacker.getName() +" roles: " + attacking[i]);
 			System.out.println(defender.getName() +" roles: " + defending[i]);
 			if(attackerWin(attacking[i], defending[i])) {
