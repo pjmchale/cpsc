@@ -128,7 +128,7 @@ public class Player{
      */
     public void moveUnits(Country fromCountry, Country toCountry){
         //
-        if (fromCountry.isNeighbour(toCountry) && fromCountry.getOwner() == this){
+        if (fromCountry.isNeighbour(toCountry)){
             int units;
             do{
                 units = receiveInt("How many units would you like to move?");
