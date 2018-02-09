@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.ArrayList;
 
 /**
- * This is the class which runs the entire game
+ * This is the class which runs the entire RISK game
  *
  */
 public class GameManager{
@@ -299,6 +299,10 @@ public class GameManager{
 
   }
 
+  /**
+   * Calculates number of new units calculated at beginning of turn and
+   * allows player to ditribute them to their countries
+   */
   private void placeNewTurnUnits(){
     int numNewUnits = 3;
     int numUnits;
@@ -403,6 +407,8 @@ public class GameManager{
 
     userChoice = receiveInt("Select country to move units to: ");
     toCountry = countries.get(userChoice-1);
+
+    System.out.println(fromCountry.getName() + "|" + toCountry.getName());
 
     currentPlayer.moveUnits(fromCountry, toCountry);
 
@@ -509,8 +515,9 @@ public class GameManager{
   }
 
   /**
-   * Prints all the countries in the entire map
-   * @return returns ArrayList of countries not owned by current player
+   * Prints all the countries neighboring input country
+   * @param country the country to print the neighbours of
+   * @return returns ArrayList of countries neighbouring input country
    */
   private ArrayList<Country> printCountriesNeighbours(Country country){
     ArrayList<Country> countriesNeighbours, allCountries;
