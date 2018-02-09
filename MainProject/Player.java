@@ -143,6 +143,9 @@ public class Player{
             toCountry.addUnits(units);
             fromCountry.addUnits(-units);
         }
+        else{
+            System.out.println("Countries are not neighbours");
+        }
     }
 
     /**
