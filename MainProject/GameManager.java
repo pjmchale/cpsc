@@ -19,6 +19,13 @@ public class GameManager{
    */
   GameManager(){
     initGameState();
+
+    System.out.println("\n--------------------------------------------------------------------------------");
+    System.out.println("|                                                                                 ");
+    System.out.println("| BEGIN GAME                                                                      ");
+    System.out.println("|                                                                                 ");
+    System.out.println("--------------------------------------------------------------------------------");
+
     playGame();
   }
 
