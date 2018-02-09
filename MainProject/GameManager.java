@@ -27,6 +27,7 @@ public class GameManager{
    */
   private void initGameState(){
     Player firstTurn;
+    int firstTurnIndex;
 
     printAsciiArt();
 
@@ -36,10 +37,12 @@ public class GameManager{
 
     initializeTurn();
     firstTurn = currentPlayer;
+    firstTurnIndex = turnIndex;
 
     distributeUnits();
 
     currentPlayer = firstTurn;
+    turnIndex = firstTurnIndex;
   }
 
   /**
@@ -359,7 +362,12 @@ public class GameManager{
     countries = currentPlayer.getCountriesOwned();
     attackingCountry = countries.get(userChoice-1);
 
-    countries = printCountriesNotOwned();
+    countries = printCountriesNeighbours(attackingCountry);
+    if(countries.size() == 0){
+      System.out.println("No enemy owned bordering countries");
+      return;
+    }
+
     userChoice = receiveInt("Select country to attack: ");
 
     defendingCountry = countries.get(userChoice-1);
@@ -497,23 +505,23 @@ public class GameManager{
    * Prints all the countries in the entire map
    * @return returns ArrayList of countries not owned by current player
    */
-  private ArrayList<Country> printCountriesNotOwned(){
-    ArrayList<Country> notOwnedCountries, allCountries;
+  private ArrayList<Country> printCountriesNeighbours(Country country){
+    ArrayList<Country> countriesNeighbours, allCountries;
     allCountries = map.getCountries();
 
-    notOwnedCountries = new ArrayList<Country>();
+    countriesNeighbours = new ArrayList<Country>();
 
-    System.out.println("Other Countries:");
+    System.out.println("Neighbouring Countries:");
     for(int i=0; i < allCountries.size(); i++){
-      if(allCountries.get(i).getOwner() != currentPlayer){
-        notOwnedCountries.add(allCountries.get(i));
-        System.out.println("\t" + notOwnedCountries.size() + ". " + allCountries.get(i).getName() + " (Owner: "
+      if(allCountries.get(i).getOwner() != currentPlayer && allCountries.get(i).isNeighbour(country)){
+        countriesNeighbours.add(allCountries.get(i));
+        System.out.println("\t" + countriesNeighbours.size() + ". " + allCountries.get(i).getName() + " (Owner: "
                            + allCountries.get(i).getOwner().getName() + ", " 
                            + allCountries.get(i).getUnits() + " Units)");
       }
     }
 
-    return notOwnedCountries;
+    return countriesNeighbours;
   }
 
 
