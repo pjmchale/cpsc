@@ -104,7 +104,7 @@ public class Country {
 	*/
 	public boolean isNeighbour(Country country) {
 		int possibleNeighbour = country.getCountryID();
-		return neighbours.contains(possibleNeighbour)
+		return neighbours.contains(possibleNeighbour);
 	}
 
 
