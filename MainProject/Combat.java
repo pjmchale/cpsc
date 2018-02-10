@@ -1,6 +1,9 @@
 import java.lang.Math;
 import java.util.Arrays;
 import java.util.Scanner;
+/**
+ * Simulates a Combat between 2 country
+ */
 public class Combat{
 	private Dice dice;
 	private Player attacker;
@@ -18,6 +21,10 @@ public class Combat{
 		
 		
 	}
+	/**checks to see if the attacking number is higher
+	 * @param attackerDice the attacker's number value
+	 * @param defenderDice the defender's number value
+	 */
 	public boolean attackerWin(int attackerDice, int defenderDice) {
 		boolean attackWin = false;
 		if(attackerDice > defenderDice) {
@@ -25,11 +32,20 @@ public class Combat{
 		}
 		return attackWin;
 	}
+	/**
+	 * Roll's a number of dice
+	 * @param numDice how much dice to roll
+	 */
 	public int[] rollDice(int numDice) {
 		int dices[] = dice.rollDices(numDice);
 		return dices;
 		
 	}
+	/**
+	 * decrease one unit from a country. checks if the country has any units left
+	 * @param country the country that will lose (1) unit
+	 * @param attacker the player who is won the attack
+	 */
 	public void countryLose(Country country , Player attacker) {
 		Player player = country.getOwner();
 		System.out.println("-[===> ---------------------- <===]-");
@@ -48,6 +64,10 @@ public class Combat{
 			attacker.moveUnits(attackingCountry, defendingCountry);
 		}
 	}
+	/**
+	 * sorts an array from highest to lowest
+	 * @param arr the unsorted array
+	 */
 	public int[] sortFromHighest(int[]arr) {
 		Arrays.sort(arr);
 		int arrLength = arr.length;
@@ -58,6 +78,9 @@ public class Combat{
 		return desendingArray;
 		
 	}
+	/**
+	 * starts the battle between 2 countries
+	 */
 	public void simulateBattle() {
 		System.out.println(attackingCountry.getName().toUpperCase() + " ATTACKING "+defendingCountry.getName().toUpperCase());
 		//prompt attacker and defender to select amount of units
@@ -87,45 +110,94 @@ public class Combat{
 	}
 	
 	//getters and setters
+	/**
+	 * returns the dice
+	 */
 	public Dice getDice() {
 		return dice;
 	}
+	/**
+	 * sets the dice
+	 * @param dice the dice to set
+	 */
 	public void setDice(Dice dice) {
 		this.dice = dice;
 	}
+	/**
+	 * returns the attacker
+	 */
 	public Player getAttacker() {
 		return attacker;
 	}
+	/**
+	 * sets who is the attacker
+	 * @param the player who will become the attacker
+	 */
 	public void setAttacker(Player attacker) {
 		this.attacker = attacker;
 	}
+	/**
+	 * returns the defender
+	 */
 	public Player getDefender() {
 		return defender;
 	}
+	/**
+	 * sets who is the defender
+	 * @param defender the player who will become the defender
+	 */
 	public void setDefender(Player defender) {
 		this.defender = defender;
 	}
+	/**
+	 * return the country that is attacking
+	 */
 	public Country getAttackingCountry() {
 		return attackingCountry;
 	}
+	/**
+	 * sets the attacking country
+	 * @param attackingCountry the country that is attacking
+	 */
 	public void setAttackingCountry(Country attackingCountry) {
 		this.attackingCountry = attackingCountry;
 	}
+	/**
+	 * returns the country that is defending
+	 */
 	public Country getDefendingCountry() {
 		return defendingCountry;
 	}
+	/**
+	 * sets the defending country
+	 * @param defendingCountry the country that is defending
+	 */
 	public void setDefendingCountry(Country defendingCountry) {
 		this.defendingCountry = defendingCountry;
 	}
+	/**
+	 * returns the amount of attackers
+	 */
 	public int getNumAttackers() {
 		return numAttackers;
 	}
+	/**
+	 * sets the amount of attackers
+	 * @param numAttackers how much units are attacking
+	 */
 	public void setNumAttackers(int numAttackers) {
 		this.numAttackers = numAttackers;
 	}
+	/**
+	 * returns the number of defenders
+	 */
 	public int getNumDefenders() {
 		return numDefenders;
 	}
+	/**
+	 * sets the amount of defenders
+	 * @param numDefenders how much units are attacking
+	 */
 	public void setNumDefenders(int numDefenders) {
 		this.numDefenders = numDefenders;
 	}
