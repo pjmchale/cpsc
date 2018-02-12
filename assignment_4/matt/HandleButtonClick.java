@@ -7,32 +7,54 @@ import javafx.scene.text.Font;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 
-public class HandleButtonClick implements EventHandler<ActionEvent>
-{
+/**
+ * Handle the button click and act upon it
+*/
+public class HandleButtonClick implements EventHandler<ActionEvent> {
 
-	private String btnName;
+	private String actionType = "";
+	private BankAccount account;
+	private TextField actionAmountTextField;
+	private Label actionBalanceLabel;
 
-	public HandleButtonClick(String buttonName){
-		btnName = buttonName;
+	/**
+	 * Used get the 
+	 * @param buttonName: a String to check between deposit and withdraw
+	 * @param bankAccount: a BankAccount that is of the customers
+	 * @param amountTextField: a TextField of the withdraw or deposit amount
+	 * @param balanceLabel: a Label of the customers balance
+	*/
+	public HandleButtonClick(String buttonName, BankAccount bankAccount, TextField amountTextField, Label balanceLabel){
+		actionType = buttonName;
+	 	account = bankAccount;
+		actionAmountTextField = amountTextField;
+		actionBalanceLabel = balanceLabel;
 	}
 
+	/**
+	 * Used to handle the button click
+	 * Will take the value from the balanceLabel and apply a withdraw or deposit
+	 * @param event: a ActionEvent 
+	*/
 	@Override
-	public void handle(ActionEvent event)
-	{	
-		// messageLabel.setText("Clicked " + message);
-        // System.out.println("clicked");
-        // HandleButtonClick();
-        onClick();
-    }
+	public void handle(ActionEvent event){
+		double changeAmount;
 
-    public void onClick() {
+		try {
+	    	changeAmount =  Double.parseDouble(actionAmountTextField.getText());
+	    } catch (NumberFormatException e){
+	    	changeAmount = 0;
+	    }
 
-		if (btnName == "withdraw"){
-			System.out.print("WUTHINGSKDF");
-		} else if (btnName == "deposit"){
-			System.out.print("DEPOSTITING");
+		if (actionType == "withdraw"){
+			account.withdraw(changeAmount);
+		} else if (actionType == "deposit"){
+			account.deposit(changeAmount);
 		}
-		System.out.println(btnName);
+
+		actionBalanceLabel.setText("Balance: " + account.getBalance());
+		
     }
 }
