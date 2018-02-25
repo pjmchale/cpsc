@@ -117,7 +117,7 @@ public class Country {
 		Scanner kb = new Scanner(System.in);
 		int input = kb.nextInt();
 		if (input > numUnits){
-			System.out.println("Not enough unit.");
+			System.out.println("Not enough units.");
 			input = 0;
 		}
 		return input;

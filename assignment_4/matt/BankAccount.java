@@ -1,42 +1,96 @@
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.text.Font;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+/**
+ * Simulates a bank account with overdraft
+ * Allows withdraws and deposits
+ */
+public class BankAccount{
 
-public class BankAccount extends Application {
-	
-	@Override
-	public void start(Stage primaryStage) {
-		VBox root = new VBox();
+    private double balance;
+    private double overdraftAmount = 100.0;
+    private Customer customer;
 
-		Label balanceLabel = new Label("Balance: ");
-		balanceLabel.setFont(Font.font("Courier New", 15));
-		root.getChildren().add(balanceLabel);
+    /**
+     * Constructor with no input arguments. Sets the balance to 0.0
+     */
+    BankAccount(){
+      balance = 0.0;
+    }
 
-		Label nameLabel = new Label("NAME");
-		nameLabel.setFont(Font.font("Courier New", 15));
-		root.getChildren().add(nameLabel);
+    /**
+     * Constructor with input arguments of Customer and balance and sets the corresponding instance variables
+     * @param inputCustomer the input Customer class
+     * @param @inputBalance the input balance to set the account balance to
+     */
+    BankAccount(Customer inputCustomer, double inputBalance){
+      customer = inputCustomer;
+      if(inputBalance < 0){
+        System.out.println("Cannot initialize with negative balance");
+      } else{
+        balance = inputBalance;
+      }
+    }
 
-		Button depositButton = new Button("Deposit");
-		depositButton.setOnAction(new HandleButtonClick("deposit"));
-		root.getChildren().add(depositButton);
 
-		Button withdrawButton = new Button("Withdraw");
-		withdrawButton.setOnAction(new HandleButtonClick("withdraw"));
-		root.getChildren().add(withdrawButton);
+    /**
+     * sets the Customer class instance variable
+     * @param inputCustomer
+     */
+    void setCustomer(Customer inputCustomer){
+      customer = inputCustomer;
+    }
 
-		TextField amountTextField = new TextField();
-		root.getChildren().add(amountTextField);
+    /**
+     * return the customer Class associated with the account
+     * @return customer
+     */
+    Customer getCustomer(){
+      return customer;
+    }
 
-		Scene scene = new Scene(root, 600, 600);
-		primaryStage.setTitle("Bank Account");
-		primaryStage.setScene(scene);
-		primaryStage.show();
-	}
+    /**
+     * Adds the requested deposit to the balance
+     * @param amount is the desired deposit amount
+     */
+    public void deposit(double amount){
+        if (amount < 0){
+            System.out.println("Cannot deposit a negative amount");
+        }
+        else if (amount >= 0){
+            balance += amount;
+        }
+    }
+
+    /**
+     * withdraws the requested amount from the balance without exceeding the overdraftAmount
+     * @param amount is the desired withdraw amount
+     */
+    public void withdraw(double amount){
+        if (amount < 0) {
+            System.out.println("Cannot withdraw a negative amount");
+        }
+        else if ((amount - balance) <= overdraftAmount){
+            balance -= amount;
+        } else{
+          System.out.println("Not enough money in account");
+        }
+    }
+
+    /**
+     *
+     * @return the current balance
+     */
+    public double getBalance(){
+        return balance;
+
+    }
+
+    /**
+     * Sets the overdraftAmount
+     * @param value is the maximum overdraftAmount
+     */
+    public void setOverdraftAmount(double value){
+        overdraftAmount = value;
+    }
 
 
 }
+
