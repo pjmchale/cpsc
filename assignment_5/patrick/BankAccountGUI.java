@@ -63,19 +63,9 @@ public class BankAccountGUI extends Application {
 		createAccountGrid.setHgap(10);
 		createAccountGrid.setVgap(10);
 		createAccountGrid.setPadding(new Insets(0, 10, 0, 10));
+    Scene createAccountScene = new Scene(createAccountGrid, 400, 300);
 
-    /* Create account button on root scene */
-    Button createAccount = new Button("Create Account");
-    createAccount.setOnAction(new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-          Scene scene = new Scene(createAccountGrid, 400, 300);
-          primaryStage.setScene(scene);
-          primaryStage.show();
-        }
-    });
-		root.add(createAccount, 1, 5);
-
+    
     /* Create the stage */
     rootScene = new Scene(root, 400, 300);
 		primaryStage.setTitle("Bank Account");
@@ -114,6 +104,20 @@ public class BankAccountGUI extends Application {
 		TextField startBalanceTextField = new TextField();
 		createAccountGrid.add(startBalanceTextField, 2, 3);
 
+    /* Create account button on root scene */
+    Button createAccount = new Button("Create Account");
+    createAccount.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+          customerIDTextField.setText("");
+          customerNameTextField.setText("");
+          startBalanceTextField.setText("");
+          primaryStage.setScene(createAccountScene);
+          primaryStage.show();
+        }
+    });
+		root.add(createAccount, 1, 5);
+
     /* Create button */
     Button createAccountButton = new Button("Create Account");
 		createAccountGrid.add(createAccountButton, 1, 5);
@@ -139,15 +143,18 @@ public class BankAccountGUI extends Application {
           customer = new Customer(customerName, customerID);
           bankAccount = new BankAccount(customer, startBalance);
 
-          /* HAVE TO UPDATE DEPOSIT AND WITHDRAW HANDLE CLICK */
+          depositButton.setOnAction(new HandleButtonClick("deposit", bankAccount, amountTextField, balanceLabel));
+          withdrawButton.setOnAction(new HandleButtonClick("withdraw", bankAccount, amountTextField, balanceLabel));
 
           nameLabel.setText(customerName);
           balanceLabel.setText("Balance: " + bankAccount.getBalance());
+
           primaryStage.setScene(rootScene);
           primaryStage.show();
         }
     });
 
+    
     
 		
     
