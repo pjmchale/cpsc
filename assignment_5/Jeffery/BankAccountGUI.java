@@ -16,7 +16,7 @@ import javafx.event.EventHandler;
 public class BankAccountGUI extends Application {
 	Scene mainDisplay;
 	final int HEIGHT = 300;
-	final int WIDTH = 250;
+	final int WIDTH = 300;
 	Scene createAccountDisplay;
 
 	/**
