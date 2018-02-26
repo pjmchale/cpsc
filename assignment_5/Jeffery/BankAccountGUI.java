@@ -33,7 +33,10 @@ public class BankAccountGUI extends Application {
 		primaryStage.show();
 
 	}
-
+	/**
+	 * creates the display for the Create a new account display
+	 * @param stage the stage this will be displayed on
+	 */
 	public Scene displayCreateAccount(Stage stage) {
 		GridPane root = new GridPane();
 		root.setHgap(10);
@@ -76,7 +79,7 @@ public class BankAccountGUI extends Application {
 				String customerName = customerNameTextField.getText();
 				int customerID;
 				double startBalance;
-
+				//check to see if user inputs correct values
 				try {
 					customerIDTextField.setStyle("-fx-text-fill: black;");
 					customerID = Integer.parseInt(customerIDTextField.getText());
@@ -85,6 +88,7 @@ public class BankAccountGUI extends Application {
 					return;
 				}
 
+				//check to see if user inputs correct values
 				try {
 					startBalanceTextField.setStyle("-fx-text-fill: black;");
 					startBalance = Double.parseDouble(startBalanceTextField.getText());
@@ -92,7 +96,7 @@ public class BankAccountGUI extends Application {
 					startBalanceTextField.setStyle("-fx-text-fill: red;");
 					return;
 				}
-
+				//sets up the new display for the new customer and bank account
 				Customer customer = new Customer(customerName, customerID);
 				BankAccount bankAccount = new BankAccount(customer, startBalance);
 				mainDisplay = displayMainMenu(customer, bankAccount, stage);
@@ -104,7 +108,12 @@ public class BankAccountGUI extends Application {
 		Scene scene = new Scene(root, WIDTH, HEIGHT);
 		return scene;
 	}
-
+	/**
+	 * creates the bank account information, withdraw, and deposit
+	 * @param customer the customer's information
+	 * @param bankAccount the bank information
+	 * @param stage the stage this scene will be displayed onto
+	 */
 	public Scene displayMainMenu(Customer customer, BankAccount bankAccount, Stage stage) {
 		
 		/* Create the grid to store the visual elements */
@@ -136,7 +145,7 @@ public class BankAccountGUI extends Application {
 		withdrawButton.setOnAction(new HandleButtonClick("withdraw", bankAccount, amountTextField, balanceLabel));
 		root.add(withdrawButton, 2, 3);
 
-
+		/* Create a new Account button */
 		Button createAccount = new Button("Create New Account");
 		createAccount.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
