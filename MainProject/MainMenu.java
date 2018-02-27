@@ -28,16 +28,28 @@ public class MainMenu extends Application {
 
   static public void nextPane(){
     root.getChildren().remove(currentPane);
-    //currentPane = nextPane;
     root.getChildren().add(nextPane);
-    //nextPane = 
+    currentPane = nextPane;
   }
 
+  /* sets the scene to the input pane
+   * 
+   */
   static private void setPane(Pane pane){
-    currentPane = pane;
+    root.getChildren().remove(currentPane);
     root.getChildren().add(pane);
+    currentPane = pane;
   }
-    
+  
+  /* sets the current scene to the input pane and also sets the next pane
+   *
+   */
+  static private void setPane(Pane pane, Pane nextPane){
+    root.getChildren().remove(currentPane);
+    root.getChildren().add(pane);
+    currentPane = pane;
+    nextPane = nextPane;
+  } 
   
   @Override
   public void start(Stage primaryStage){
@@ -52,7 +64,7 @@ public class MainMenu extends Application {
     centerX = resX/2;
     centerY = resY/2;
 
-    /* Create the grid to store the visual elements */
+    /* Main pane from which all other panes are branches */
 		root = new Pane();
     root.setPrefSize(resX,resY);
 
@@ -66,12 +78,18 @@ public class MainMenu extends Application {
     ivBackground.setCache(true);
     root.getChildren().add(ivBackground);
 
-    /* Another grid pane for all other dynamic elements */
+    /* Display main screen pane */
     Pane menuPane = new Pane();
     menuPane.setPrefSize(resX, resY);
     menuPane.setLayoutX(0);
     menuPane.setLayoutY(0);
-    root.getChildren().add(menuPane);
+    setPane(menuPane);
+
+    /* pane for initialize board units */
+    Pane initializeBoardPane = new Pane();
+    menuPane.setPrefSize(resX, resY);
+    menuPane.setLayoutX(0);
+    menuPane.setLayoutY(0);
 
 
     /* set title text */
@@ -102,18 +120,14 @@ public class MainMenu extends Application {
         public void handle(ActionEvent event) {
           PlayerMenu playerMenu = new PlayerMenu();
           Pane playerPane = playerMenu.getPane();
-          root.getChildren().remove(menuPane);
-          setPane(playerPane);
+          InitializeBoardPane initializeBoardPane = new initializeBoardPane();
+          setPane(playerPane, 
           //primaryStage.setScene(createAccountScene);
         }
     });
     menuPane.getChildren().add(startGame);
-    //menuPane.getChildren().add(startGame);
-
-    
 
     /* Create the stage */
-    //root.getChildren().add(menuPane);
     ivBackground.toBack(); 
 		Scene scene = new Scene(root, resX, resY);
     scene.getStylesheets().add("css_styles.css");
@@ -121,6 +135,8 @@ public class MainMenu extends Application {
 		primaryStage.setScene(scene);
     primaryStage.setResizable(false);
 	  primaryStage.show();
+
+    
 
   }
 }
