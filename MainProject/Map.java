@@ -105,15 +105,15 @@ public class Map extends Application {
 		}
 	}
 
-	public Country showNeighbours(Country country) {
-		for (int i:countries){
+	public void showNeighbours(Country country) {
+		for (Country i:countries){
 			i.setClickable(country.isNeighbour(i));
 		}
 	}
 
 	public ArrayList<Country> getNeighbours(Country country) {
 		ArrayList<Country> output = new ArrayList<Country>();
-		for (int i:countries){
+		for (Country i:countries){
 			if (country.isNeighbour(i)){
 				output.add(i);
 			}

@@ -36,7 +36,7 @@ public class Country extends Application{
 		name = newName;
 		countryID = id;
 
-		String imagePath = "mapImages/"+x+".png";
+		String imagePath = "mapImages/"+name+".png";
 		Image image = new Image(imagePath);
 		imageView = new ImageView();
 		imageView.setImage(image);
@@ -49,7 +49,7 @@ public class Country extends Application{
 			@Override
 		     public void handle(MouseEvent event) {
 		     	if (clickable){
-			        String imagePath = "mapImages/"+x+"-Hover.png";
+			        String imagePath = "mapImages/"+name+"-Hover.png";
 					Image hoverImage = new Image(imagePath);
 					imageView.setImage(hoverImage);
 				}
@@ -60,7 +60,7 @@ public class Country extends Application{
 			@Override
 		     public void handle(MouseEvent event) {
 		     	if (clickable){
-			        String imagePath = "mapImages/"+x+".png";
+			        String imagePath = "mapImages/"+name+".png";
 					Image nonHoverImage = new Image(imagePath);
 					imageView.setImage(nonHoverImage);
 				}
@@ -81,7 +81,7 @@ public class Country extends Application{
         root.getChildren().add(imageView);
 
         Label title = new Label(x);
-		title.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
+		title.setFont(Font.font("Courier New", 12));
 		int posx = titleCordinates.get(0);
 		int posy = titleCordinates.get(1);
 		title.setLayoutX(posx);
@@ -145,7 +145,7 @@ public class Country extends Application{
 	public void setUnits(int units){
 		numUnits = units;
 		// Update the map here
-		amountOfUnitsLabel.setText("Units: "+amountOfUnits);
+		amountOfUnitsLabel.setText("Units: "+numUnits);
 	}
 
 	/**
@@ -230,40 +230,40 @@ public class Country extends Application{
 	 * @return int the amount of units that have chosen to send
 	*/
 	public int selectUnitAmount(){
-		// System.out.println("How many units do you want to send? ");
-		// Scanner kb = new Scanner(System.in);
-		// int input = kb.nextInt();
-		int input;
+		System.out.println("How many units do you want to send? ");
+		Scanner kb = new Scanner(System.in);
+		int input = kb.nextInt();
+		// int input;
 
-		/* Instructions label */
-		Label instructionsLabel = new Label("How many units do you want to send?");
-		instructionsLabel.setFont(Font.font("Courier New", 15));
-		root.getChildren().add(instructionsLabel);
+		// /* Instructions label */
+		// Label instructionsLabel = new Label("How many units do you want to send?");
+		// instructionsLabel.setFont(Font.font("Courier New", 15));
+		// root.getChildren().add(instructionsLabel);
 
-		/* Input text field */
-		TextField amountTextField = new TextField();
-		root.getChildren().add(amountTextField);
+		// /* Input text field */
+		// TextField amountTextField = new TextField();
+		// root.getChildren().add(amountTextField);
 
-		/* Submit Button */
-		Button submitButton = new Button("Submit");
-		submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-			@Override
-		     public void handle(MouseEvent event) {
-		        // Get text from user and check it and change the label
-		        input = Integer.parseInt(amountTextField.getText());
-		     	if (input > numUnits){
-					// System.out.println("Not enough units.");
-					instructionsLabel = new Label("Not enough units.");
-					root.getChildren().add(instructionsLabel);
+		// /* Submit Button */
+		// Button submitButton = new Button("Submit");
+		// submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		// 	@Override
+		//      public void handle(MouseEvent event) {
+		//         // Get text from user and check it and change the label
+		//         input = Integer.parseInt(amountTextField.getText());
+		//      	if (input > numUnits){
+		// 			// System.out.println("Not enough units.");
+		// 			instructionsLabel = new Label("Not enough units.");
+		// 			root.getChildren().add(instructionsLabel);
 
-					input = 0;
-				}
+		// 			input = 0;
+		// 		}
 				return input;
-		        event.consume();
-		     }
-		});
+		//         event.consume();
+		//      }
+		// });
 
-		root.getChildren().add(submitButton);
+		// root.getChildren().add(submitButton);
 	}
 
 	/**
