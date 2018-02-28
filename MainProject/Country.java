@@ -1,19 +1,109 @@
 import java.util.*;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.text.Font;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import java.util.HashMap;
+import javafx.geometry.Pos;
 
-public class Country {
+public class Country extends Application{
 	private String name = "";
 	private int countryID;
 	private Player owner;
 	private int numUnits;
 	private ArrayList<Integer> neighbours;
-
+	private Pane root;
+	private Label amountOfUnitsLabel;
+	private Label ownerLabel;
+	private boolean clickable = true;
 	/**
 	 * Constructor to set the id, neighbours, and name
 	*/
-	Country(int id, ArrayList<Integer> newNeighbours, String newName){
+	Country(int id, ArrayList<Integer> newNeighbours, String newName, Pane root, HashMap<String, ArrayList<Integer>> titleCordinates){
 		neighbours = newNeighbours;
 		name = newName;
 		countryID = id;
+
+		String imagePath = "mapImages/"+x+".png";
+		Image image = new Image(imagePath);
+		ImageView imageView = new ImageView();
+		imageView.setImage(image);
+		// imageView.setId(x);
+		imageView.setPreserveRatio(true);
+		imageView.setSmooth(true);
+		imageView.setLayoutX(0);
+		imageView.setLayoutY(0);
+		imageView.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+			@Override
+		     public void handle(MouseEvent event) {
+		        String imagePath = "mapImages/"+x+"-Hover.png";
+				Image hoverImage = new Image(imagePath);
+				imageView.setImage(hoverImage);
+		        event.consume();
+		     }
+		});
+		imageView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+			@Override
+		     public void handle(MouseEvent event) {
+		        String imagePath = "mapImages/"+x+".png";
+				Image nonHoverImage = new Image(imagePath);
+				imageView.setImage(nonHoverImage);
+		        event.consume();
+		     }
+		});
+		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent event) {
+		        System.out.println(x + " Pressed");
+		        event.consume();
+		    }
+		});
+
+        root.getChildren().add(imageView);
+
+        Label title = new Label(x);
+		title.setFont(Font.font("Courier New", 12));
+		int posx = titleCordinates.get(x).get(0);
+		int posy = titleCordinates.get(x).get(1);
+		title.setLayoutX(posx);
+		title.setLayoutY(posy);
+
+		String ownerName = owner.getName();
+		ownerLabel = new Label(ownerName);
+		ownerLabel.setFont(Font.font("Courier New", 10));
+		posx = posx;
+		posy = posy + 10;
+		ownerLabel.setLayoutX(posx);
+		ownerLabel.setLayoutY(posy);
+
+		String amountOfUnits = Integer.toString(numUnits); 
+		amountOfUnitsLabel = new Label("Units: "+amountOfUnits);
+		amountOfUnitsLabel.setFont(Font.font("Courier New", 10));
+		posx = posx;
+		posy = posy + 10;
+		amountOfUnitsLabel.setLayoutX(posx);
+		amountOfUnitsLabel.setLayoutY(posy);
+
+
+		root.getChildren().add(title);
+		root.getChildren().add(ownerLabel);
+		root.getChildren().add(amountOfUnitsLabel);
+
+		title.toFront();
+		ownerLabel.toFront();
+		amountOfUnitsLabel.toFront();
+		imageView.toBack();
 	}
 
 	/**
@@ -46,6 +136,8 @@ public class Country {
 	*/
 	public void setUnits(int units){
 		numUnits = units;
+		// Update the map here
+		amountOfUnitsLabel.setText("Units: "+amountOfUnits);
 	}
 
 	/**
@@ -62,6 +154,8 @@ public class Country {
 	*/
 	public void setOwner(Player player) {
 		owner = player;
+		String ownerName = owner.getName();
+		ownerLabel.setText(ownerName);
 	}
 
 	/**
@@ -88,6 +182,14 @@ public class Country {
 		return countryID;
 	}
 
+	public ArrayList<Integer> getNeighbours(){
+		return neighbours;
+	}
+
+	public void setClickable(boolean state){
+		clickable = state;
+	}
+
 	/**
 	 * Used to check who the owner of the country is
 	 * @param a Player to check if they are the owner
@@ -108,19 +210,47 @@ public class Country {
 	}
 
 
+
+
 	/**
 	 * Used to ask user how many units they want to send
 	 * @return int the amount of units that have chosen to send
 	*/
 	public int selectUnitAmount(){
-		System.out.println("How many units do you want to send? ");
-		Scanner kb = new Scanner(System.in);
-		int input = kb.nextInt();
-		if (input > numUnits){
-			System.out.println("Not enough units.");
-			input = 0;
-		}
-		return input;
+		// System.out.println("How many units do you want to send? ");
+		// Scanner kb = new Scanner(System.in);
+		// int input = kb.nextInt();
+		int input;
+
+		/* Instructions label */
+		Label instructionsLabel = new Label("How many units do you want to send?");
+		instructionsLabel.setFont(Font.font("Courier New", 15));
+		root.getChildren().add(instructionsLabel);
+
+		/* Input text field */
+		TextField amountTextField = new TextField();
+		root.getChildren().add(amountTextField);
+
+		/* Submit Button */
+		Button submitButton = new Button("Submit");
+		submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+		     public void handle(MouseEvent event) {
+		        // Get text from user and check it and change the label
+		        input = Integer.parseInt(amountTextField.getText());
+		     	if (input > numUnits){
+					// System.out.println("Not enough units.");
+					instructionsLabel = new Label("Not enough units.");
+					root.getChildren().add(instructionsLabel);
+
+					input = 0;
+				}
+				return input;
+		        event.consume();
+		     }
+		});
+
+		root.getChildren().add(submitButton);
 	}
 
 	/**

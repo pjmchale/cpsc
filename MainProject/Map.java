@@ -1,8 +1,29 @@
 import java.util.*;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.text.Font;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
-public class Map {
+
+public class Map extends Application {
 
 	private ArrayList<Country> countries;
+	private Pane root = new Pane();
+
+	public getPane() {
+		return root;
+	}
 
 	/**
 	 * Used to get the countries
@@ -11,7 +32,7 @@ public class Map {
 	public ArrayList<Country> getCountries(){
 		return countries;
 	}
-	
+
 	/**
 	 * Used to set the amount of units in a country
 	 * @param a Country to set the number of units of
@@ -41,27 +62,49 @@ public class Map {
 	/**
 	 * Contructor used to build the map
 	*/
-	Map(){		
-		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2,4));
-		buildMap(1, neighbours, "CANADA");
+	Map(){
+		// HashMap<String, ArrayList<Integer>> titleCordinates = new HashMap<String, ArrayList<Integer>>();
+		// ArrayList<Integer> cor = new ArrayList<Integer>(Arrays.asList(135,175));
+	 //    titleCordinates.put("Canada", cor);
 
-		neighbours = new ArrayList<Integer>(Arrays.asList(1,5,6,3));
-		buildMap(2, neighbours, "SWEDEN");
+	    // cor = new ArrayList<Integer>(Arrays.asList(165,240));
+	    // titleCordinates.put("USA", cor);
 
-		neighbours = new ArrayList<Integer>(Arrays.asList(2,6,7));
-		buildMap(3, neighbours, "RUSSIA");
+	    // cor = new ArrayList<Integer>(Arrays.asList(115,310));
+	    // titleCordinates.put("Mexico", cor);
 
-		neighbours = new ArrayList<Integer>(Arrays.asList(1,2,5));
-		buildMap(4, neighbours, "USA");
+	    // cor = new ArrayList<Integer>(Arrays.asList(195,350));
+	    // titleCordinates.put("Peru", cor);
 
-		neighbours = new ArrayList<Integer>(Arrays.asList(1,2,6));
-		buildMap(5, neighbours, "CHINA");
+	    // cor = new ArrayList<Integer>(Arrays.asList(305,370));
+	    // titleCordinates.put("Brazil", cor);
 
-		neighbours = new ArrayList<Integer>(Arrays.asList(2,5,7));
-		buildMap(6, neighbours, "JAPAN");
+	    // cor = new ArrayList<Integer>(Arrays.asList(190,450));
+	    // titleCordinates.put("Argentina", cor);
 
-		neighbours = new ArrayList<Integer>(Arrays.asList(2,3,6));
-		buildMap(7, neighbours, "AUSTRALIA");
+		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2));
+		ArrayList<Integer> titleCordinates = new ArrayList<Integer>(Arrays.asList(135,175));
+		buildMap(1, neighbours, "Canada", titleCordinates);
+
+		neighbours = new ArrayList<Integer>(Arrays.asList(1,3));
+		titleCordinates = new ArrayList<Integer>(Arrays.asList(165,240));
+		buildMap(2, neighbours, "USA", titleCordinates);
+
+		neighbours = new ArrayList<Integer>(Arrays.asList(2,4));
+		titleCordinates = new ArrayList<Integer>(Arrays.asList(115,310));
+		buildMap(3, neighbours, "Mexico", titleCordinates);
+
+		neighbours = new ArrayList<Integer>(Arrays.asList(3,5,6));
+		titleCordinates = new ArrayList<Integer>(Arrays.asList(195,350));
+		buildMap(4, neighbours, "Peru", titleCordinates);
+
+		neighbours = new ArrayList<Integer>(Arrays.asList(4,6));
+		titleCordinates = new ArrayList<Integer>(Arrays.asList(305,370));
+		buildMap(5, neighbours, "Brazil", titleCordinates);
+
+		neighbours = new ArrayList<Integer>(Arrays.asList(4,5));
+		titleCordinates = new ArrayList<Integer>(Arrays.asList(190,450));
+		buildMap(6, neighbours, "Argentina", titleCordinates);
 	}
 
 	/**
@@ -70,8 +113,8 @@ public class Map {
 	 * @param an ArrayList of type Interger, with the id's of neighbouring countries
 	 * @param a String to be the name of the country
 	*/
-	private void buildMap(int id, ArrayList<Integer> neighbours, String name) {
-		Country country = new Country(id, neighbours, name);
+	private void buildMap(int id, ArrayList<Integer> neighbours, String name, ArrayList<Integer> titleCordinates) {
+		Country country = new Country(id, neighbours, name, root, titleCordinates);
 		if (countries == null){
 			countries = new ArrayList<Country>(Arrays.asList(country));
 			
@@ -80,31 +123,46 @@ public class Map {
 		}
 	}
 
+	public Country showNeighbours(Country country) {
+
+		// SIMPLIFY THIS LATER
+		for (int i:countries){
+			if (country.isNeighbour(i)){
+				i.setClickable(true);
+			} else {
+				i.setClickable(false);
+			}
+		}
+	}
+
+
+
 	/**
 	 * Used to print the ASCII Map
 	*/
 	public void printMap(){
-		System.out.println(
-	  "	  |-----------___                                       | \n"
-	+ "	  |        |      \\------------------------------------/ \n"
-	+ "	 /         |                 \\                       /  \n"
-	+ "	 |  CANADA  \\                 |                      |  \n"
-	+ "	/            |     SWEDEN     \\        RUSSIA        |  \n"
-	+ "	|----__      |                |                      |  \n"
-	+ "	|      |_____|                \\                      |  \n"
-	+ "	|            -----------       \\                     | \n"
-	+ "	 |             |       |        |                    |\n"
-	+ "	 |             |       |        |                    |\n"
-	+ "	  |    USA     | CHINA |--------|____________________|_\n"
-	+ "	  |_           |       |         |                   /\n"
-	+ "	    |          |       |         |     AUSTRALIA    /\n"
-	+ "	    |____      |       |         |                 /\n"
-	+ "	         |___  | ______|  JAPAN  |                /\n"
-	+ "	             |__|   \\           _|______________/\n"
-	+ "	                     \\        /                \n"
-	+ "	                       \\     /                 \n"
-	+ "	                        \\    |                   \n"
-	+ "	                         |___| \n");
+		System.out.print("");
+	// 	System.out.println(
+	//   "	  |-----------___                                       | \n"
+	// + "	  |        |      \\------------------------------------/ \n"
+	// + "	 /         |                 \\                       /  \n"
+	// + "	 |  CANADA  \\                 |                      |  \n"
+	// + "	/            |     SWEDEN     \\        RUSSIA        |  \n"
+	// + "	|----__      |                |                      |  \n"
+	// + "	|      |_____|                \\                      |  \n"
+	// + "	|            -----------       \\                     | \n"
+	// + "	 |             |       |        |                    |\n"
+	// + "	 |             |       |        |                    |\n"
+	// + "	  |    USA     | CHINA |--------|____________________|_\n"
+	// + "	  |_           |       |         |                   /\n"
+	// + "	    |          |       |         |     AUSTRALIA    /\n"
+	// + "	    |____      |       |         |                 /\n"
+	// + "	         |___  | ______|  JAPAN  |                /\n"
+	// + "	             |__|   \\           _|______________/\n"
+	// + "	                     \\        /                \n"
+	// + "	                       \\     /                 \n"
+	// + "	                        \\    |                   \n"
+	// + "	                         |___| \n");
 	}
 
 }
