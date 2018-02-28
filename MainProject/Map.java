@@ -16,7 +16,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 
-public class Map extends Application {
+public class Map {
+// extends Application {
 
 	private ArrayList<Country> countries;
 	private Pane root = new Pane();

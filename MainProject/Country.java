@@ -17,7 +17,8 @@ import javafx.event.EventHandler;
 import java.util.HashMap;
 import javafx.geometry.Pos;
 
-public class Country extends Application{
+public class Country {
+ // extends Application{
 	private String name = "";
 	private int countryID;
 	private Player owner;
@@ -70,7 +71,7 @@ public class Country extends Application{
 		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent event) {
-		        System.out.println(x + " Pressed");
+		        System.out.println(name + " Pressed");
 		        if (clickable) {
 		        	//************* TELL THE SOME OTHER CLASS THAT A COUNTRY WAS CLICKED ************
 		        }
@@ -80,7 +81,7 @@ public class Country extends Application{
 
         root.getChildren().add(imageView);
 
-        Label title = new Label(x);
+        Label title = new Label(name);
 		title.setFont(Font.font("Courier New", 12));
 		int posx = titleCordinates.get(0);
 		int posy = titleCordinates.get(1);
