@@ -89,11 +89,11 @@ public class Country {
 		title.setLayoutY(posy);
 
 		String ownerName = "";
-		if (owner.getName() == null){
-			String ownerName = "";
-		} else {
-			String ownerName = owner.getName();
-		}
+		// if (owner == null){
+		// 	String ownerName = "";
+		// } else {
+		// 	String ownerName = owner.getName();
+		// }
 		
 		ownerLabel = new Label(ownerName);
 		ownerLabel.setFont(Font.font("Courier New", 10));
