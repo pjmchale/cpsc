@@ -63,24 +63,6 @@ public class Map extends Application {
 	 * Contructor used to build the map
 	*/
 	Map(){
-		// HashMap<String, ArrayList<Integer>> titleCordinates = new HashMap<String, ArrayList<Integer>>();
-		// ArrayList<Integer> cor = new ArrayList<Integer>(Arrays.asList(135,175));
-	 //    titleCordinates.put("Canada", cor);
-
-	    // cor = new ArrayList<Integer>(Arrays.asList(165,240));
-	    // titleCordinates.put("USA", cor);
-
-	    // cor = new ArrayList<Integer>(Arrays.asList(115,310));
-	    // titleCordinates.put("Mexico", cor);
-
-	    // cor = new ArrayList<Integer>(Arrays.asList(195,350));
-	    // titleCordinates.put("Peru", cor);
-
-	    // cor = new ArrayList<Integer>(Arrays.asList(305,370));
-	    // titleCordinates.put("Brazil", cor);
-
-	    // cor = new ArrayList<Integer>(Arrays.asList(190,450));
-	    // titleCordinates.put("Argentina", cor);
 
 		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2));
 		ArrayList<Integer> titleCordinates = new ArrayList<Integer>(Arrays.asList(135,175));
@@ -124,17 +106,20 @@ public class Map extends Application {
 	}
 
 	public Country showNeighbours(Country country) {
-
-		// SIMPLIFY THIS LATER
 		for (int i:countries){
-			if (country.isNeighbour(i)){
-				i.setClickable(true);
-			} else {
-				i.setClickable(false);
-			}
+			i.setClickable(country.isNeighbour(i));
 		}
 	}
 
+	public ArrayList<Country> getNeighbours(Country country) {
+		ArrayList<Country> output = new ArrayList<Country>();
+		for (int i:countries){
+			if (country.isNeighbour(i)){
+				output.add(i);
+			}
+		}
+		return output;
+	}
 
 
 	/**

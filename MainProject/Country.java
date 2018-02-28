@@ -31,7 +31,7 @@ public class Country extends Application{
 	/**
 	 * Constructor to set the id, neighbours, and name
 	*/
-	Country(int id, ArrayList<Integer> newNeighbours, String newName, Pane root, HashMap<String, ArrayList<Integer>> titleCordinates){
+	Country(int id, ArrayList<Integer> newNeighbours, String newName, Pane root, ArrayList<Integer> titleCordinates){
 		neighbours = newNeighbours;
 		name = newName;
 		countryID = id;
@@ -48,18 +48,22 @@ public class Country extends Application{
 		imageView.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 			@Override
 		     public void handle(MouseEvent event) {
-		        String imagePath = "mapImages/"+x+"-Hover.png";
-				Image hoverImage = new Image(imagePath);
-				imageView.setImage(hoverImage);
+		     	if (clickable){
+			        String imagePath = "mapImages/"+x+"-Hover.png";
+					Image hoverImage = new Image(imagePath);
+					imageView.setImage(hoverImage);
+				}
 		        event.consume();
 		     }
 		});
 		imageView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
 			@Override
 		     public void handle(MouseEvent event) {
-		        String imagePath = "mapImages/"+x+".png";
-				Image nonHoverImage = new Image(imagePath);
-				imageView.setImage(nonHoverImage);
+		     	if (clickable){
+			        String imagePath = "mapImages/"+x+".png";
+					Image nonHoverImage = new Image(imagePath);
+					imageView.setImage(nonHoverImage);
+				}
 		        event.consume();
 		     }
 		});
@@ -67,6 +71,9 @@ public class Country extends Application{
 		    @Override
 		    public void handle(MouseEvent event) {
 		        System.out.println(x + " Pressed");
+		        if (clickable) {
+		        	//************* TELL THE SOME OTHER CLASS THAT A COUNTRY WAS CLICKED ************
+		        }
 		        event.consume();
 		    }
 		});
@@ -74,9 +81,9 @@ public class Country extends Application{
         root.getChildren().add(imageView);
 
         Label title = new Label(x);
-		title.setFont(Font.font("Courier New", 12));
-		int posx = titleCordinates.get(x).get(0);
-		int posy = titleCordinates.get(x).get(1);
+		title.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
+		int posx = titleCordinates.get(0);
+		int posy = titleCordinates.get(1);
 		title.setLayoutX(posx);
 		title.setLayoutY(posy);
 
