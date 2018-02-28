@@ -26,6 +26,7 @@ public class Country extends Application{
 	private Pane root;
 	private Label amountOfUnitsLabel;
 	private Label ownerLabel;
+	private ImageView imageView;
 	private boolean clickable = true;
 	/**
 	 * Constructor to set the id, neighbours, and name
@@ -37,7 +38,7 @@ public class Country extends Application{
 
 		String imagePath = "mapImages/"+x+".png";
 		Image image = new Image(imagePath);
-		ImageView imageView = new ImageView();
+		imageView = new ImageView();
 		imageView.setImage(image);
 		// imageView.setId(x);
 		imageView.setPreserveRatio(true);
@@ -188,6 +189,11 @@ public class Country extends Application{
 
 	public void setClickable(boolean state){
 		clickable = state;
+		if (clickable) {
+			imageView.setOpacity(1);
+		} else {
+			imageView.setOpacity(0.1);
+		}
 	}
 
 	/**
