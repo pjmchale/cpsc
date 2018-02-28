@@ -21,7 +21,7 @@ public class Map extends Application {
 	private ArrayList<Country> countries;
 	private Pane root = new Pane();
 
-	public getPane() {
+	public Pane getPane() {
 		return root;
 	}
 
