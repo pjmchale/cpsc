@@ -88,14 +88,14 @@ public class Country {
 		title.setLayoutX(posx);
 		title.setLayoutY(posy);
 
-		String ownerName = "";
+		// String ownerName = "";
 		// if (owner == null){
 		// 	String ownerName = "";
 		// } else {
 		// 	String ownerName = owner.getName();
 		// }
 		
-		ownerLabel = new Label(ownerName);
+		ownerLabel = new Label("");
 		ownerLabel.setFont(Font.font("Courier New", 10));
 		posx = posx;
 		posy = posy + 10;
