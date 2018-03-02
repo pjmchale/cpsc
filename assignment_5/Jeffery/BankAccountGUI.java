@@ -41,7 +41,6 @@ public class BankAccountGUI extends Application {
 		GridPane root = new GridPane();
 		root.setHgap(10);
 		root.setVgap(10);
-
 		/* Customer ID label */
 
 		Label customerIDLabel = new Label("Customer ID");
