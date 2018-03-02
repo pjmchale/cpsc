@@ -37,7 +37,7 @@ public class Country {
 		name = newName;
 		countryID = id;
 
-		String imagePath = "mapImages/"+name+".png";
+		String imagePath = "arts_assests/"+name+".png";
 		Image image = new Image(imagePath);
 		imageView = new ImageView();
 		imageView.setImage(image);
@@ -50,7 +50,7 @@ public class Country {
 			@Override
 		     public void handle(MouseEvent event) {
 		     	if (clickable){
-			        String imagePath = "mapImages/"+name+"-Hover.png";
+			        String imagePath = "arts_assests/"+name+"-Hover.png";
 					Image hoverImage = new Image(imagePath);
 					imageView.setImage(hoverImage);
 				}
@@ -61,7 +61,7 @@ public class Country {
 			@Override
 		     public void handle(MouseEvent event) {
 		     	if (clickable){
-			        String imagePath = "mapImages/"+name+".png";
+			        String imagePath = "arts_assests/"+name+".png";
 					Image nonHoverImage = new Image(imagePath);
 					imageView.setImage(nonHoverImage);
 				}
