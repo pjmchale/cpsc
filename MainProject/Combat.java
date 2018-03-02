@@ -181,11 +181,11 @@ public class Combat {
 					numAttackers = amount;
 					pane.getChildren().clear();
 					constantDisplayElements(backDrop);
-					getUnits(defender.getName(), " how many units(DEFEND)", backDrop, displayResults);
+					getUnits(defender.getName()+"("+defendingCountry.getUnits()+")", " how many units(DEFEND)", backDrop, displayResults);
 				}
 			}
 		};
-		getUnits(attacker.getName(), " how many units(ATTACK)", backDrop, attackerDone);
+		getUnits(attacker.getName()+"("+getAttackingCountry().getUnits()+")", " how many units(ATTACK)", backDrop, attackerDone);
 
 	}
 
