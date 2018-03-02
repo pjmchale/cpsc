@@ -1,7 +1,8 @@
 import java.lang.Math;
 import java.util.Arrays;
 import java.util.Scanner;
-import javafx.scene.layout.Pane;imort javafx.scene.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.*;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -417,7 +418,6 @@ public class Combat {
 
 	}
 
-}
 
 	// getters and setters
 	/**
