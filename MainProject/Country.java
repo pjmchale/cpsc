@@ -144,6 +144,7 @@ public class Country {
 	*/
 	public void addUnits(int units) {
 		numUnits = numUnits + units;
+		amountOfUnitsLabel.setText("Units: "+numUnits);
 	}
 
 	/**
