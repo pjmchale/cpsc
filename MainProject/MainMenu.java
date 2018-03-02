@@ -31,6 +31,10 @@ public class MainMenu extends Application {
 
   static private InitializeBoard initializeBoard;
   static private Label countrySelectionLabel;
+  static private Label playerTurnLabel;
+  static private Button cancelButton;
+  static private Button confirmButton;
+  static private TextField numUnitsTextField;
 
   static private int numPlayers;
   static private Player[] players;
@@ -53,6 +57,7 @@ public class MainMenu extends Application {
     setPane(nextPane);
     if(nextPane == getMapPane()){
       root.getChildren().add(turnPane);
+      playerTurnLabel.setVisible(true);
     }
     nextPane = getMapPane();
   }
@@ -171,6 +176,7 @@ public class MainMenu extends Application {
           toCountry = countryClicked;
           root.getChildren().remove(getMapPane());
           root.getChildren().remove(countrySelectionLabel);
+          root.getChildren().remove(cancelButton);
           startAttack(toCountry, fromCountry);
         }else{
           return;
@@ -190,8 +196,10 @@ public class MainMenu extends Application {
       }else if(toCountry == null)
         if(countryClicked.getOwner() == currentPlayer && countryClicked.isNeighbour(fromCountry)){
           toCountry = countryClicked;
-          countrySelectionLabel.setText("How Many Units Would You Like To Move? (" + fromCountry.getUnits()-1 + " available)");
-                  }else{
+          countrySelectionLabel.setText("How Many Units Would You Like To Move? (" + (fromCountry.getUnits()-1) + " available)");
+          root.getChildren().add(numUnitsTextField);
+          root.getChildren().add(confirmButton);
+        }else{
           return;
         }
     }
@@ -250,6 +258,7 @@ public class MainMenu extends Application {
     turnIndex++;
     turnIndex %= numPlayers;
     currentPlayer = players[turnIndex];
+    playerTurnLabel.setText(currentPlayer.getName() + "'s Turn");
   }
 
   /**
@@ -278,8 +287,8 @@ public class MainMenu extends Application {
    * initiates the combat
    */
   static private void startAttack(Country toCountry, Country fromCountry){
-    //Combat combat = new Combat(toCountry, fromCountry);
-    //setPane(combat.getPane(), getMapPane());
+    Combat combat = new Combat(toCountry, fromCountry);
+    setPane(combat.getPane(), getMapPane());
     toCountry = null;
     fromCountry = null;
     attacking = false;
@@ -330,6 +339,15 @@ public class MainMenu extends Application {
     turnPane.setLayoutY(0);
     turnPane.getChildren().add(getMapPane());
 
+    /* PLayer turn label */
+    playerTurnLabel = new Label();
+    playerTurnLabel.setFont(new Font("Times New Roman Bold", 30));
+    playerTurnLabel.setTextFill(Color.RED);
+    playerTurnLabel.setLayoutX(30);
+    playerTurnLabel.layoutYProperty().bind(root.heightProperty().subtract(30));
+    root.getChildren().add(playerTurnLabel);
+    playerTurnLabel.setVisible(false);
+
     /* VBox for user selection during turn */
     HBox selectionHBox = new HBox();
     selectionHBox.layoutXProperty().bind(turnPane.widthProperty().subtract(selectionHBox.widthProperty()).divide(2));
@@ -343,8 +361,8 @@ public class MainMenu extends Application {
     countrySelectionLabel.setLayoutY(30);
 
     /* Number of units text box */
-    TextField numUnitsTextField = new TextField();
-    numUnitsTextField.layoutXProperty().bind(root.widthProperty().divide(2).add(countrySelectionLabel.widthProperty()));
+    numUnitsTextField = new TextField();
+    numUnitsTextField.layoutXProperty().bind(root.widthProperty().divide(2).add(countrySelectionLabel.widthProperty()).divide(2));
     numUnitsTextField.setLayoutY(30);
 
 
@@ -359,6 +377,7 @@ public class MainMenu extends Application {
         root.getChildren().remove(turnPane);
         countrySelectionLabel.setText("Please Select Country To Attack From");
         root.getChildren().add(countrySelectionLabel);
+        root.getChildren().add(cancelButton);
       }
     });
 
@@ -374,7 +393,7 @@ public class MainMenu extends Application {
         root.getChildren().remove(turnPane);
         countrySelectionLabel.setText("Please Select Country To Move Units From");
         root.getChildren().add(countrySelectionLabel);
-
+        root.getChildren().add(cancelButton);
       }
     });
 
@@ -389,14 +408,52 @@ public class MainMenu extends Application {
       }
     });
 
-    Button confirmButton = new Button("Confirm");
+    /**
+     * button to confirm num of units selection
+     */
+    confirmButton = new Button("Confirm");
+    confirmButton.layoutXProperty().bind(root.widthProperty().divide(2).add(countrySelectionLabel.widthProperty()));
     confirmButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        root.getChildren().remove(getMapPane());
+        int numUnits;
+        try {
+          numUnitsTextField.setStyle("-fx-text-fill: black;");
+          numUnits = Integer.parseInt(numUnitsTextField.getText());
+        } catch (NumberFormatException e) {
+          numUnitsTextField.setStyle("-fx-text-fill: red;");
+          return;
+        }       
+        if(numUnits < fromCountry.getUnits()){
+          root.getChildren().remove(getMapPane());
+          root.getChildren().remove(countrySelectionLabel);
+          root.getChildren().remove(numUnitsTextField);
+          currentPlayer.moveUnits(toCountry, fromCountry, numUnits);
+          nextTurn();
+        }else{
+          numUnitsTextField.setStyle("-fx-text-fill: red;");
+          return;
+        }
+      }
+    });
+
+    /**
+     * button to cancel turn selection choice
+     */
+    cancelButton = new Button("Cancel");
+    cancelButton.layoutXProperty().bind(root.widthProperty().subtract(cancelButton.widthProperty()).divide(2));
+    cancelButton.layoutYProperty().bind(root.heightProperty().subtract(30));
+    cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        toCountry = null;
+        fromCountry = null;
+        root.getChildren().remove(cancelButton);
+        root.getChildren().remove(confirmButton);
+        root.getChildren().remove(numUnitsTextField);
         root.getChildren().remove(countrySelectionLabel);
-        currentPlayer.moveUnits(toCountry, fromCountry, ?*jfdsiajdfsiod)
-        nextTurn();
+        root.getChildren().remove(getMapPane());
+        nextPane();
       }
     });
 
