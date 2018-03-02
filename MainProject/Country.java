@@ -74,6 +74,7 @@ public class Country {
 		        System.out.println(name + " Pressed");
 		        if (clickable) {
 		        	//************* TELL THE SOME OTHER CLASS THAT A COUNTRY WAS CLICKED ************
+		        	MainMenu.setCountryClicked(this);
 		        }
 		        event.consume();
 		    }
