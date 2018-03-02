@@ -148,6 +148,12 @@ public class Player{
         }
     }
 
+    public void moveUnits(Country fromCountry, Country toCountry int units){
+        toCountry.addUnits(units);
+        fromCountry.addUnits(-units);
+
+    }
+
     /**
      * Temporary method for getting an int from user
      * @param displayString is the string displayed for input
