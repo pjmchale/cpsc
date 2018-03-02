@@ -149,14 +149,16 @@ public class PlayerMenu{
     createPlayerButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        /* ADD CREATE PLAYER */
-        playerNames[currPlayer] = playerNameTextField.getText();
+
+        /* get input name and capitalize first letter */
+        String name = playerNameTextField.getText();
+        playerNames[currPlayer] = name.substring(0, 1).toUpperCase() + name.substring(1);
         currPlayer++;
         playerNameTextField.setText("");
         playerNameLabel.setText("Player " + (currPlayer+1) + " Please Enter Your Name");
 
         if(currPlayer == numPlayers){
-          MainMenu.gameManager.initializePlayers(numPlayers, numAIPlayers, playerNames);
+          MainMenu.initializePlayers(numPlayers, numAIPlayers, playerNames);
           playerMenu.getChildren().clear();
           MainMenu.nextPane();
         }
