@@ -73,7 +73,7 @@ public class Combat {
 	 * @param country
 	 *            the country that will lose (1) unit
 	 * @param attacker
-	 *            the player who is won the attack
+	 *            the player who has won the attack
 	 */
 	public void countryLose(Country country, Player attacker) {
 		Player player = country.getOwner();
@@ -81,17 +81,18 @@ public class Combat {
 		System.out.println(country.getName() + "[" + player.getName() + "] lost a unit");
 		System.out.println("-[===> ---------------------- <===]-");
 
-		country.addUnits(-1);
-		if (country.getUnits() <= 0) {
-			System.out.println(
-					player.getName() + " has lost " + country.getName() + "/n New owner is " + attacker.getName());
+		if (country.getUnits() > 0)
+			country.addUnits(-1);
 
-			System.out.println("-[===> ---------------------- <===]-");
-			player.loseCountry(country);
-			attacker.gainCountry(country);
-			country.setOwner(attacker);
-			attacker.moveUnits(attackingCountry, defendingCountry);
-		}
+		/*
+		 * if (country.getUnits() <= 0) { System.out.println( player.getName() +
+		 * " has lost " + country.getName() + "/n New owner is " + attacker.getName());
+		 * 
+		 * System.out.println("-[===> ---------------------- <===]-");
+		 * player.loseCountry(country); attacker.gainCountry(country);
+		 * country.setOwner(attacker); attacker.moveUnits(attackingCountry,
+		 * defendingCountry); }
+		 */
 	}
 
 	/**
@@ -181,11 +182,13 @@ public class Combat {
 					numAttackers = amount;
 					pane.getChildren().clear();
 					constantDisplayElements(backDrop);
-					getUnits(defender.getName()+"("+defendingCountry.getUnits()+")", " how many units(DEFEND)", backDrop, displayResults);
+					getUnits(defender.getName() + "(" + defendingCountry.getUnits() + ")", " how many units(DEFEND)",
+							backDrop, displayResults);
 				}
 			}
 		};
-		getUnits(attacker.getName()+"("+getAttackingCountry().getUnits()+")", " how many units(ATTACK)", backDrop, attackerDone);
+		getUnits(attacker.getName() + "(" + getAttackingCountry().getUnits() + ")", " how many units(ATTACK)", backDrop,
+				attackerDone);
 
 	}
 
@@ -238,15 +241,39 @@ public class Combat {
 		pane.getChildren().add(nextBtn);
 		nextBtn.setLayoutX((960 - image.getWidth()) - 60);
 		nextBtn.setLayoutY(500);
+		if(true){
+			CallAction moveUnitAction = new CallAction() {
+				public void use(int amount) {
+					if(amount < attackingCountry.getUnits()) {
+						 defender.loseCountry(defendingCountry);
+						 attacker.gainCountry(defendingCountry);
+						 country.setOwner(attacker);
+						 attacker.moveUnits(attackingCountry,defendingCountry,amount);
+						 pane.getChildren().clear();
+						 MainMenu.nextPane()
+					}
+				}
+			}
 			nextBtn.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					pane.getChildren().clear();
+					getUnits("Move " + attackingCountry.getName(), "To " defendingCountry.getName(), new Rectangle(0,0,960,600), moveUnitAction);
+				}
+			});
+			
+		}else {
+		nextBtn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
 					pane.getChildren().clear();
 					MainMenu.nextPane()
 				}
 			});
+		}
 		nextBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-			@Override
+
+	@Override
 			public void handle(MouseEvent e) {
 				nextBtn.setEffect(new DropShadow());
 			}
