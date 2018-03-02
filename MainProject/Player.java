@@ -148,7 +148,7 @@ public class Player{
         }
     }
 
-    public void moveUnits(Country fromCountry, Country toCountry int units){
+    public void moveUnits(Country fromCountry, Country toCountry, int units){
         toCountry.addUnits(units);
         fromCountry.addUnits(-units);
 
