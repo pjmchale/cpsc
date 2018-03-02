@@ -25,6 +25,7 @@ public class MainMenu extends Application {
   static private Pane currentPane;
   static private Pane nextPane;
   static private Pane root;
+  static public GameManager gameManager;
 
   static public void nextPane(){
     root.getChildren().remove(currentPane);
@@ -44,18 +45,33 @@ public class MainMenu extends Application {
   /* sets the current scene to the input pane and also sets the next pane
    *
    */
-  static private void setPane(Pane pane, Pane nextPane){
+  static private void setPane(Pane pane, Pane nPane){
     root.getChildren().remove(currentPane);
     root.getChildren().add(pane);
     currentPane = pane;
-    nextPane = nextPane;
+    nextPane = nPane;
   } 
+
+  static public Pane getMapPane(){
+    return gameManager.getMap().getPane();
+  }
+
+  static public Player getCurrentPlayer(){
+    return gameManager.getCurrentPlayer();
+  }
+
+  static public void setCountryClicked(Country country){
+    gameManager.setCountryClicked(country);
+  }
   
   @Override
   public void start(Stage primaryStage){
     int resX;
     int resY;
     double gapSize, centerX, centerY;
+
+    /* Create the game manager */
+    gameManager = new GameManager();
 
     /* Set screen size/resolution */
     resX = 960;
@@ -120,8 +136,9 @@ public class MainMenu extends Application {
         public void handle(ActionEvent event) {
           PlayerMenu playerMenu = new PlayerMenu();
           Pane playerPane = playerMenu.getPane();
-          InitializeBoardPane initializeBoardPane = new initializeBoardPane();
-          setPane(playerPane, 
+          InitializeBoard initializeBoard = new InitializeBoard();
+          Pane initializeBoardPane = initializeBoard.getPane();
+          setPane(playerPane, initializeBoardPane);
           //primaryStage.setScene(createAccountScene);
         }
     });

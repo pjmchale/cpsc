@@ -142,6 +142,7 @@ public class PlayerMenu{
 
     /* Create Player Button */
     currPlayer = 0;
+    String[] playerNames = new String[numPlayers];
     Button createPlayerButton = new Button(" Create Player ");
     createPlayerButton.layoutXProperty().bind(playerMenu.widthProperty().subtract(createPlayerButton.widthProperty()).divide(2));
     createPlayerButton.setLayoutY(centerY + 50);
@@ -149,12 +150,13 @@ public class PlayerMenu{
       @Override
       public void handle(ActionEvent event) {
         /* ADD CREATE PLAYER */
-        String playerName = playerNameTextField.getText();
+        playerNames[currPlayer] = playerNameTextField.getText();
         currPlayer++;
         playerNameTextField.setText("");
         playerNameLabel.setText("Player " + (currPlayer+1) + " Please Enter Your Name");
 
         if(currPlayer == numPlayers){
+          MainMenu.gameManager.initializePlayers(numPlayers, numAIPlayers, playerNames);
           playerMenu.getChildren().clear();
           MainMenu.nextPane();
         }

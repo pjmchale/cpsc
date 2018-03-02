@@ -12,7 +12,10 @@ public class GameManager{
   private Player[] players;
   private Map map;
   private Player currentPlayer;
+  private Country countryClicked;
   private int turnIndex;
+  Player firstTurn;
+  int firstTurnIndex;
 
   /**
    * Constructor, initializes and starts the game
@@ -20,28 +23,21 @@ public class GameManager{
   GameManager(){
     initGameState();
 
-    System.out.println("\n--------------------------------------------------------------------------------");
-    System.out.println("|                                                                                 ");
-    System.out.println("| BEGIN GAME                                                                      ");
-    System.out.println("|                                                                                 ");
-    System.out.println("--------------------------------------------------------------------------------");
-
-    playGame();
+    //playGame();
   }
 
   /**
    * initializes game, creates players, map, turn order and distributes board units
    */
   private void initGameState(){
-    Player firstTurn;
-    int firstTurnIndex;
 
-    printAsciiArt();
+    //printAsciiArt();
 
-    initializePlayers();
+    //initializePlayers();
 
     initializeMap();
 
+    /* 
     initializeTurn();
     firstTurn = currentPlayer;
     firstTurnIndex = turnIndex;
@@ -50,6 +46,23 @@ public class GameManager{
 
     currentPlayer = firstTurn;
     turnIndex = firstTurnIndex;
+    */
+  }
+
+  public Player getCurrentPlayer(){
+    return currentPlayer;
+  }
+
+  public Map getMap(){
+    return map;
+  }
+
+  public void setCountryClicked(Country country){
+    countryClicked = country;
+  }
+
+  public Country getCountryClicked(){
+    return countryClicked;
   }
 
   /**
@@ -83,42 +96,37 @@ public class GameManager{
   /**
    * Creates all players for the game
    */
-  private void initializePlayers(){
-    boolean success = false;
-    String name;
-    Scanner kb;
+  public void initializePlayers(int numHuman, int numAI, String[] names){
 
-    while (!success){
-      numPlayers = receiveInt("Please enter number of players (2-4): ");
-      if(numPlayers > 1 && numPlayers <= 4) success = true;
-      else numPlayers = 0;
-    }
-    
-    kb = new Scanner(System.in);
+    numPlayers = numHuman + numAI;
     players = new Player[numPlayers];
-    for(int i=0; i < numPlayers; i++){
-      System.out.print("Player " + (i+1) + " what is your name: ");
-      name = kb.next();
-      players[i] = new Player(name);
+    for(int i=0; i < numHuman; i++){
+      players[i] = new Player(names[i]);
     }
+    //for(; i < numPlayers; i++){
+    //  players[i] = new AIPlayer();
+    //}
   }
 
   /**
    * initializes turn order randomly
    */
-  private void initializeTurn(){
-    System.out.println("\nRandomizing first turn...\n");
+  public void initializeTurn(){
 
     // sleep for 1 second
+    /*
     try{
       Thread.sleep(1000);
     } catch (Exception e) {
       System.out.println(e);
     }
+    */
 
     Random rand = new Random();
     turnIndex = rand.nextInt(numPlayers);
     currentPlayer = players[turnIndex];
+    firstTurn = currentPlayer;
+    firstTurnIndex = turnIndex;
 
   }
 
