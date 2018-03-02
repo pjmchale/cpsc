@@ -17,6 +17,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
+
 
 /**
  * Simulates a Combat between 2 country
@@ -29,6 +31,7 @@ public class Combat {
 	private Country defendingCountry;
 	private int numAttackers;
 	private int numDefenders;
+	private Pane pane;
 
 	Combat(Country attackingCountry, Country defendingCountry) {
 		dice = new Dice();
@@ -164,6 +167,16 @@ public class Combat {
 		// displayBattle(a, b);
 		return pane;
 	}
+	
+	public void constantDisplayElements(Rectangle field) {
+		String message = attacker.getName() + " is attacking " + defender.getName();
+		final int fontSize = 30;
+		Label title = centeredText(message, field, fontSize);
+		title.setFont(Font.font("Courier New", fontSize));
+		title.setTextFill(Color.RED);
+		pane.getChildren().add(title);
+
+	}
 
 	public void displaySelection(Rectangle backDrop) {
 		CallAction displayResults = new CallAction() {
@@ -207,8 +220,8 @@ public class Combat {
 		int minimumDice = Math.min(atkDice.length, defDice.length);
 		Rectangle box = new Rectangle(300, 400);
 		double divider = box.getHeight() / 4;
-		displayResultBox(100, alignY, box, temp1, Color.RED);
-		displayResultBox(560, alignY, box, temp2, Color.BLUE);
+		displayResultBox(100, alignY, box, attacker.getName(), Color.RED);
+		displayResultBox(560, alignY, box, defender.getName(), Color.BLUE);
 		for (int i = 0; i < minimumDice; i++) {
 			MyAnimation cross = new MyAnimation(pane, false);
 			cross.addFrames("x", 13, 30);
@@ -251,7 +264,7 @@ public class Combat {
 				if (amount < attackingCountry.getUnits()) {
 					defender.loseCountry(defendingCountry);
 					attacker.gainCountry(defendingCountry);
-					country.setOwner(attacker);
+					defendingCountry.setOwner(attacker);
 					attacker.moveUnits(attackingCountry, defendingCountry, amount);
 					pane.getChildren().clear();
 					MainMenu.nextPane();
@@ -371,22 +384,6 @@ public class Combat {
 		return message;
 	}
 
-	public Timer createTimer(int sec, int repeat, CallAction ca) {
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-			int count = 0;
-
-			@Override
-			public void run() {
-				System.out.println(count);
-				ca.use(0);
-				count++;
-				if (count >= repeat)
-					timer.cancel();
-			}
-		}, repeat, sec * 1000);
-		return timer;
-	}
 
 	private class CallAction {
 		public void use(int amount) {
