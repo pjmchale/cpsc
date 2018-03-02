@@ -1,8 +1,7 @@
 import java.lang.Math;
 import java.util.Arrays;
 import java.util.Scanner;
-import javafx.scene.layout.Pane;
-
+import javafx.scene.layout.Pane;imort javafx.scene.*;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -222,6 +221,7 @@ public class Combat {
 			double defX = defLabel.getLayoutX() + 560;
 			defLabel.setLayoutX(defX);
 			pane.getChildren().addAll(defLabel, atkLabel);
+
 			if (attackerWin(atkDice[i], defDice[i])) {
 				cross.setMiddleCoord(710, spacing + 25);
 			} else {
@@ -241,39 +241,46 @@ public class Combat {
 		pane.getChildren().add(nextBtn);
 		nextBtn.setLayoutX((960 - image.getWidth()) - 60);
 		nextBtn.setLayoutY(500);
-		if(true){
-			CallAction moveUnitAction = new CallAction() {
-				public void use(int amount) {
-					if(amount < attackingCountry.getUnits()) {
-						 defender.loseCountry(defendingCountry);
-						 attacker.gainCountry(defendingCountry);
-						 country.setOwner(attacker);
-						 attacker.moveUnits(attackingCountry,defendingCountry,amount);
-						 pane.getChildren().clear();
-						 MainMenu.nextPane()
-					}
+		setNextBtnEvents(nextBtn);
+	}
+
+	public void setNextBtnEvents(Button nextBtn) {
+		CallAction moveUnitAction = new CallAction() {
+			public void use(int amount) {
+				if (amount < attackingCountry.getUnits()) {
+					defender.loseCountry(defendingCountry);
+					attacker.gainCountry(defendingCountry);
+					country.setOwner(attacker);
+					attacker.moveUnits(attackingCountry, defendingCountry, amount);
+					pane.getChildren().clear();
+					MainMenu.nextPane();
 				}
 			}
+		};
+		if (defendingCountry.getUnits() <= 0) {
 			nextBtn.setOnAction(new EventHandler<ActionEvent>() {
+
 				@Override
 				public void handle(ActionEvent event) {
 					pane.getChildren().clear();
-					getUnits("Move " + attackingCountry.getName(), "To " defendingCountry.getName(), new Rectangle(0,0,960,600), moveUnitAction);
+					getUnits("Move " + attackingCountry.getName(), "To " + defendingCountry.getName(),
+							new Rectangle(0, 0, 960, 600), moveUnitAction);
 				}
 			});
-			
-		}else {
-		nextBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+		} else {
+			nextBtn.setOnAction(new EventHandler<ActionEvent>() {
+
 				@Override
 				public void handle(ActionEvent event) {
 					pane.getChildren().clear();
-					MainMenu.nextPane()
+					MainMenu.nextPane();
 				}
 			});
 		}
 		nextBtn.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 
-	@Override
+			@Override
 			public void handle(MouseEvent e) {
 				nextBtn.setEffect(new DropShadow());
 			}

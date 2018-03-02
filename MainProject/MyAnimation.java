@@ -34,7 +34,11 @@ public class MyAnimation extends AnimationTimer {
 	}
 	public void addFrames(String name, int numFrames) {
 		for (int i = 0; i < numFrames; i++) {
-			String imagePath = "AnimatingImages/"+name +"_"+i+".png";
+			String imagePath = "AnimatingImages/"+name +"_";
+			if(i < 10) imagePath += "000";
+			else if(i < 100) imagePath += "00";
+			else if(i < 1000) imagePath += "0";
+			imagePath += i+1+".png";;
 			frames.add(new Image(imagePath));
 		}
 		frameImage.setImage(frames.get(0));
@@ -43,7 +47,11 @@ public class MyAnimation extends AnimationTimer {
 	}
 	public void addFrames(String name, int start, int end) {
 		for (int i = start; i < end; i++) {
-			String imagePath = "AnimatingImages/"+name +"_"+i+".png";
+			String imagePath = "AnimatingImages/"+name +"_";
+			if(i < 10) imagePath += "000";
+			else if(i < 100) imagePath += "00";
+			else if(i < 1000) imagePath += "0";
+			imagePath += i+1+".png";;
 			frames.add(new Image(imagePath));
 		}
 		frameImage.setImage(frames.get(0));
