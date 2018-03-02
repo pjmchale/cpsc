@@ -27,25 +27,33 @@ public class MainMenu extends Application {
   static private Pane nextPane;
   static private Pane root;
   static private Pane turnPane;
-  static public GameManager gameManager;
+  //static public GameManager gameManager;
 
-  InitializeBoard initializeBoard;
-  
+  static private InitializeBoard initializeBoard;
+  static private Label countrySelectionLabel;
+
   static private int numPlayers;
   static private Player[] players;
   static private Map map;
   static private Player currentPlayer;
   static private Country countryClicked;
+  static private Country toCountry;
+  static private Country fromCountry;
   static private int turnIndex;
   static private Player firstTurn;
   static int firstTurnIndex;
   static boolean distributeUnits;
+  static boolean attacking;
+  static boolean fortify;
 
   /**
    * moves the scene to the next pane
    */
   static public void nextPane(){
     setPane(nextPane);
+    if(nextPane == getMapPane()){
+      root.getChildren().add(turnPane);
+    }
     nextPane = getMapPane();
   }
 
@@ -54,6 +62,9 @@ public class MainMenu extends Application {
    */
   static private void setPane(Pane pane){
     root.getChildren().remove(currentPane);
+    if(currentPane == getMapPane()){
+      root.getChildren().remove(turnPane);
+    }
     root.getChildren().add(pane);
     currentPane = pane;
   }
@@ -63,6 +74,9 @@ public class MainMenu extends Application {
    */
   static private void setPane(Pane pane, Pane nPane){
     root.getChildren().remove(currentPane);
+    if(currentPane == getMapPane()){
+      root.getChildren().remove(turnPane);
+    }
     root.getChildren().add(pane);
     currentPane = pane;
     nextPane = nPane;
@@ -123,7 +137,7 @@ public class MainMenu extends Application {
    * Determines what to do with country click based off game state
    */
   static public void processCountryClick(){
-    
+
     /* Distributing units phase, set country owner */
     if(distributeUnits){
 
@@ -141,6 +155,45 @@ public class MainMenu extends Application {
           nextTurn();
         }
       }
+    }
+
+    /* For when player is attacking */
+    if(attacking){
+      if(fromCountry == null){
+        if(countryClicked.getOwner() == currentPlayer){
+          fromCountry = countryClicked;
+          countrySelectionLabel.setText("Please Select Country To Attack");
+        }else{
+          return;
+        }
+      }else{
+        if(countryClicked.getOwner() != currentPlayer && countryClicked.isNeighbour(fromCountry)){
+          toCountry = countryClicked;
+          root.getChildren().remove(getMapPane());
+          root.getChildren().remove(countrySelectionLabel);
+          startAttack(toCountry, fromCountry);
+        }else{
+          return;
+        }
+      }
+    }
+
+    /* For when player is fortifying*/
+    if(fortify){
+      if(fromCountry == null){
+        if(countryClicked.getOwner() == currentPlayer){
+          fromCountry = countryClicked;
+          countrySelectionLabel.setText("Please Select Country To Move Units To");
+        }else{
+          return;
+        }
+      }else if(toCountry == null)
+        if(countryClicked.getOwner() == currentPlayer && countryClicked.isNeighbour(fromCountry)){
+          toCountry = countryClicked;
+          countrySelectionLabel.setText("How Many Units Would You Like To Move? (" + fromCountry.getUnits()-1 + " available)");
+                  }else{
+          return;
+        }
     }
   }
 
@@ -220,6 +273,18 @@ public class MainMenu extends Application {
     firstTurnIndex = turnIndex;
 
   }
+
+  /**
+   * initiates the combat
+   */
+  static private void startAttack(Country toCountry, Country fromCountry){
+    //Combat combat = new Combat(toCountry, fromCountry);
+    //setPane(combat.getPane(), getMapPane());
+    toCountry = null;
+    fromCountry = null;
+    attacking = false;
+  }
+
   @Override
   public void start(Stage primaryStage){
     int resX;
@@ -228,7 +293,7 @@ public class MainMenu extends Application {
 
     /* Create the game manager */
     initializeMap();
-    
+
 
     /* Set screen size/resolution */
     resX = 960;
@@ -249,7 +314,7 @@ public class MainMenu extends Application {
     ivBackground.setPreserveRatio(true);
     ivBackground.setSmooth(true);
     ivBackground.setCache(true);
-    //root.getChildren().add(ivBackground);
+    root.getChildren().add(ivBackground);
 
     /* Display main screen pane */
     Pane menuPane = new Pane();
@@ -270,15 +335,72 @@ public class MainMenu extends Application {
     selectionHBox.layoutXProperty().bind(turnPane.widthProperty().subtract(selectionHBox.widthProperty()).divide(2));
     selectionHBox.setLayoutY(30);
 
+    /* Country selection label */
+    countrySelectionLabel = new Label("");
+    countrySelectionLabel.setFont(new Font("Times New Roman Bold", 20));
+    countrySelectionLabel.setTextFill(Color.RED);
+    countrySelectionLabel.layoutXProperty().bind(root.widthProperty().subtract(countrySelectionLabel.widthProperty()).divide(2));
+    countrySelectionLabel.setLayoutY(30);
+
+    /* Number of units text box */
+    TextField numUnitsTextField = new TextField();
+    numUnitsTextField.layoutXProperty().bind(root.widthProperty().divide(2).add(countrySelectionLabel.widthProperty()));
+    numUnitsTextField.setLayoutY(30);
+
+
     /* attack selection button */
     Button attackButton = new Button("Attack");
+    attackButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        attacking = true;
+        toCountry = null;
+        fromCountry = null;
+        root.getChildren().remove(turnPane);
+        countrySelectionLabel.setText("Please Select Country To Attack From");
+        root.getChildren().add(countrySelectionLabel);
+      }
+    });
+
 
     /* fortify selection button */
     Button fortifyButton = new Button("Fortify");
-    
+    fortifyButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        fortify = true;
+        toCountry = null;
+        fromCountry = null;
+        root.getChildren().remove(turnPane);
+        countrySelectionLabel.setText("Please Select Country To Move Units From");
+        root.getChildren().add(countrySelectionLabel);
+
+      }
+    });
+
+
+
     /* end turn selection button */
     Button endTurnButton = new Button("End Turn");
+    endTurnButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        nextTurn();
+      }
+    });
 
+    Button confirmButton = new Button("Confirm");
+    confirmButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        root.getChildren().remove(getMapPane());
+        root.getChildren().remove(countrySelectionLabel);
+        currentPlayer.moveUnits(toCountry, fromCountry, ?*jfdsiajdfsiod)
+        nextTurn();
+      }
+    });
+
+    
     selectionHBox.getChildren().addAll(attackButton, fortifyButton, endTurnButton);
     turnPane.getChildren().add(selectionHBox);
 

@@ -87,6 +87,7 @@ public class InitializeBoard{
         public void handle(ActionEvent event) {
           /* if all units distributed we're done */
           if(allUnitsDistributed()){
+              MainMenu.setDistributeUnits(false);
               initializeBoardPane.getChildren().clear();
               MainMenu.nextPane();
           }
