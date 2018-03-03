@@ -6,11 +6,11 @@ import java.util.Scanner;
  */
 public class Player{
     private String name;
-    private int id = 0;
+    private int id;
     private ArrayList<Country> countriesOwned;
     private int totalUnits;
     private int availableUnits;
-    private static int numPlayer = 0;
+    private static int numPlayer = 1;
 
     /**
      * Constructors for a player
