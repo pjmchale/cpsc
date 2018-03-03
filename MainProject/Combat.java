@@ -224,7 +224,7 @@ public class Combat {
 		displayResultBox(560, alignY, box, defender.getName(), Color.BLUE);
 		for (int i = 0; i < minimumDice; i++) {
 			MyAnimation cross = new MyAnimation(pane, false);
-			cross.addFrames("cross", 13, 30);
+			cross.addFrames("cross", 13, 29);
 			Label atkLabel = centeredText(atkDice[i] + "", box, 50);
 			double spacing = alignY + divider * (i + 1) + 15;
 			double atkX = atkLabel.getLayoutX() + 100;
