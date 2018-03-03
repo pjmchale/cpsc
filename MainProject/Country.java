@@ -1,21 +1,25 @@
-import java.util.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.text.Font;
-import javafx.scene.layout.HBox;
+import javafx.scene.text.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import java.util.HashMap;
-import javafx.geometry.Pos;
+import java.util.Map;
+import java.util.*;
+import javafx.scene.*;
+import javafx.scene.paint.*;
+import javafx.scene.canvas.*;
+import javafx.scene.Group; 
+import javafx.scene.effect.ColorAdjust;
+import javafx.beans.binding.Bindings;
+import javafx.scene.effect.*;
+import javafx.scene.image.*;
 
 public class Country {
  // extends Application{
@@ -25,23 +29,30 @@ public class Country {
 	private int numUnits;
 	private ArrayList<Integer> neighbours;
 	private Pane root;
-	private Label amountOfUnitsLabel;
-	private Label ownerLabel;
+	// private Label amountOfUnitsLabel;
+	// private Label ownerLabel;
 	private ImageView imageView;
 	private boolean clickable = true;
+	private infoView popUp;
+	private String ownerName;
+	private int ownerID;
 	/**
 	 * Constructor to set the id, neighbours, and name
 	*/
-	Country(int id, ArrayList<Integer> newNeighbours, String newName, Pane root, ArrayList<Integer> titleCordinates){
-		neighbours = newNeighbours;
+	Country(int id, ArrayList<Integer> newNeighbours, String newName, int newOwnerID, String newOwnerName, int newNumUnits, Pane newRoot){
+		root = newRoot;
 		name = newName;
+		numUnits = newNumUnits;
+		ownerName = newOwnerName;
+		ownerID = newOwnerID;
 		countryID = id;
+		neighbours = newNeighbours;
 
-		String imagePath = "arts_assests/"+name+".png";
-		Image image = new Image(imagePath);
+		String path = "mapAssets/"+name+".png";
+		Image img = new Image(path);
 		imageView = new ImageView();
-		imageView.setImage(image);
-		// imageView.setId(x);
+		imageView.setImage(img);
+		imageView.setOpacity(1);
 		imageView.setPreserveRatio(true);
 		imageView.setSmooth(true);
 		imageView.setLayoutX(0);
@@ -50,78 +61,82 @@ public class Country {
 			@Override
 		     public void handle(MouseEvent event) {
 		     	if (clickable){
-			        String imagePath = "arts_assests/"+name+"-Hover.png";
-					Image hoverImage = new Image(imagePath);
-					imageView.setImage(hoverImage);
-				}
-		        event.consume();
+			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);
+			        event.consume();
+			    }
 		     }
 		});
 		imageView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
 			@Override
 		     public void handle(MouseEvent event) {
 		     	if (clickable){
-			        String imagePath = "arts_assests/"+name+".png";
-					Image nonHoverImage = new Image(imagePath);
-					imageView.setImage(nonHoverImage);
-				}
-		        event.consume();
+			        popUp.clear();
+			        popUp = null;
+			        event.consume();
+			    }
 		     }
 		});
 		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent event) {
-		        System.out.println(name + " Pressed");
-		        if (clickable) {
-		        	//************* TELL THE SOME OTHER CLASS THAT A COUNTRY WAS CLICKED ************
-		        	MainMenu.setCountryClicked(Country.this);
-		        }
+		    	popUp.clear();
+		        popUp = null;
+		        MainMenu.setCountryClicked(Country.this);
+		        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);
 		        event.consume();
 		    }
 		});
 
-        root.getChildren().add(imageView);
-
-        Label title = new Label(name);
-		title.setFont(Font.font("Courier New", 12));
-		int posx = titleCordinates.get(0);
-		int posy = titleCordinates.get(1);
-		title.setLayoutX(posx);
-		title.setLayoutY(posy);
-
-		// String ownerName = "";
-		// if (owner == null){
-		// 	String ownerName = "";
-		// } else {
-		// 	String ownerName = owner.getName();
-		// }
-		
-		ownerLabel = new Label("");
-		ownerLabel.setFont(Font.font("Courier New", 10));
-		posx = posx;
-		posy = posy + 10;
-		ownerLabel.setLayoutX(posx);
-		ownerLabel.setLayoutY(posy);
-
-		String amountOfUnits = Integer.toString(numUnits); 
-		amountOfUnitsLabel = new Label("Units: "+amountOfUnits);
-		amountOfUnitsLabel.setFont(Font.font("Courier New", 10));
-		posx = posx;
-		posy = posy + 10;
-		amountOfUnitsLabel.setLayoutX(posx);
-		amountOfUnitsLabel.setLayoutY(posy);
-
-
-		root.getChildren().add(title);
-		root.getChildren().add(ownerLabel);
-		root.getChildren().add(amountOfUnitsLabel);
-
-		title.toFront();
-		ownerLabel.toFront();
-		amountOfUnitsLabel.toFront();
-		imageView.toBack();
+		root.getChildren().add(colorView(ownerID, imageView));
 	}
 
+	public ImageView colorView(int playerNumber, ImageView iV){
+		double con = 0;
+		double hue = 0;
+		double sat = 0;
+		double bri = 0;
+
+		switch(playerNumber) {
+			case 1:
+				// Green
+				con = 0;
+				hue = 0.5;
+				sat = 0.6;
+				bri = 0;
+			break;
+			case 2:
+				// Red
+				con = 0;
+				hue = 0;
+				sat = 0.8;
+				bri = 0;
+			break;
+			case 3:
+				// Orange
+				con = 0;
+				hue = 0.1;
+				sat = 0.6;
+				bri = 0;
+			break;
+			case 4:
+				// Purple
+				con = 0;
+				hue = -0.7;
+				sat = 0.5;
+				bri = 0;
+			break;
+		}
+		
+		ColorAdjust colorAdjust = new ColorAdjust();
+		colorAdjust.setContrast(con);
+		colorAdjust.setHue(hue);
+		colorAdjust.setBrightness(bri);
+		colorAdjust.setSaturation(sat);
+
+		iV.setEffect(colorAdjust);
+
+		return iV;
+	}
 	/**
 	 * Used to get the name of the country
 	 * @return the name
@@ -144,7 +159,7 @@ public class Country {
 	*/
 	public void addUnits(int units) {
 		numUnits = numUnits + units;
-		amountOfUnitsLabel.setText("Units: "+numUnits);
+		// amountOfUnitsLabel.setText("Units: "+numUnits);
 	}
 
 	/**
@@ -154,7 +169,7 @@ public class Country {
 	public void setUnits(int units){
 		numUnits = units;
 		// Update the map here
-		amountOfUnitsLabel.setText("Units: "+numUnits);
+
 	}
 
 	/**
@@ -171,8 +186,11 @@ public class Country {
 	*/
 	public void setOwner(Player player) {
 		owner = player;
-		String ownerName = owner.getName();
-		ownerLabel.setText(ownerName);
+		ownerName = player.getName();
+		ownerID = player.getId();
+		colorView(ownerID, imageView);
+		// ownerID = new Player(GameManager.getPlayers()).indexOf(player);
+		// **********
 	}
 
 	/**
