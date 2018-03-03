@@ -6,9 +6,11 @@ import java.util.Scanner;
  */
 public class Player{
     private String name;
+    private int id = 0;
     private ArrayList<Country> countriesOwned;
     private int totalUnits;
     private int availableUnits;
+    private static int numPlayer = 0;
 
     /**
      * Constructors for a player
@@ -16,13 +18,8 @@ public class Player{
      */
     Player(String name){
         this.name = name;
-        totalUnits = 0;
-        availableUnits = 0;
-        countriesOwned = new ArrayList<Country>();
-    }
-
-    Player(){
-        name = "none";
+        id = numPlayer;
+        numPlayer++;
         totalUnits = 0;
         availableUnits = 0;
         countriesOwned = new ArrayList<Country>();
@@ -34,6 +31,8 @@ public class Player{
     public String getName(){
         return name;
     }
+
+    public int getId() { return id; }
 
     public ArrayList<Country> getCountriesOwned(){
         return countriesOwned;
