@@ -33,7 +33,6 @@ public class InitializeBoard{
   public Pane getPane(){
     return buildPane();
   } 
-  
 
   private Pane buildPane(){
     int resX;
@@ -91,7 +90,6 @@ public class InitializeBoard{
               initializeBoardPane.getChildren().clear();
               MainMenu.nextPane();
           }
-
           
           if(MainMenu.getCurrentPlayer() == currPlayer){
               return;
@@ -125,6 +123,7 @@ public class InitializeBoard{
           if(clicked){
             initializeBoardPane.getChildren().clear();
             distributeUnits();
+            return;
           }else {
             randomizeTurnButton.setText("Click to continue ...");
             clicked = true;

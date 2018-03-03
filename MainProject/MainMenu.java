@@ -32,6 +32,7 @@ public class MainMenu extends Application {
   static private InitializeBoard initializeBoard;
   static private Label countrySelectionLabel;
   static private Label playerTurnLabel;
+  static private Label gainedUnitsLabel;
   static private Button cancelButton;
   static private Button confirmButton;
   static private TextField numUnitsTextField;
@@ -46,9 +47,11 @@ public class MainMenu extends Application {
   static private int turnIndex;
   static private Player firstTurn;
   static int firstTurnIndex;
-  static boolean distributeUnits;
-  static boolean attacking;
-  static boolean fortify;
+  static boolean distributeUnits = false;
+  static boolean attacking = false;
+  static boolean fortify = false;
+  static boolean placeUnits = false;
+  static boolean turn = false;
 
   /**
    * moves the scene to the next pane
@@ -57,8 +60,12 @@ public class MainMenu extends Application {
     setPane(nextPane);
     if(nextPane == getMapPane()){
       root.getChildren().add(turnPane);
+      turn = true;
       playerTurnLabel.setVisible(true);
     }
+
+    checkIfGameOver();
+
     nextPane = getMapPane();
   }
 
@@ -145,10 +152,8 @@ public class MainMenu extends Application {
 
     /* Distributing units phase, set country owner */
     if(distributeUnits){
-
       if(countryClicked.getOwner() == null){
         countryClicked.setOwner(currentPlayer);
-        System.out.println(currentPlayer.getName());
         currentPlayer.placeUnits(countryClicked, 1);
         distributeUnits = false;
         nextTurn();
@@ -177,7 +182,7 @@ public class MainMenu extends Application {
           root.getChildren().remove(getMapPane());
           root.getChildren().remove(countrySelectionLabel);
           root.getChildren().remove(cancelButton);
-          startAttack(toCountry, fromCountry);
+          startAttack(fromCountry, toCountry);
         }else{
           return;
         }
@@ -203,6 +208,19 @@ public class MainMenu extends Application {
           return;
         }
     }
+
+    /* For when player is placing new units */
+    if(placeUnits){
+      if(countryClicked.getOwner() == currentPlayer){
+        currentPlayer.placeUnits(countryClicked, 1);
+        gainedUnitsLabel.setText(currentPlayer.getName() + " Select Country To Place Gained Units! (" + currentPlayer.getAvailableUnits() + " available)");
+        if(currentPlayer.getAvailableUnits() == 0){
+          root.getChildren().remove(gainedUnitsLabel);
+          placeUnits = false;
+          nextPane();
+        }
+      }
+    }
   }
 
   /**
@@ -224,10 +242,33 @@ public class MainMenu extends Application {
 
   /**
    * sets boolean for distributing units phase
+   * @state distributing units state (true false)
    */
   static public void setDistributeUnits(boolean state){
     distributeUnits = state;
   } 
+
+  /**
+   * Checks if player has won the game i.e. owns every territory on the map
+   * @return gameOver true if player owns every territory otherwise false
+   */
+  static public boolean checkIfGameOver(){
+    ArrayList<Country> allCountries = map.getCountries();
+
+    for(int i=0; i < players.length ; i++){
+      if(players[i].getCountriesOwned().size() == allCountries.size()){
+        root.getChildren().clear();
+        //root.getChildren().add(ivBackground);
+        Label winnerLabel = new Label();
+        winnerLabel.setText("Congratulations " + players[i].getName() + " You Won The Game!");
+        winnerLabel.layoutYProperty().bind(root.heightProperty().divide(2));
+        winnerLabel.layoutXProperty().bind(root.widthProperty().divide(2));
+        root.getChildren().add(winnerLabel);
+        return true;
+      }
+    }
+    return false;
+  }
 
   /**
    * Creates all players for the game
@@ -259,6 +300,10 @@ public class MainMenu extends Application {
     turnIndex %= numPlayers;
     currentPlayer = players[turnIndex];
     playerTurnLabel.setText(currentPlayer.getName() + "'s Turn");
+
+    if(turn){
+      calcDistributeUnits();
+    }
   }
 
   /**
@@ -284,10 +329,41 @@ public class MainMenu extends Application {
   }
 
   /**
+   * calculates and distributes new units at beginning of turn
+   */
+  static private void calcDistributeUnits(){
+    int numNewUnits = 3;
+    int numUnits;
+    int userChoice;
+    ArrayList<Country> countriesOwned;
+    Country country;
+
+    root.getChildren().remove(turnPane);
+    root.getChildren().remove(getMapPane());
+    root.getChildren().add(getMapPane());
+
+    countriesOwned = currentPlayer.getCountriesOwned();
+
+    if(countriesOwned.size() > numNewUnits){
+      numNewUnits = countriesOwned.size();
+    }
+    currentPlayer.setAvailableUnits(numNewUnits);
+
+    gainedUnitsLabel.setText(currentPlayer.getName() + " Select Country To Place Gained Units! (" + currentPlayer.getAvailableUnits() + " available)");
+    root.getChildren().add(gainedUnitsLabel);
+    
+    attacking = false;
+    fortify = false;
+    distributeUnits = false;
+    placeUnits = true;
+
+  }
+
+  /**
    * initiates the combat
    */
-  static private void startAttack(Country toCountry, Country fromCountry){
-    Combat combat = new Combat(toCountry, fromCountry);
+  static private void startAttack(Country fromCountry, Country toCountry){
+    Combat combat = new Combat(fromCountry, toCountry);
     setPane(combat.getPane(), getMapPane());
     toCountry = null;
     fromCountry = null;
@@ -362,9 +438,15 @@ public class MainMenu extends Application {
 
     /* Number of units text box */
     numUnitsTextField = new TextField();
-    numUnitsTextField.layoutXProperty().bind(root.widthProperty().divide(2).add(countrySelectionLabel.widthProperty()).divide(2));
-    numUnitsTextField.setLayoutY(30);
+    numUnitsTextField.layoutXProperty().bind(root.widthProperty().subtract(numUnitsTextField.widthProperty()).divide(2));
+    numUnitsTextField.setLayoutY(60);
 
+    /* Label for displaying number of untis gained at begginning of turn */
+    gainedUnitsLabel = new Label();
+    gainedUnitsLabel.setFont(new Font("Times New Roman Bold", 20));
+    gainedUnitsLabel.setTextFill(Color.RED);
+    gainedUnitsLabel.layoutXProperty().bind(root.widthProperty().subtract(gainedUnitsLabel.widthProperty()).divide(2));
+    gainedUnitsLabel.setLayoutY(30);
 
     /* attack selection button */
     Button attackButton = new Button("Attack");
@@ -372,6 +454,8 @@ public class MainMenu extends Application {
       @Override
       public void handle(ActionEvent event) {
         attacking = true;
+        distributeUnits = false;
+        fortify = false;
         toCountry = null;
         fromCountry = null;
         root.getChildren().remove(turnPane);
@@ -388,6 +472,8 @@ public class MainMenu extends Application {
       @Override
       public void handle(ActionEvent event) {
         fortify = true;
+        distributeUnits = false;
+        attacking = false;
         toCountry = null;
         fromCountry = null;
         root.getChildren().remove(turnPane);
@@ -412,7 +498,8 @@ public class MainMenu extends Application {
      * button to confirm num of units selection
      */
     confirmButton = new Button("Confirm");
-    confirmButton.layoutXProperty().bind(root.widthProperty().divide(2).add(countrySelectionLabel.widthProperty()));
+    confirmButton.layoutXProperty().bind(root.widthProperty().divide(2).add(numUnitsTextField.widthProperty().divide(2)));
+    confirmButton.setLayoutY(60);
     confirmButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -428,8 +515,11 @@ public class MainMenu extends Application {
           root.getChildren().remove(getMapPane());
           root.getChildren().remove(countrySelectionLabel);
           root.getChildren().remove(numUnitsTextField);
-          currentPlayer.moveUnits(toCountry, fromCountry, numUnits);
+          root.getChildren().remove(confirmButton);
+          root.getChildren().remove(cancelButton);
+          currentPlayer.moveUnits(fromCountry, toCountry, numUnits);
           nextTurn();
+          //nextPane();
         }else{
           numUnitsTextField.setStyle("-fx-text-fill: red;");
           return;
@@ -446,6 +536,8 @@ public class MainMenu extends Application {
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
+        attacking = false;
+        fortify = false;
         toCountry = null;
         fromCountry = null;
         root.getChildren().remove(cancelButton);
@@ -466,7 +558,6 @@ public class MainMenu extends Application {
     menuPane.setPrefSize(resX, resY);
     menuPane.setLayoutX(0);
     menuPane.setLayoutY(0);
-
 
     /* set title text */
     Label title = new Label("RISK");
