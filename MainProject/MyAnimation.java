@@ -5,7 +5,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-
+/**
+ * An animation system that takes images as frames and plays them at a specific fps (Frames Per Second)
+ */
 public class MyAnimation extends AnimationTimer {
 	private ArrayList<Image>frames;
 	private int totalFrames;
@@ -18,7 +20,11 @@ public class MyAnimation extends AnimationTimer {
 	private ImageView frameImage;
 	private long prevTime;
 	private boolean loop;
-
+	/**
+	 * initialize the class
+	 * @param pane the pane this animation will be drawn on
+	 * @param isLoop determines if the animation will loop
+	 */
 	public MyAnimation(Pane pane, boolean isLoop){
 		this.frames = new ArrayList<Image>();
 		frameImage = new ImageView();
@@ -28,10 +34,22 @@ public class MyAnimation extends AnimationTimer {
 		middleX = 960/2;
 		middleY = 600/2;
 	}
+	
+	/**
+	 * set the center coordinate of the animation
+	 * @param x the x-value of the center coordinate
+	 * @param y the y-value of the center coordinate
+	 */
 	public void setMiddleCoord(double x, double y) {
 		middleX = x;
 		middleY = y;
 	}
+	
+	/**
+	 * add a collection of images by the name of the animation sequence
+	 * @param name the name of the animation
+	 * @param numFrames the number of frames in that animation
+	 */
 	public void addFrames(String name, int numFrames) {
 		for (int i = 0; i < numFrames; i++) {
 			String imagePath = "AnimatingImages/"+name +"_";
@@ -45,6 +63,13 @@ public class MyAnimation extends AnimationTimer {
 		pane.getChildren().add(frameImage);
 		totalFrames = frames.size();
 	}
+
+	/**
+	 * add a collection of images by the name of the animation sequence
+	 * @param name the name of the animation
+	 * @param start the starting frame of the animation
+	 * @param end the last frame of the animation
+	 */
 	public void addFrames(String name, int start, int end) {
 		for (int i = start; i < end; i++) {
 			String imagePath = "AnimatingImages/"+name +"_";
