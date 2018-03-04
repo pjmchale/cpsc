@@ -1,3 +1,9 @@
+/**
+ * This class (called by MainMenu.java) builds the players
+ * for the RISK game. It receives the number of human and AI 
+ * players from the user and creates them
+ */
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -32,10 +38,16 @@ public class PlayerMenu{
   int centerX, centerY;
 
 
+  /**
+   * returns the pane for use by MainMenu
+   */
   public Pane getPane(){
     return buildPane();
   }
 
+  /**
+   * creates the pane
+   */
   private Pane buildPane(){
 
     /* Set screen size/resolution */

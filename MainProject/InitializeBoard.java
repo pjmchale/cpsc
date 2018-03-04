@@ -1,3 +1,10 @@
+/**
+ * This class (called by MainMenu) initialized the board.
+ * it allows player to choose the countries they own and
+ * distribute the initial units
+ */
+
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -30,10 +37,16 @@ public class InitializeBoard{
   Player currPlayer;
 
 
+  /**
+   * returns the pane for use by MainMenu
+   */
   public Pane getPane(){
     return buildPane();
   } 
 
+  /**
+   * builds the actual pane for initializing the board 
+   */
   private Pane buildPane(){
     int resX;
     int resY;
@@ -189,6 +202,7 @@ public class InitializeBoard{
 
     }
 
+    /* Set initial number of units for each player */
     players = MainMenu.getAllPlayers();
     for(i=0; i < players.length; i++){
       players[i].setAvailableUnits(numUnits);
@@ -204,6 +218,7 @@ public class InitializeBoard{
 
   /**
    * checks if all units for all players have been distributed
+   * @return true if all units have been distributed, false otherwise
    */
    private boolean allUnitsDistributed(){
      Player[] players;
