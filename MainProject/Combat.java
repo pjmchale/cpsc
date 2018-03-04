@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.control.Label;
@@ -137,7 +138,6 @@ public class Combat {
 		int defending[] = sortFromHighest(defDices);
 		int attacking[] = sortFromHighest(atkDices);
 		int minimumDice = Math.min(defending.length, attacking.length);
-		displayBattle(attacking, defending);
 		for (int i = 0; i < minimumDice; i++) {
 			System.out.println("-[===> ---------------------- <===]-");
 			System.out.println(attacker.getName() + " roles: " + attacking[i]);
@@ -148,6 +148,7 @@ public class Combat {
 				countryLose(attackingCountry, defender);
 			}
 		}
+		displayBattle(attacking, defending);
 
 	}
 
@@ -195,12 +196,12 @@ public class Combat {
 					numAttackers = amount;
 					pane.getChildren().clear();
 					constantDisplayElements(backDrop);
-					getUnits(defender.getName() + "(" + defendingCountry.getUnits() + ")", " how many units(DEFEND)",
+					getUnits(defender.getName() + "(" + (defendingCountry.getUnits()) + ")", " how many units(DEFEND)",
 							backDrop, displayResults);
 				}
 			}
 		};
-		getUnits(attacker.getName() + "(" + getAttackingCountry().getUnits() + ")", " how many units(ATTACK)", backDrop,
+		getUnits(attacker.getName() + "(" + (getAttackingCountry().getUnits()-1) + ")", " how many units(ATTACK)", backDrop,
 				attackerDone);
 
 	}
@@ -220,8 +221,8 @@ public class Combat {
 		int minimumDice = Math.min(atkDice.length, defDice.length);
 		Rectangle box = new Rectangle(300, 400);
 		double divider = box.getHeight() / 4;
-		displayResultBox(100, alignY, box, attacker.getName(), Color.RED);
-		displayResultBox(560, alignY, box, defender.getName(), Color.BLUE);
+		displayResultBox(100, alignY, true, attacker.getName(), Color.RED);
+		displayResultBox(560, alignY, false, defender.getName(), Color.BLUE);
 		for (int i = 0; i < minimumDice; i++) {
 			MyAnimation cross = new MyAnimation(pane, false);
 			cross.addFrames("cross", 13, 29);
@@ -271,13 +272,14 @@ public class Combat {
 				}
 			}
 		};
+		System.out.println("defending country has " + defendingCountry.getUnits() + " left");
 		if (defendingCountry.getUnits() <= 0) {
 			nextBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
 					pane.getChildren().clear();
-					getUnits("Move " + attackingCountry.getName(), "To " + defendingCountry.getName(),
+					getUnits("Move " + attackingCountry.getName() + "("+(attackingCountry.getUnits()-1)+")", "To " + defendingCountry.getName(),
 							new Rectangle(0, 0, 960, 600), moveUnitAction);
 				}
 			});
@@ -307,16 +309,26 @@ public class Combat {
 		});
 	}
 
-	public void displayResultBox(double x, double y, Rectangle rect, String name, Color color) {
-		Rectangle box = new Rectangle(rect.getWidth(), rect.getHeight());
-		box.setX(x);
+	public void displayResultBox(double x, double y, boolean leftSide, String name, Color color) {
+		Image panelImage;
+		Rectangle box = new Rectangle(250,400);
+		box.setX(x+15);
 		box.setY(y);
-		box.setFill(color);
-		box.setOpacity(0.5);
+		ImageView backPanel;
+		if(leftSide) {
+			panelImage = new Image("arts_assests/banner_attacker.png");
+			backPanel = new ImageView(panelImage);
+			backPanel.setLayoutX(x-355.4);
+		}else {
+			panelImage = new Image("arts_assests/banner_defender.png");
+			backPanel = new ImageView(panelImage);
+			backPanel.setLayoutX(x-30);
+		}
+		backPanel.setLayoutY(y-10);
 		Label nameLabel = centeredText(name, box, 50);
 		nameLabel.setTextFill(color);
 		nameLabel.setLayoutY(y + 20);
-		pane.getChildren().add(box);
+		pane.getChildren().add(backPanel);
 		pane.getChildren().add(nameLabel);
 		setDividers(4, box);
 	}
@@ -340,25 +352,27 @@ public class Combat {
 		double x = field.getX() + (field.getWidth() - WIDTH) / 2;
 		double y = field.getY() + (field.getHeight() - HEIGHT) / 2;
 		TextField input = new TextField();
-
 		Rectangle backDrop = new Rectangle(x, y, WIDTH, HEIGHT);
-
+		Image panelImage = new Image("arts_assests/backDrop_small.png");
+		ImageView panelView = new ImageView(panelImage);
+		panelView.setX(x-30);
+		panelView.setY(y-10);
 		Label message = centeredText(msg, backDrop);
-		message.setLayoutY(message.getLayoutY() + 20);
-		message.setTextFill(Color.BLUE);
+		message.setLayoutY(message.getLayoutY() + 30);
+		message.setTextFill(Color.rgb(5,5,5));
 
 		Label name = centeredText(title, backDrop);
 		name.setTextFill(Color.WHITE);
 		backDrop.setFill(Color.BLACK);
 		input.setLayoutX(x + (backDrop.getWidth() - input.getWidth()) / 5);
-		input.setLayoutY(y + 60);
+		input.setLayoutY(y + 68);
 
 		Button submitUnitsBtn = new Button("CONFIRM");
 		submitUnitsBtn.setOnAction(new inputNumberHandler(input, ca));
 		submitUnitsBtn.setLayoutX(x + WIDTH - 80);
-		submitUnitsBtn.setLayoutY(y + 60.5);
+		submitUnitsBtn.setLayoutY(y + 68);
 
-		pane.getChildren().addAll(backDrop, message, name);
+		pane.getChildren().addAll(panelView, message, name);
 		pane.getChildren().add(input);
 		pane.getChildren().add(submitUnitsBtn);
 		submitUnitsBtn.toFront();
@@ -368,7 +382,7 @@ public class Combat {
 		Label message = new Label(msg);
 		int totalChar = msg.length();
 		final int fontSize = 20;
-		message.setFont(Font.font("Courier New", fontSize));
+		message.setFont(Font.font("Courier New", FontWeight.BOLD,fontSize));
 		message.setTextFill(Color.BLACK);
 		message.relocate(field.getX() + (field.getWidth() - (fontSize / 1.7 * totalChar)) / 2, field.getY());
 		return message;
@@ -378,11 +392,12 @@ public class Combat {
 		Label message = new Label(msg);
 		int totalChar = msg.length();
 		int fontSize = size;
-		message.setFont(Font.font("Courier New", fontSize));
+		message.setFont(Font.font("Courier New", FontWeight.BOLD,fontSize));
 		message.setTextFill(Color.BLACK);
 		message.relocate(field.getX() + (field.getWidth() - (fontSize / 1.7 * totalChar)) / 2, field.getY());
 		return message;
 	}
+
 
 
 	private class CallAction {

@@ -64,7 +64,7 @@ public class infoView {
 		// int ownerWidth = ownerLabel.getWidth();
 		// int amountOfUnitsLabelWidth = amountOfUnitsLabel.getWidth();
 
-		int titleWidth = 110;
+		int titleWidth = 100;
 		int ownerWidth = 30;
 		int amountOfUnitsLabelWidth = 30;
 
@@ -125,6 +125,18 @@ public class infoView {
 				R = 120;
 				G = 131;
 				B = 239;
+			break;
+			case 5:
+				// Brown RGB(128, 56, 25)
+				R = 128;
+				G = 56;
+				B = 25;
+			break;
+			case 6:
+				// Ugly Purple RGB(128, 25, 117)
+				R = 128;
+				G = 25;
+				B = 117;
 			break;
 			default:
 				// White RGB(255, 255, 255)
