@@ -61,28 +61,38 @@ public class Country {
 			@Override
 		     public void handle(MouseEvent event) {
 		     	if (clickable){
-			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);
-			        event.consume();
+		     		if (popUp != null){
+				        popUp.clear();
+				        popUp = null;
+				    }
+			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);    
 			    }
+			    event.consume();
 		     }
 		});
 		imageView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
 			@Override
 		     public void handle(MouseEvent event) {
 		     	if (clickable){
-			        popUp.clear();
-			        popUp = null;
-			        event.consume();
+		     		if (popUp != null){
+				        popUp.clear();
+				        popUp = null;
+				    }
 			    }
+			    event.consume();
 		     }
 		});
 		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent event) {
-		    	popUp.clear();
-		        popUp = null;
-		        MainMenu.setCountryClicked(Country.this);
-		        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);
+		    	if (clickable){
+		    		if (popUp != null){
+		    			popUp.clear();
+				        popUp = null;
+		    		}
+			        MainMenu.setCountryClicked(Country.this);
+			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);
+			    }
 		        event.consume();
 		    }
 		});
@@ -120,6 +130,20 @@ public class Country {
 			break;
 			case 4:
 				// Purple
+				con = 0;
+				hue = -0.7;
+				sat = 0.5;
+				bri = 0;
+
+			case 5:
+				// Color
+				con = 0;
+				hue = -0.7;
+				sat = 0.5;
+				bri = 0;
+
+			case 6:
+				// Color
 				con = 0;
 				hue = -0.7;
 				sat = 0.5;
