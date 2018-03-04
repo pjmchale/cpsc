@@ -35,27 +35,28 @@ public class infoView {
 
 		ownerLabel = new Label(ownerName);
 		ownerLabel.setFont(Font.font("Arial", 12));
-		ownerLabelcorY = corY+20;
-		ownerLabel.setLayoutX(ownerLabelcorY);
-		ownerLabel.setLayoutY(corY);
+		double ownerLabelcorY = corY+20;
+		ownerLabel.setLayoutX(corX);
+		ownerLabel.setLayoutY(ownerLabelcorY);
 
 		amountOfUnitsLabel = new Label("Units: "+units);
 		amountOfUnitsLabel.setFont(Font.font("Arial", 12));
-		amountOfUnitsLabelcorY = corY+35;
+		double amountOfUnitsLabelcorX = corX;
+		double amountOfUnitsLabelcorY = corY+35;
 		amountOfUnitsLabel.setLayoutX(amountOfUnitsLabelcorX);
-		amountOfUnitsLabel.setLayoutY(corY);
+		amountOfUnitsLabel.setLayoutY(amountOfUnitsLabelcorY);
 
 		// int titleWidth = 100;
 		// int ownerWidth = 30;
 		// int amountOfUnitsLabelWidth = 30;
 
-		int backgroundWidth = 100;
+		int backgroundWidth = 140;
 		// Math.max(Math.max(titleWidth,ownerWidth),amountOfUnitsLabelWidth) + 40;
 		int backgroundHeight = 60;
-		int backgroundPosX = corX-10;
-		int backgroundPosY = corY-40;
+		double backgroundPosX = corX-10;
+		double backgroundPosY = corY-5;
 
-		background = new Rectangle(backgroundPosX,backgroundPosY,backgroundWidth,backgroundHeight);
+		background = new Rectangle(backgroundPosX, backgroundPosY,backgroundWidth,backgroundHeight);
 		background.setFill(Color.rgb(255, 255, 255, 0.9));
 		background.setArcHeight(10);
 	    background.setArcWidth(10);
@@ -69,8 +70,10 @@ public class infoView {
 	    background.setEffect(backgroundShadow);
 
 	    colorIcon = new Circle();
-		colorIcon.setCenterX(corX+60);
-		colorIcon.setCenterY(corY-5);
+	    double cirlcePosX = corX+60;
+	    double cirlcePosY = corY+30;
+		colorIcon.setCenterX(cirlcePosX);
+		colorIcon.setCenterY(cirlcePosY);
 		colorIcon.setRadius(10);
 		colorIcon = iconBackgroundColor(ownerId, colorIcon);
 
