@@ -262,7 +262,7 @@ public class Combat {
 	public void setNextBtnEvents(Button nextBtn) {
 		CallAction moveUnitAction = new CallAction() {
 			public void use(int amount) {
-				if (amount < attackingCountry.getUnits()) {
+				if (amount > 0 && amount < attackingCountry.getUnits()) {
 					defender.loseCountry(defendingCountry);
 					attacker.gainCountry(defendingCountry);
 					defendingCountry.setOwner(attacker);
