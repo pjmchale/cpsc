@@ -20,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 
-
 /**
  * Simulates a Combat between 2 country
  */
@@ -40,6 +39,7 @@ public class Combat {
 		this.defendingCountry = defendingCountry;
 		attacker = attackingCountry.getOwner();
 		defender = defendingCountry.getOwner();
+		initPane();
 
 	}
 
@@ -117,7 +117,7 @@ public class Combat {
 	}
 
 	/**
-	 * starts the battle between 2 countries
+	 * simulates the battle between 2 countries
 	 */
 	public void simulateBattle() {
 		System.out.println(
@@ -132,6 +132,9 @@ public class Combat {
 
 	}
 
+	/**
+	 * starts the battle
+	 */
 	public void startBattle() {
 		int[] atkDices = rollDice(numAttackers);
 		int[] defDices = rollDice(numDefenders);
@@ -152,12 +155,11 @@ public class Combat {
 
 	}
 
-	public Pane getPane() {
+	/**
+	 * intializes the display for the battle
+	 */
+	public void initPane() {
 		pane = new Pane();
-
-		// MyAnimation ma = new MyAnimation(pane,true);
-		// ma.addFrames("test",3);
-		// ma.start();
 		final double WIDTH = 960.0;
 		final double HEIGHT = 600.0;
 		final double paneX = (960 - WIDTH) / 2;
@@ -165,10 +167,18 @@ public class Combat {
 		Rectangle backDrop = new Rectangle(paneX, paneY, WIDTH, HEIGHT);
 		constantDisplayElements(backDrop);
 		displaySelection(backDrop);
-		// displayBattle(a, b);
+	}
+
+	public Pane getPane() {
 		return pane;
 	}
-	
+
+	/**
+	 * draws any elements that should be constantly on the display
+	 * 
+	 * @param field
+	 *            the field this will be drawn onto
+	 */
 	public void constantDisplayElements(Rectangle field) {
 		String message = attacker.getName() + " is attacking " + defender.getName();
 		final int fontSize = 30;
@@ -179,6 +189,13 @@ public class Combat {
 
 	}
 
+	/**
+	 * displays the selection phase, allowing the attacker and defender to choose
+	 * how many units to send to battle
+	 * 
+	 * @param backDrop
+	 *            the area these elements will be drawn onto
+	 */
 	public void displaySelection(Rectangle backDrop) {
 		CallAction displayResults = new CallAction() {
 			public void use(int amount) {
@@ -192,7 +209,7 @@ public class Combat {
 		};
 		CallAction attackerDone = new CallAction() {
 			public void use(int amount) {
-				if (amount <= attackingCountry.getUnits()) {
+				if (amount > 0 && amount < attackingCountry.getUnits()) {
 					numAttackers = amount;
 					pane.getChildren().clear();
 					constantDisplayElements(backDrop);
@@ -201,11 +218,23 @@ public class Combat {
 				}
 			}
 		};
-		getUnits(attacker.getName() + "(" + (getAttackingCountry().getUnits()-1) + ")", " how many units(ATTACK)", backDrop,
-				attackerDone);
+		getUnits(attacker.getName() + "(" + (getAttackingCountry().getUnits() - 1) + ")", " how many units(ATTACK)",
+				backDrop, attackerDone);
 
 	}
 
+	/**
+	 * displays a number on a specific row relative to the field it will be drawn on
+	 * 
+	 * @param rect
+	 *            the area these elements will be drawn onto
+	 * @param row
+	 *            the row value that will determine its y-value
+	 * @param number
+	 *            the number that will be displayed
+	 * @param color
+	 *            the font color of the number
+	 */
 	public void displayNumber(Rectangle rect, int row, int number, Color color) {
 		double rectX = rect.getX();
 		double rectY = rect.getY();
@@ -216,6 +245,14 @@ public class Combat {
 		pane.getChildren().add(numberLabel);
 	}
 
+	/**
+	 * displays the battle results
+	 * 
+	 * @param atkDice
+	 *            an array of values that will represent the attackers units
+	 * @param defDice
+	 *            an array of values that will represent the defenders units
+	 */
 	public void displayBattle(int[] atkDice, int[] defDice) {
 		double alignY = 100.0;
 		int minimumDice = Math.min(atkDice.length, defDice.length);
@@ -259,6 +296,12 @@ public class Combat {
 		setNextBtnEvents(nextBtn);
 	}
 
+	/**
+	 * sets the action events to a button
+	 * 
+	 * @param nextBtn
+	 *            the button to set these new action events to
+	 */
 	public void setNextBtnEvents(Button nextBtn) {
 		CallAction moveUnitAction = new CallAction() {
 			public void use(int amount) {
@@ -279,8 +322,8 @@ public class Combat {
 				@Override
 				public void handle(ActionEvent event) {
 					pane.getChildren().clear();
-					getUnits("Move " + attackingCountry.getName() + "("+(attackingCountry.getUnits()-1)+")", "To " + defendingCountry.getName(),
-							new Rectangle(0, 0, 960, 600), moveUnitAction);
+					getUnits("Move " + attackingCountry.getName() + "(" + (attackingCountry.getUnits() - 1) + ")",
+							"To " + defendingCountry.getName(), new Rectangle(0, 0, 960, 600), moveUnitAction);
 				}
 			});
 
@@ -309,22 +352,36 @@ public class Combat {
 		});
 	}
 
+	/**
+	 * displays the back drop of a player's results
+	 * 
+	 * @param x
+	 *            the x-value
+	 * @param y
+	 *            the y-value
+	 * @param leftSide
+	 *            if the display is on the left side of the display
+	 * @param name
+	 *            the name of the player
+	 * @param color
+	 *            the font color
+	 */
 	public void displayResultBox(double x, double y, boolean leftSide, String name, Color color) {
 		Image panelImage;
-		Rectangle box = new Rectangle(250,400);
-		box.setX(x+15);
+		Rectangle box = new Rectangle(250, 400);
+		box.setX(x + 15);
 		box.setY(y);
 		ImageView backPanel;
-		if(leftSide) {
+		if (leftSide) {
 			panelImage = new Image("arts_assests/banner_attacker.png");
 			backPanel = new ImageView(panelImage);
-			backPanel.setLayoutX(x-355.4);
-		}else {
+			backPanel.setLayoutX(x - 355.4);
+		} else {
 			panelImage = new Image("arts_assests/banner_defender.png");
 			backPanel = new ImageView(panelImage);
-			backPanel.setLayoutX(x-30);
+			backPanel.setLayoutX(x - 30);
 		}
-		backPanel.setLayoutY(y-10);
+		backPanel.setLayoutY(y - 10);
 		Label nameLabel = centeredText(name, box, 50);
 		nameLabel.setTextFill(color);
 		nameLabel.setLayoutY(y + 20);
@@ -333,6 +390,14 @@ public class Combat {
 		setDividers(4, box);
 	}
 
+	/**
+	 * displays dividers on a rectangle
+	 * 
+	 * @param amount
+	 *            how many dividers is needed
+	 * @param rect
+	 *            the area the dividers will be drawn relative to
+	 */
 	public void setDividers(int amount, Rectangle rect) {
 		double rectX = rect.getX();
 		double rectY = rect.getY();
@@ -346,6 +411,17 @@ public class Combat {
 		}
 	}
 
+	/**
+	 * displays an input with a header at the top and a message below that
+	 * 
+	 * @param title
+	 *            the header
+	 * @param msg
+	 *            the message to display
+	 * @param field
+	 *            the area these elements will be drawn relative to
+	 * @ca the action that will happen once the user presses "CONFIRM"
+	 */
 	public void getUnits(String title, String msg, Rectangle field, CallAction ca) {
 		final double WIDTH = 300.0;
 		final double HEIGHT = 100.0;
@@ -355,11 +431,11 @@ public class Combat {
 		Rectangle backDrop = new Rectangle(x, y, WIDTH, HEIGHT);
 		Image panelImage = new Image("arts_assests/backDrop_small.png");
 		ImageView panelView = new ImageView(panelImage);
-		panelView.setX(x-30);
-		panelView.setY(y-10);
+		panelView.setX(x - 30);
+		panelView.setY(y - 10);
 		Label message = centeredText(msg, backDrop);
 		message.setLayoutY(message.getLayoutY() + 30);
-		message.setTextFill(Color.rgb(5,5,5));
+		message.setTextFill(Color.rgb(5, 5, 5));
 
 		Label name = centeredText(title, backDrop);
 		name.setTextFill(Color.WHITE);
@@ -378,38 +454,76 @@ public class Combat {
 		submitUnitsBtn.toFront();
 	}
 
+	/**
+	 * returns a label with a message that is centered relative to a field
+	 * 
+	 * @param msg
+	 *            the message to display
+	 * @param field
+	 *            the area this message will be drawn relative to
+	 * 
+	 */
 	public Label centeredText(String msg, Rectangle field) {
 		Label message = new Label(msg);
 		int totalChar = msg.length();
 		final int fontSize = 20;
-		message.setFont(Font.font("Courier New", FontWeight.BOLD,fontSize));
+		message.setFont(Font.font("Courier New", FontWeight.BOLD, fontSize));
 		message.setTextFill(Color.BLACK);
 		message.relocate(field.getX() + (field.getWidth() - (fontSize / 1.7 * totalChar)) / 2, field.getY());
 		return message;
 	}
 
+	/**
+	 * returns a label with a message that is centered relative to a field
+	 * 
+	 * @param msg
+	 *            the message to display
+	 * @param field
+	 *            the area this message will be drawn relative to
+	 * @param size
+	 *            the font size
+	 * 
+	 */
 	public Label centeredText(String msg, Rectangle field, int size) {
 		Label message = new Label(msg);
 		int totalChar = msg.length();
 		int fontSize = size;
-		message.setFont(Font.font("Courier New", FontWeight.BOLD,fontSize));
+		message.setFont(Font.font("Courier New", FontWeight.BOLD, fontSize));
 		message.setTextFill(Color.BLACK);
 		message.relocate(field.getX() + (field.getWidth() - (fontSize / 1.7 * totalChar)) / 2, field.getY());
 		return message;
 	}
 
-
-
+	/**
+	 * acts as a custom action that will do something when the "use" method is
+	 * called the "use" method is meant to be overrided whenever creating a new
+	 * instance of this class
+	 */
 	private class CallAction {
+		/**
+		 * by default will print the amount to console
+		 * 
+		 * @param amount
+		 *            the amount being passed through
+		 */
 		public void use(int amount) {
 			System.out.println(amount);
 		}
 	}
 
+	/**
+	 * acts as a custom event handler that takes an integer if the input is not an
+	 * integer it will change the text to red
+	 */
 	private class inputNumberHandler implements EventHandler<ActionEvent> {
 		TextField input;
 		CallAction call;
 
+		/**
+		 * the constructor that passes through a TextField and a CallAction
+		 * @param in the input that will be used
+		 * @param ca the action that will happen once the input is correct
+		 */
 		public inputNumberHandler(TextField in, CallAction ca) {
 			input = in;
 			call = ca;
@@ -429,7 +543,6 @@ public class Combat {
 		}
 
 	}
-
 
 	// getters and setters
 	/**
