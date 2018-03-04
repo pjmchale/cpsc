@@ -171,7 +171,7 @@ public class MainMenu extends Application {
     /* For when player is attacking */
     if(attacking){
       if(fromCountry == null){
-        if(countryClicked.getOwner() == currentPlayer){
+        if(countryClicked.getOwner() == currentPlayer && countryClicked.getUnits() > 1){
           fromCountry = countryClicked;
           countrySelectionLabel.setText("Please Select Country To Attack");
         }else{
@@ -365,7 +365,6 @@ public class MainMenu extends Application {
    */
   static private void startAttack(Country fromCountry, Country toCountry){
     Combat combat = new Combat(fromCountry, toCountry);
-    System.out.println("hit");
     setPane(combat.getPane(), getMapPane());
     toCountry = null;
     fromCountry = null;
