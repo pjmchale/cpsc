@@ -2,13 +2,7 @@ import java.util.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.text.Font;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -17,11 +11,14 @@ import javafx.event.EventHandler;
 
 
 public class Map {
-// extends Application {
 
 	private ArrayList<Country> countries;
 	private Pane root = new Pane();
 
+	/**
+	 * Used to get the pane
+	 * @return the root pane displaying the maps
+	*/
 	public Pane getPane() {
 		return root;
 	}
@@ -64,30 +61,6 @@ public class Map {
 	 * Contructor used to build the map
 	*/
 	Map(){
-
-		// ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2));
-		// ArrayList<Integer> titleCordinates = new ArrayList<Integer>(Arrays.asList(135,175));
-		// buildMap(1, neighbours, "Canada", titleCordinates);
-
-		// neighbours = new ArrayList<Integer>(Arrays.asList(1,3));
-		// titleCordinates = new ArrayList<Integer>(Arrays.asList(165,240));
-		// buildMap(2, neighbours, "USA", titleCordinates);
-
-		// neighbours = new ArrayList<Integer>(Arrays.asList(2,4));
-		// titleCordinates = new ArrayList<Integer>(Arrays.asList(115,310));
-		// buildMap(3, neighbours, "Mexico", titleCordinates);
-
-		// neighbours = new ArrayList<Integer>(Arrays.asList(3,5,6));
-		// titleCordinates = new ArrayList<Integer>(Arrays.asList(195,350));
-		// buildMap(4, neighbours, "Peru", titleCordinates);
-
-		// neighbours = new ArrayList<Integer>(Arrays.asList(4,6));
-		// titleCordinates = new ArrayList<Integer>(Arrays.asList(305,370));
-		// buildMap(5, neighbours, "Brazil", titleCordinates);
-
-		// neighbours = new ArrayList<Integer>(Arrays.asList(4,5));
-		// titleCordinates = new ArrayList<Integer>(Arrays.asList(190,450));
-		// buildMap(6, neighbours, "Argentina", titleCordinates);
 
 		// North America
 		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2,22));
@@ -217,12 +190,30 @@ public class Map {
 		}
 	}
 
+	/**
+	 * Used to highlight only a country's neighbours
+	 * @param a Country to show its neighbours 
+	*/
 	public void showNeighbours(Country country) {
 		for (Country i:countries){
 			i.setClickable(country.isNeighbour(i));
 		}
 	}
 
+	/**
+	 * Used to reset the highlighted country's
+	*/
+	public void hideNeighbours() {
+		for (Country i:countries){
+			i.setClickable(true);
+		}
+	}
+
+	/**
+	 * Used get a countrys neighbours
+	 * @param a Country to show its neighbours 
+	 * @return an ArrayList of type country of the neighbours
+	*/
 	public ArrayList<Country> getNeighbours(Country country) {
 		ArrayList<Country> output = new ArrayList<Country>();
 		for (Country i:countries){
@@ -235,6 +226,7 @@ public class Map {
 
 
 	/**
+	 * THIS METHOD IS NO LONGER NEEDED IN THE GUI VERSION OF THE GAME
 	 * Used to print the ASCII Map
 	*/
 	public void printMap(){

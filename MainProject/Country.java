@@ -3,39 +3,31 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.text.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import java.util.Map;
 import java.util.*;
 import javafx.scene.*;
-import javafx.scene.paint.*;
-import javafx.scene.canvas.*;
-import javafx.scene.Group; 
 import javafx.scene.effect.ColorAdjust;
 import javafx.beans.binding.Bindings;
-import javafx.scene.effect.*;
-import javafx.scene.image.*;
 
 public class Country {
- // extends Application{
+
 	private String name = "";
 	private int countryID;
 	private Player owner;
 	private int numUnits;
 	private ArrayList<Integer> neighbours;
 	private Pane root;
-	// private Label amountOfUnitsLabel;
-	// private Label ownerLabel;
 	private ImageView imageView;
 	private boolean clickable = true;
 	private infoView popUp;
 	private String ownerName;
 	private int ownerID;
+
 	/**
 	 * Constructor to set the id, neighbours, and name
 	*/
@@ -100,6 +92,12 @@ public class Country {
 		root.getChildren().add(colorView(ownerID, imageView));
 	}
 
+	/**
+	 * Used to get the color of a country imageView
+	 * @param the player number to determine what color to use
+	 * @param the imageView to modify
+	 * @return the modified imageView
+	*/
 	public ImageView colorView(int playerNumber, ImageView iV){
 		double con = 0;
 		double hue = 0;
@@ -161,6 +159,7 @@ public class Country {
 
 		return iV;
 	}
+
 	/**
 	 * Used to get the name of the country
 	 * @return the name
@@ -213,8 +212,6 @@ public class Country {
 		ownerName = player.getName();
 		ownerID = player.getId();
 		colorView(ownerID, imageView);
-		// ownerID = new Player(GameManager.getPlayers()).indexOf(player);
-		// **********
 	}
 
 	/**
@@ -241,10 +238,18 @@ public class Country {
 		return countryID;
 	}
 
+	/**
+	 * Used to get neighbour ID's
+	 * @return the neighbour ID's
+	*/
 	public ArrayList<Integer> getNeighbours(){
 		return neighbours;
 	}
 
+	/**
+	 * Used to set the opactity of a country image
+	 * @param a boolean to set the state
+	*/
 	public void setClickable(boolean state){
 		clickable = state;
 		if (clickable) {
@@ -277,6 +282,7 @@ public class Country {
 
 
 	/**
+	 * THIS METHOD IS NO LONGER NEEDED IN THE GUI VERSION OF THE GAME
 	 * Used to ask user how many units they want to send
 	 * @return int the amount of units that have chosen to send
 	*/
@@ -284,40 +290,11 @@ public class Country {
 		System.out.println("How many units do you want to send? ");
 		Scanner kb = new Scanner(System.in);
 		int input = kb.nextInt();
-		// int input;
-
-		// /* Instructions label */
-		// Label instructionsLabel = new Label("How many units do you want to send?");
-		// instructionsLabel.setFont(Font.font("Courier New", 15));
-		// root.getChildren().add(instructionsLabel);
-
-		// /* Input text field */
-		// TextField amountTextField = new TextField();
-		// root.getChildren().add(amountTextField);
-
-		// /* Submit Button */
-		// Button submitButton = new Button("Submit");
-		// submitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-		// 	@Override
-		//      public void handle(MouseEvent event) {
-		//         // Get text from user and check it and change the label
-		//         input = Integer.parseInt(amountTextField.getText());
-		//      	if (input > numUnits){
-		// 			// System.out.println("Not enough units.");
-		// 			instructionsLabel = new Label("Not enough units.");
-		// 			root.getChildren().add(instructionsLabel);
-
-		// 			input = 0;
-		// 		}
-				return input;
-		//         event.consume();
-		//      }
-		// });
-
-		// root.getChildren().add(submitButton);
+		return input;
 	}
 
 	/**
+	 * THIS METHOD IS NO LONGER NEEDED IN THE GUI VERSION OF THE GAME
 	 * Used to get the countries stats and present them
 	 * @return String of nicely formated information
 	*/
