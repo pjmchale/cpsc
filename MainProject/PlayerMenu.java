@@ -50,7 +50,7 @@ public class PlayerMenu{
 
     /* Enter number of players label */
     Label numPlayerLabel = new Label();
-    numPlayerLabel.setText("Please Enter Number of Human Players (2-4)");
+    numPlayerLabel.setText("Please Enter Number of Human Players (2-6)");
     numPlayerLabel.setFont(new Font("Times New Roman Bold", 18));
     numPlayerLabel.setTextFill(Color.RED);
     numPlayerLabel.layoutXProperty().bind(playerMenu.widthProperty().subtract(numPlayerLabel.widthProperty()).divide(3));
@@ -104,8 +104,8 @@ public class PlayerMenu{
           return;
         }
 
-        if(numPlayers >= 2 && numPlayers <= 3){
-          maxAIPlayers = 4-numPlayers;
+        if(numPlayers >= 2 && numPlayers <= 6){
+          maxAIPlayers = 6-numPlayers;
           numPlayerLabel.setText("Please Enter Number of AI Players (max " + maxAIPlayers + ")");
           playerMenu.getChildren().remove(confirmPlayersButton);
           playerMenu.getChildren().add(confirmAIPlayersButton);

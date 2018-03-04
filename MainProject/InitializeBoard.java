@@ -158,16 +158,25 @@ public class InitializeBoard{
     int userChoice;
     Player players[];
     
+    /* CHANGE THIS */
+    int numCountries = 24;
     switch(MainMenu.getNumPlayers()){
       case 2: 
-        numUnits = 4;
+        //numUnits = 7;
+        numUnits = (numCountries/MainMenu.getNumPlayers()) + 2;
         break;
       case 3: 
-        numUnits = 7;
+        //numUnits = 7;
+        numUnits = (numCountries/MainMenu.getNumPlayers()) + 2;
         break;
       case 4: 
-        numUnits = 5;
+        //numUnits = 5;
+        numUnits = (numCountries/MainMenu.getNumPlayers()) + 2;
         break;
+      case 5:
+        numUnits = (numCountries/MainMenu.getNumPlayers()) + 2;
+      case 6:
+        numUnits = (numCountries/MainMenu.getNumPlayers()) + 2;
       default: 
         numUnits = 5;
 

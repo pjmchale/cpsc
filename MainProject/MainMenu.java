@@ -26,7 +26,7 @@ public class MainMenu extends Application {
   static private Pane currentPane;
   static private Pane nextPane;
   static private Pane root;
-  static private Pane turnPane;
+  static private HBox turnHBox;
   //static public GameManager gameManager;
 
   static private InitializeBoard initializeBoard;
@@ -59,7 +59,8 @@ public class MainMenu extends Application {
   static public void nextPane(){
     setPane(nextPane);
     if(nextPane == getMapPane()){
-      root.getChildren().add(turnPane);
+      getMapPane().toFront();
+      root.getChildren().add(turnHBox);
       turn = true;
       playerTurnLabel.setVisible(true);
     }
@@ -75,7 +76,7 @@ public class MainMenu extends Application {
   static private void setPane(Pane pane){
     root.getChildren().remove(currentPane);
     if(currentPane == getMapPane()){
-      root.getChildren().remove(turnPane);
+      root.getChildren().remove(turnHBox);
     }
     root.getChildren().add(pane);
     currentPane = pane;
@@ -87,7 +88,7 @@ public class MainMenu extends Application {
   static private void setPane(Pane pane, Pane nPane){
     root.getChildren().remove(currentPane);
     if(currentPane == getMapPane()){
-      root.getChildren().remove(turnPane);
+      root.getChildren().remove(turnHBox);
     }
     root.getChildren().add(pane);
     currentPane = pane;
@@ -338,7 +339,7 @@ public class MainMenu extends Application {
     ArrayList<Country> countriesOwned;
     Country country;
 
-    root.getChildren().remove(turnPane);
+    root.getChildren().remove(turnHBox);
     root.getChildren().remove(getMapPane());
     root.getChildren().add(getMapPane());
 
@@ -364,6 +365,7 @@ public class MainMenu extends Application {
    */
   static private void startAttack(Country fromCountry, Country toCountry){
     Combat combat = new Combat(fromCountry, toCountry);
+    System.out.println("hit");
     setPane(combat.getPane(), getMapPane());
     toCountry = null;
     fromCountry = null;
@@ -409,11 +411,13 @@ public class MainMenu extends Application {
     setPane(menuPane);
 
     /* initialize turn pane */
+    /*
     turnPane = new Pane();
     turnPane.setPrefSize(resX, resY);
     turnPane.setLayoutX(0);
     turnPane.setLayoutY(0);
     turnPane.getChildren().add(getMapPane());
+    */
 
     /* PLayer turn label */
     playerTurnLabel = new Label();
@@ -425,9 +429,9 @@ public class MainMenu extends Application {
     playerTurnLabel.setVisible(false);
 
     /* VBox for user selection during turn */
-    HBox selectionHBox = new HBox();
-    selectionHBox.layoutXProperty().bind(turnPane.widthProperty().subtract(selectionHBox.widthProperty()).divide(2));
-    selectionHBox.setLayoutY(30);
+    turnHBox = new HBox();
+    turnHBox.layoutXProperty().bind(root.widthProperty().subtract(turnHBox.widthProperty()).divide(2));
+    turnHBox.setLayoutY(30);
 
     /* Country selection label */
     countrySelectionLabel = new Label("");
@@ -458,7 +462,7 @@ public class MainMenu extends Application {
         fortify = false;
         toCountry = null;
         fromCountry = null;
-        root.getChildren().remove(turnPane);
+        root.getChildren().remove(turnHBox);
         countrySelectionLabel.setText("Please Select Country To Attack From");
         root.getChildren().add(countrySelectionLabel);
         root.getChildren().add(cancelButton);
@@ -476,7 +480,7 @@ public class MainMenu extends Application {
         attacking = false;
         toCountry = null;
         fromCountry = null;
-        root.getChildren().remove(turnPane);
+        root.getChildren().remove(turnHBox);
         countrySelectionLabel.setText("Please Select Country To Move Units From");
         root.getChildren().add(countrySelectionLabel);
         root.getChildren().add(cancelButton);
@@ -550,8 +554,7 @@ public class MainMenu extends Application {
     });
 
     
-    selectionHBox.getChildren().addAll(attackButton, fortifyButton, endTurnButton);
-    turnPane.getChildren().add(selectionHBox);
+    turnHBox.getChildren().addAll(attackButton, fortifyButton, endTurnButton);
 
     /* pane for initialize board units */
     Pane initializeBoardPane = new Pane();
