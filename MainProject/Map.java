@@ -166,7 +166,7 @@ public class Map {
 		buildMap(23, neighbours, "Indonesia", 0, "FREE", 0);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(23,25,26));
-		buildMap(24, neighbours, "Papua New Guinea", 0, "FREE", 0);	
+		buildMap(24, neighbours, "New Guinea", 0, "FREE", 0);	
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(23,24,26));
 		buildMap(25, neighbours, "Western Australia", 0, "FREE", 0);

@@ -86,11 +86,11 @@ public class Country {
 		    @Override
 		    public void handle(MouseEvent event) {
 		    	if (clickable){
-		    		if (popUp != null){
+			        MainMenu.setCountryClicked(Country.this);
+			        if (popUp != null){
 		    			popUp.clear();
 				        popUp = null;
 		    		}
-			        MainMenu.setCountryClicked(Country.this);
 			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);
 			    }
 		        event.consume();
@@ -134,20 +134,20 @@ public class Country {
 				hue = -0.7;
 				sat = 0.5;
 				bri = 0;
-
+			break;
 			case 5:
-				// Color
+				// Brown
 				con = 0;
-				hue = -0.7;
-				sat = 0.5;
-				bri = 0;
-
+				hue = 0.1;
+				sat = 0.8;
+				bri = -0.5;
+			break;
 			case 6:
-				// Color
+				// Magenta
 				con = 0;
-				hue = -0.7;
-				sat = 0.5;
-				bri = 0;
+				hue = -0.3;
+				sat = 0.8;
+				bri = -0.5;
 			break;
 		}
 		
