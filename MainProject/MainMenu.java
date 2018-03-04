@@ -1,3 +1,10 @@
+/**
+ * This is the main function for running the risk game.
+ * it maintains the state of the game and It builds the 
+ * stage and gets panes from other classes to add to the
+ * scene.
+ */
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -70,8 +77,8 @@ public class MainMenu extends Application {
     nextPane = getMapPane();
   }
 
-  /* sets the scene to the input pane
-   * 
+  /**
+   * sets the scene to the input pane
    */
   static private void setPane(Pane pane){
     root.getChildren().remove(currentPane);
@@ -141,6 +148,7 @@ public class MainMenu extends Application {
 
   /**
    * setter for country clicked
+   * @return couuntry
    */
   static public Country getCountryClicked(){
     return countryClicked;
@@ -371,6 +379,9 @@ public class MainMenu extends Application {
     attacking = false;
   }
 
+  /**
+   * Main function builds the stage for the game
+   */
   @Override
   public void start(Stage primaryStage){
     int resX;
@@ -408,15 +419,6 @@ public class MainMenu extends Application {
     menuPane.setLayoutX(0);
     menuPane.setLayoutY(0);
     setPane(menuPane);
-
-    /* initialize turn pane */
-    /*
-    turnPane = new Pane();
-    turnPane.setPrefSize(resX, resY);
-    turnPane.setLayoutX(0);
-    turnPane.setLayoutY(0);
-    turnPane.getChildren().add(getMapPane());
-    */
 
     /* PLayer turn label */
     playerTurnLabel = new Label();
