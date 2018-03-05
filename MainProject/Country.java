@@ -38,12 +38,12 @@ public class Country {
 	 * @param The number of units on the country
 	 * @param The Pane to add the country too
 	*/
-	Country(int id, ArrayList<Integer> newNeighbours, String newName, int newOwnerID, String newOwnerName, int newNumUnits, Pane newRoot){
+	Country(int id, ArrayList<Integer> newNeighbours, String newName, Pane newRoot){
 		root = newRoot;
 		name = newName;
-		numUnits = newNumUnits;
-		ownerName = newOwnerName;
-		ownerID = newOwnerID;
+		numUnits = 0;
+		ownerName = "OPEN";
+		ownerID = 0;
 		countryID = id;
 		neighbours = newNeighbours;
 
