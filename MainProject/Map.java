@@ -205,7 +205,7 @@ public class Map {
 	*/
 	public void showNeighboursOwner(Country country, Player owner) {
 		for (Country i:countries){
-			i.setClickable(country.isNeighbour(i) && country.isOwner(owner));
+			i.setClickable(i.isOwner(owner) && country.isNeighbour(i));
 		}
 	}
 
