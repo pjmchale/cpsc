@@ -1,3 +1,4 @@
+
 import java.lang.Math;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -10,9 +11,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.Duration;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.control.Label;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -155,6 +159,27 @@ public class Combat {
 
 	}
 
+	public void displayTransition(Rectangle backDrop) {
+		Pane transition = new Pane();
+
+		pane.getChildren().add(transition);
+		MyAnimation transitionAnimation = new MyAnimation(transition, false);
+		transitionAnimation.addFrames("battleStarting", 43);
+		transitionAnimation.start();
+		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.5), ae -> {
+			pane.getChildren().remove(MainMenu.getMapPane());
+			displaySelection(backDrop);
+			transition.toFront();
+		}));
+		Timeline clearTransition = new Timeline(new KeyFrame(Duration.seconds(3.7), ae -> {
+			transition.getChildren().clear();
+			pane.getChildren().remove(transition);
+		}));
+		clearTransition.play();
+		timeline.play();
+
+	}
+
 	/**
 	 * intializes the display for the battle
 	 */
@@ -165,8 +190,9 @@ public class Combat {
 		final double paneX = (960 - WIDTH) / 2;
 		final double paneY = (600 - HEIGHT) / 2;
 		Rectangle backDrop = new Rectangle(paneX, paneY, WIDTH, HEIGHT);
-		constantDisplayElements(backDrop);
-		displaySelection(backDrop);
+		pane.getChildren().add(MainMenu.getMapPane());
+		displayTransition(backDrop);
+		// displaySelection(backDrop);
 	}
 
 	public Pane getPane() {
@@ -197,10 +223,14 @@ public class Combat {
 	 *            the area these elements will be drawn onto
 	 */
 	public void displaySelection(Rectangle backDrop) {
+		constantDisplayElements(backDrop);
 		CallAction displayResults = new CallAction() {
 			public void use(int amount) {
 				if (amount <= defendingCountry.getUnits()) {
-					numDefenders = amount;
+					if (amount >= 2)
+						numDefenders = 2;
+					else
+						numDefenders = amount;
 					pane.getChildren().clear();
 					constantDisplayElements(backDrop);
 					startBattle();
@@ -210,7 +240,10 @@ public class Combat {
 		CallAction attackerDone = new CallAction() {
 			public void use(int amount) {
 				if (amount > 0 && amount < attackingCountry.getUnits()) {
-					numAttackers = amount;
+					if (amount >= 3)
+						numAttackers = 3;
+					else
+						numAttackers = amount;
 					pane.getChildren().clear();
 					constantDisplayElements(backDrop);
 					getUnits(defender.getName() + "(" + (defendingCountry.getUnits()) + ")", " how many units(DEFEND)",
@@ -255,31 +288,39 @@ public class Combat {
 	 */
 	public void displayBattle(int[] atkDice, int[] defDice) {
 		double alignY = 100.0;
-		int minimumDice = Math.min(atkDice.length, defDice.length);
+		int maxDice = Math.max(atkDice.length, defDice.length);
+		int minDice = Math.min(atkDice.length, defDice.length);
 		Rectangle box = new Rectangle(300, 400);
 		double divider = box.getHeight() / 4;
 		displayResultBox(100, alignY, true, attacker.getName(), Color.RED);
 		displayResultBox(560, alignY, false, defender.getName(), Color.BLUE);
-		for (int i = 0; i < minimumDice; i++) {
-			MyAnimation cross = new MyAnimation(pane, false);
-			cross.addFrames("cross", 13, 29);
-			Label atkLabel = centeredText(atkDice[i] + "", box, 50);
-			double spacing = alignY + divider * (i + 1) + 15;
-			double atkX = atkLabel.getLayoutX() + 100;
-			atkLabel.setLayoutY(spacing);
-			atkLabel.setLayoutX(atkX);
-			Label defLabel = centeredText(defDice[i] + "", box, 50);
-			defLabel.setLayoutY(spacing);
-			double defX = defLabel.getLayoutX() + 560;
-			defLabel.setLayoutX(defX);
-			pane.getChildren().addAll(defLabel, atkLabel);
 
-			if (attackerWin(atkDice[i], defDice[i])) {
-				cross.setMiddleCoord(710, spacing + 25);
-			} else {
-				cross.setMiddleCoord(250, spacing + 25);
+		for (int i = 0; i < maxDice; i++) {
+			double spacing = alignY + divider * (i + 1) + 15;
+			if (i < atkDice.length) {
+				Label atkLabel = centeredText(atkDice[i] + "", box, 50);
+				double atkX = atkLabel.getLayoutX() + 100;
+				atkLabel.setLayoutY(spacing);
+				atkLabel.setLayoutX(atkX);
+				pane.getChildren().add(atkLabel);
 			}
-			cross.start();
+			if (i < defDice.length) {
+				Label defLabel = centeredText(defDice[i] + "", box, 50);
+				defLabel.setLayoutY(spacing);
+				double defX = defLabel.getLayoutX() + 560;
+				defLabel.setLayoutX(defX);
+				pane.getChildren().add(defLabel);
+			}
+			if (i < minDice) {
+				MyAnimation cross = new MyAnimation(pane, false);
+				cross.addFrames("cross", 13, 29);
+				if (attackerWin(atkDice[i], defDice[i])) {
+					cross.setMiddleCoord(710, spacing + 25);
+				} else {
+					cross.setMiddleCoord(250, spacing + 25);
+				}
+				cross.start();
+			}
 		}
 		Button nextBtn = new Button();
 		Image image = new Image("arts_assests/btn_next.png");
@@ -521,8 +562,11 @@ public class Combat {
 
 		/**
 		 * the constructor that passes through a TextField and a CallAction
-		 * @param in the input that will be used
-		 * @param ca the action that will happen once the input is correct
+		 * 
+		 * @param in
+		 *            the input that will be used
+		 * @param ca
+		 *            the action that will happen once the input is correct
 		 */
 		public inputNumberHandler(TextField in, CallAction ca) {
 			input = in;

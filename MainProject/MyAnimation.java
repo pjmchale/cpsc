@@ -51,12 +51,12 @@ public class MyAnimation extends AnimationTimer {
 	 * @param numFrames the number of frames in that animation
 	 */
 	public void addFrames(String name, int numFrames) {
-		for (int i = 0; i < numFrames; i++) {
+		for (int i = 1; i <= numFrames; i++) {
 			String imagePath = "AnimatingImages/"+name +"_";
 			if(i < 10) imagePath += "000";
 			else if(i < 100) imagePath += "00";
 			else if(i < 1000) imagePath += "0";
-			imagePath += i+1+".png";;
+			imagePath += i+".png";;
 			frames.add(new Image(imagePath));
 		}
 		frameImage.setImage(frames.get(0));
@@ -71,12 +71,12 @@ public class MyAnimation extends AnimationTimer {
 	 * @param end the last frame of the animation
 	 */
 	public void addFrames(String name, int start, int end) {
-		for (int i = start; i < end; i++) {
+		for (int i = start; i <= end; i++) {
 			String imagePath = "AnimatingImages/"+name +"_";
 			if(i < 10) imagePath += "000";
 			else if(i < 100) imagePath += "00";
 			else if(i < 1000) imagePath += "0";
-			imagePath += i+1+".png";;
+			imagePath += i+".png";;
 			frames.add(new Image(imagePath));
 		}
 		frameImage.setImage(frames.get(0));
