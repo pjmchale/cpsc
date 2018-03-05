@@ -64,88 +64,88 @@ public class Map {
 
 		// North America
 		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2,22));
-		buildMap(1, neighbours, "Alaska", 0, "FREE", 0);
+		buildMap(1, neighbours, "Alaska");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(1,3,4));
-		buildMap(2, neighbours, "Canada", 0, "FREE", 0);
+		buildMap(2, neighbours, "Canada");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(2,9));
-		buildMap(3, neighbours, "Green Land", 0, "FREE", 0);
+		buildMap(3, neighbours, "Green Land");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(2,5));
-		buildMap(4, neighbours, "USA", 0, "FREE", 0);
+		buildMap(4, neighbours, "USA");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(4,6));
-		buildMap(5, neighbours, "Mexico", 0, "FREE", 0);
+		buildMap(5, neighbours, "Mexico");
 		
 		// South America
 		neighbours = new ArrayList<Integer>(Arrays.asList(5,7,8));
-		buildMap(6, neighbours, "Peru", 0, "FREE", 0);
+		buildMap(6, neighbours, "Peru");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(6,8,13));
-		buildMap(7, neighbours, "Brazil", 0, "FREE", 0);
+		buildMap(7, neighbours, "Brazil");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(6,7));
-		buildMap(8, neighbours, "Argentina", 0, "FREE", 0);
+		buildMap(8, neighbours, "Argentina");
 
 		// Europe
 		neighbours = new ArrayList<Integer>(Arrays.asList(3,10));
-		buildMap(9, neighbours, "Iceland", 0, "FREE", 0);
+		buildMap(9, neighbours, "Iceland");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(9,11,12));
-		buildMap(10, neighbours, "Scandinavia", 0, "FREE", 0);
+		buildMap(10, neighbours, "Scandinavia");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(10,12,13,16));
-		buildMap(11, neighbours, "Western Europe", 0, "FREE", 0);
+		buildMap(11, neighbours, "Western Europe");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(10,11,16,17));
-		buildMap(12, neighbours, "Eastern Europe", 0, "FREE", 0);
+		buildMap(12, neighbours, "Eastern Europe");
 
 		// Africa
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,14,16));
-		buildMap(13, neighbours, "North Africa", 0, "FREE", 0);
+		buildMap(13, neighbours, "North Africa");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(13,15,16));
-		buildMap(14, neighbours, "Central Africa", 0, "FREE", 0);
+		buildMap(14, neighbours, "Central Africa");
 		
 		neighbours = new ArrayList<Integer>(Arrays.asList(14));
-		buildMap(15, neighbours, "South Africa", 0, "FREE", 0);
+		buildMap(15, neighbours, "South Africa");
 			
 
 		// Asia
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,12,13,14,17,18,19));
-		buildMap(16, neighbours, "Middle East", 0, "FREE", 0);
+		buildMap(16, neighbours, "Middle East");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(12,16,18,19));
-		buildMap(17, neighbours, "Urul", 0, "FREE", 0);
+		buildMap(17, neighbours, "Urul");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(17,19,20,21));
-		buildMap(18, neighbours, "Siberia", 0, "FREE", 0);
+		buildMap(18, neighbours, "Siberia");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(16,17,18,20));
-		buildMap(19, neighbours, "China", 0, "FREE", 0);
+		buildMap(19, neighbours, "China");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(18,19,21,22));
-		buildMap(20, neighbours, "Mongolia", 0, "FREE", 0);
+		buildMap(20, neighbours, "Mongolia");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(18,20,22));
-		buildMap(21, neighbours, "Yakutsk", 0, "FREE", 0);
+		buildMap(21, neighbours, "Yakutsk");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(1,20,21));
-		buildMap(22, neighbours, "Kamchatka", 0, "FREE", 0);
+		buildMap(22, neighbours, "Kamchatka");
 
 		// Oceania 
 		neighbours = new ArrayList<Integer>(Arrays.asList(19,24,25));
-		buildMap(23, neighbours, "Indonesia", 0, "FREE", 0);
+		buildMap(23, neighbours, "Indonesia");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(23,25,26));
-		buildMap(24, neighbours, "New Guinea", 0, "FREE", 0);	
+		buildMap(24, neighbours, "New Guinea");	
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(23,24,26));
-		buildMap(25, neighbours, "Western Australia", 0, "FREE", 0);
+		buildMap(25, neighbours, "Western Australia");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(24,25));
-		buildMap(26, neighbours, "Eastern Australia", 0, "FREE", 0);		
+		buildMap(26, neighbours, "Eastern Australia");		
 
 		// Add the connections
 		String imagePathConnections = "mapAssets/Connections.png";
@@ -180,11 +180,10 @@ public class Map {
 	 * @param an ArrayList of type Interger, with the id's of neighbouring countries
 	 * @param a String to be the name of the country
 	*/
-	private void buildMap(int id, ArrayList<Integer> neighbours, String name, int ownerID, String ownerName, int numUnits) {
-		Country country = new Country(id, neighbours, name, ownerID, ownerName, numUnits, root);
+	private void buildMap(int id, ArrayList<Integer> neighbours, String name) {
+		Country country = new Country(id, neighbours, name, root);
 		if (countries == null){
-			countries = new ArrayList<Country>(Arrays.asList(country));
-			
+			countries = new ArrayList<Country>(Arrays.asList(country));		
 		} else {
 			countries.add(country);
 		}
@@ -197,6 +196,16 @@ public class Map {
 	public void showNeighbours(Country country) {
 		for (Country i:countries){
 			i.setClickable(country.isNeighbour(i));
+		}
+	}
+
+	/**
+	 * Used to highlight only a country's neighbours
+	 * @param a Country to show its neighbours 
+	*/
+	public void showNeighboursOwner(Country country, Player owner) {
+		for (Country i:countries){
+			i.setClickable(i.isOwner(owner) && country.isNeighbour(i));
 		}
 	}
 

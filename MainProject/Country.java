@@ -38,12 +38,12 @@ public class Country {
 	 * @param The number of units on the country
 	 * @param The Pane to add the country too
 	*/
-	Country(int id, ArrayList<Integer> newNeighbours, String newName, int newOwnerID, String newOwnerName, int newNumUnits, Pane newRoot){
+	Country(int id, ArrayList<Integer> newNeighbours, String newName, Pane newRoot){
 		root = newRoot;
 		name = newName;
-		numUnits = newNumUnits;
-		ownerName = newOwnerName;
-		ownerID = newOwnerID;
+		numUnits = 0;
+		ownerName = "OPEN";
+		ownerID = 0;
 		countryID = id;
 		neighbours = newNeighbours;
 
@@ -61,10 +61,7 @@ public class Country {
 			@Override
 		     public void handle(MouseEvent event) {
 		     	if (clickable){
-		     		if (popUp != null){
-				        popUp.clear();
-				        popUp = null;
-				    }
+		     		clearInfoView();
 			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);    
 			    }
 			    event.consume();
@@ -73,12 +70,7 @@ public class Country {
 		imageView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
 			@Override
 		     public void handle(MouseEvent event) {
-		     	if (clickable){
-		     		if (popUp != null){
-				        popUp.clear();
-				        popUp = null;
-				    }
-			    }
+		     	clearInfoView();
 			    event.consume();
 		     }
 		});
@@ -87,10 +79,7 @@ public class Country {
 		    public void handle(MouseEvent event) {
 		    	if (clickable){
 			        MainMenu.setCountryClicked(Country.this);
-			        if (popUp != null){
-		    			popUp.clear();
-				        popUp = null;
-		    		}
+			        clearInfoView();
 			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);
 			    }
 		        event.consume();
@@ -169,6 +158,16 @@ public class Country {
 	}
 
 	/**
+	 * Used to clear in info pop up view
+	*/
+	public void clearInfoView() {
+ 		if (popUp != null){
+	        popUp.clear();
+	        popUp = null;
+	    }
+	}
+
+	/**
 	 * Used to get the name of the country
 	 * @return the name
 	*/
@@ -219,6 +218,7 @@ public class Country {
 		owner = player;
 		ownerName = player.getName();
 		ownerID = player.getId();
+		player.gainCountry(this);
 		colorView(ownerID, imageView);
 	}
 

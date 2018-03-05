@@ -30,6 +30,8 @@ import java.util.*;
 
 
 public class MainMenu extends Application { 
+  static private boolean autoSetUpGame = false;
+
   static private Pane currentPane;
   static private Pane nextPane;
   static private Pane root;
@@ -53,12 +55,12 @@ public class MainMenu extends Application {
   static private Country fromCountry;
   static private int turnIndex;
   static private Player firstTurn;
-  static int firstTurnIndex;
-  static boolean distributeUnits = false;
-  static boolean attacking = false;
-  static boolean fortify = false;
-  static boolean placeUnits = false;
-  static boolean turn = false;
+  static private int firstTurnIndex;
+  static private boolean distributeUnits = false;
+  static private boolean attacking = false;
+  static private boolean fortify = false;
+  static private boolean placeUnits = false;
+  static private boolean turn = false;
 
   /**
    * moves the scene to the next pane
@@ -148,7 +150,7 @@ public class MainMenu extends Application {
 
   /**
    * setter for country clicked
-   * @return couuntry
+   * @return country
    */
   static public Country getCountryClicked(){
     return countryClicked;
@@ -181,6 +183,7 @@ public class MainMenu extends Application {
       if(fromCountry == null){
         if(countryClicked.getOwner() == currentPlayer && countryClicked.getUnits() > 1){
           fromCountry = countryClicked;
+          getMap().showNeighbours(countryClicked);
           countrySelectionLabel.setText("Please Select Country To Attack");
         }else{
           return;
@@ -188,6 +191,7 @@ public class MainMenu extends Application {
       }else{
         if(countryClicked.getOwner() != currentPlayer && countryClicked.isNeighbour(fromCountry)){
           toCountry = countryClicked;
+          getMap().hideNeighbours();
           root.getChildren().remove(getMapPane());
           root.getChildren().remove(countrySelectionLabel);
           root.getChildren().remove(cancelButton);
@@ -203,6 +207,7 @@ public class MainMenu extends Application {
       if(fromCountry == null){
         if(countryClicked.getOwner() == currentPlayer){
           fromCountry = countryClicked;
+          getMap().showNeighboursOwner(countryClicked, currentPlayer);
           countrySelectionLabel.setText("Please Select Country To Move Units To");
         }else{
           return;
@@ -210,6 +215,7 @@ public class MainMenu extends Application {
       }else if(toCountry == null)
         if(countryClicked.getOwner() == currentPlayer && countryClicked.isNeighbour(fromCountry)){
           toCountry = countryClicked;
+          getMap().hideNeighbours();
           countrySelectionLabel.setText("How Many Units Would You Like To Move? (" + (fromCountry.getUnits()-1) + " available)");
           root.getChildren().add(numUnitsTextField);
           root.getChildren().add(confirmButton);
@@ -265,13 +271,16 @@ public class MainMenu extends Application {
     ArrayList<Country> allCountries = map.getCountries();
 
     for(int i=0; i < players.length ; i++){
-      if(players[i].getCountriesOwned().size() == allCountries.size()){
+      System.out.println(players[i].getName() + ":" + players[i].getCountriesOwned().size() + "/" + allCountries.size());
+      if(players[i].getCountriesOwned().size() >= allCountries.size()){
         root.getChildren().clear();
         //root.getChildren().add(ivBackground);
         Label winnerLabel = new Label();
+        winnerLabel.setFont(new Font("Times New Roman Bold", 45));
+        winnerLabel.setTextFill(Color.RED);
         winnerLabel.setText("Congratulations " + players[i].getName() + " You Won The Game!");
+        winnerLabel.layoutXProperty().bind(root.widthProperty().subtract(winnerLabel.widthProperty()).divide(2));
         winnerLabel.layoutYProperty().bind(root.heightProperty().divide(2));
-        winnerLabel.layoutXProperty().bind(root.widthProperty().divide(2));
         root.getChildren().add(winnerLabel);
         return true;
       }
@@ -545,6 +554,7 @@ public class MainMenu extends Application {
         fortify = false;
         toCountry = null;
         fromCountry = null;
+        getMap().hideNeighbours();
         root.getChildren().remove(cancelButton);
         root.getChildren().remove(confirmButton);
         root.getChildren().remove(numUnitsTextField);
@@ -589,6 +599,10 @@ public class MainMenu extends Application {
     startGame.setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
+          if(autoSetUpGame){
+            autoSetup();
+            return;
+          }
           PlayerMenu playerMenu = new PlayerMenu();
           Pane playerPane = playerMenu.getPane();
           initializeBoard = new InitializeBoard();
@@ -610,6 +624,34 @@ public class MainMenu extends Application {
 
     
 
+  }
+
+  /**
+   * automatically sets up the game so that one player owns majority
+   * used for testing
+   */
+  static private void autoSetup(){
+    String[] names = new String[2];
+    names[0] = "Alice";
+    names[1] = "Bob";
+    initializePlayers(2,0, names);
+    initializeTurn();
+
+    ArrayList<Country> countries;
+    countries = MainMenu.getMap().getCountries();
+    for(int i=0; i < countries.size()-1;i++){
+      currentPlayer.setAvailableUnits(5);
+      countries.get(i).setOwner(currentPlayer);
+      currentPlayer.placeUnits(countries.get(i), 5);
+    }
+
+    nextTurn();
+    turn = true;
+    countries.get(countries.size()-1).setOwner(currentPlayer);
+    currentPlayer.setAvailableUnits(5);
+    currentPlayer.placeUnits(countries.get(countries.size()-1), 5);
+    nextPane = getMapPane();
+    nextPane();
   }
 }
 

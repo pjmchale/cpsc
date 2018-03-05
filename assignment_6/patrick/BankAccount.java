@@ -1,11 +1,10 @@
 /**
- * Simulates a bank account with overdraft
+ * Simulates a bank account.
  * Allows withdraws and deposits
  */
 public class BankAccount{
 
     private double balance;
-    //private double overdraftAmount = 100.0;
     private Customer accountHolder;
 
     /**
@@ -83,6 +82,7 @@ public class BankAccount{
 
     /**
      * set the balance for the account
+     * @param inBalance balance to set account to
      */
     protected void setBalance(double inBalance){
       balance = inBalance;
@@ -90,22 +90,17 @@ public class BankAccount{
 
     /**
      * Transfers money from this account to another
+     * @param amount amount to transfer
+     * @param toAccount Account to send money too
      */
     public void transfer(double amount, BankAccount toAccount){
-      withdraw(amount);
-      toAccount.deposit(amount);
+      if(amount < 0){
+        System.out.println("Cannot transfer a negative amount");
+      }else if((balance - amount) >= 0.0){
+        withdraw(amount);
+        toAccount.deposit(amount);
+      }
     }
-
-
-    /*
-     * Sets the overdraftAmount
-     * @param value is the maximum overdraftAmount
-     *
-    public void setOverdraftAmount(double value){
-        overdraftAmount = value;
-    }
-    */
-
 
 }
 
