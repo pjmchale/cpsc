@@ -61,10 +61,7 @@ public class Country {
 			@Override
 		     public void handle(MouseEvent event) {
 		     	if (clickable){
-		     		if (popUp != null){
-				        popUp.clear();
-				        popUp = null;
-				    }
+		     		clearInfoView();
 			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);    
 			    }
 			    event.consume();
@@ -73,12 +70,7 @@ public class Country {
 		imageView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
 			@Override
 		     public void handle(MouseEvent event) {
-		     	if (clickable){
-		     		if (popUp != null){
-				        popUp.clear();
-				        popUp = null;
-				    }
-			    }
+		     	clearInfoView();
 			    event.consume();
 		     }
 		});
@@ -87,10 +79,7 @@ public class Country {
 		    public void handle(MouseEvent event) {
 		    	if (clickable){
 			        MainMenu.setCountryClicked(Country.this);
-			        if (popUp != null){
-		    			popUp.clear();
-				        popUp = null;
-		    		}
+			        clearInfoView();
 			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);
 			    }
 		        event.consume();
@@ -166,6 +155,13 @@ public class Country {
 		iV.setEffect(colorAdjust);
 
 		return iV;
+	}
+
+	public void clearInfoView() {
+ 		if (popUp != null){
+	        popUp.clear();
+	        popUp = null;
+	    }
 	}
 
 	/**
