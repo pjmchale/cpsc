@@ -36,16 +36,18 @@ public class ChequingAccount extends BankAccount{
 
 		double bal = getBalance();
 		// bal += amount;
-
+		double balAndOverdraftAmount = bal + overdraftAmount;
 		if (amount < 0) {
             System.out.println("Cannot withdraw a negative amount");
-        } else 
-        if ((bal + overdraftAmount) >= amount) {
-            bal -= amount;
-            bal -= overdraftFee;
+        } else if (balAndOverdraftAmount >= amount && amount > bal) {
+            bal = bal - amount;
+            bal = bal - overdraftFee;
+        }  else if (balAndOverdraftAmount < amount) {
+        	System.out.println("No U");
+            // bal -= amount;
+            // bal -= overdraftFee;
         } else {
-        	bal -= amount;
-          // System.out.println("Overdraft Fee!!");
+        	bal = bal - amount;
         }
 
         setBalance(bal);
