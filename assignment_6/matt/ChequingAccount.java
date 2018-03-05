@@ -32,6 +32,15 @@ public class ChequingAccount extends BankAccount{
 	}
 
 	@Override
+	public void transfer(double amount, BankAccount toAccount) {
+        double bal = getBalance();
+        if (bal+overdraftFee >= 0){
+            withdraw(amount);
+            toAccount.deposit(amount);
+        }    
+    }
+
+	@Override
 	public void withdraw(double amount) {
 
 		double bal = getBalance();
