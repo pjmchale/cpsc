@@ -1,12 +1,26 @@
-
+/**
+ * This chequing account class extends bank account.
+ * it controls overdraft limits and fees and overrides
+ * withdraw and transfer functions
+ */
 public class ChequingAccount extends BankAccount{
   double overdraftFee;
   double overdraftAmount = 100.00;
 
+  /**
+   * Constructor
+   * @param transactionFee sets the overdraft fee for the account
+   */
   ChequingAccount(double transactionFee){
     overdraftFee = transactionFee;
   }
 
+  /**
+   * Constructor for setting customer, start balance and overdraft fee
+   * @param inAccountHolder customer to set account to
+   * @param startBalance initial balance for the account
+   * @param transactionFee overdraft fee for the account
+   */
   ChequingAccount(Customer inAccountHolder, double startBalance, double transactionFee){
     setBalance(startBalance);
     setCustomer(inAccountHolder);
@@ -22,6 +36,7 @@ public class ChequingAccount extends BankAccount{
 
   /**
    * set the overdraft fee
+   * @param inFee input overdraft fee
    */
   public void setOverdraftFee(double inFee){
     overdraftFee = inFee;
@@ -36,6 +51,7 @@ public class ChequingAccount extends BankAccount{
 
   /**
    * sets the overdraft amount
+   * @param inAmount overdraft amount for account
    */
   public void setOverdraftAmount(double inAmount){
     overdraftAmount = inAmount;
@@ -47,7 +63,6 @@ public class ChequingAccount extends BankAccount{
    */
   @Override
   public void withdraw(double amount){
-    System.out.println("Amount = " + (amount - getBalance()));
     if (amount < 0) {
       System.out.println("Cannot withdraw a negative amount");
     }
@@ -58,6 +73,19 @@ public class ChequingAccount extends BankAccount{
       }
     } else{
       System.out.println("Not enough money in account");
+    }
+  }
+
+  /**
+   * Transfers money from this account to another
+   * @param amount amount to transfer
+   * @param toAccount Account to send money too
+   */
+  @Override
+  public void transfer(double amount, BankAccount toAccount){
+    if((amount - getBalance()) <= overdraftAmount){
+      withdraw(amount);
+      toAccount.deposit(amount);
     }
   }
 }
