@@ -218,6 +218,7 @@ public class Country {
 		owner = player;
 		ownerName = player.getName();
 		ownerID = player.getId();
+		player.gainCountry(this);
 		colorView(ownerID, imageView);
 	}
 
