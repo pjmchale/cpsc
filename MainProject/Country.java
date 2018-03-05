@@ -157,6 +157,9 @@ public class Country {
 		return iV;
 	}
 
+	/**
+	 * Used to clear in info pop up view
+	*/
 	public void clearInfoView() {
  		if (popUp != null){
 	        popUp.clear();
