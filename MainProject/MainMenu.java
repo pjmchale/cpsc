@@ -30,6 +30,8 @@ import java.util.*;
 
 
 public class MainMenu extends Application { 
+  static private boolean autoSetUpGame = false;
+
   static private Pane currentPane;
   static private Pane nextPane;
   static private Pane root;
@@ -53,12 +55,12 @@ public class MainMenu extends Application {
   static private Country fromCountry;
   static private int turnIndex;
   static private Player firstTurn;
-  static int firstTurnIndex;
-  static boolean distributeUnits = false;
-  static boolean attacking = false;
-  static boolean fortify = false;
-  static boolean placeUnits = false;
-  static boolean turn = false;
+  static private int firstTurnIndex;
+  static private boolean distributeUnits = false;
+  static private boolean attacking = false;
+  static private boolean fortify = false;
+  static private boolean placeUnits = false;
+  static private boolean turn = false;
 
   /**
    * moves the scene to the next pane
@@ -589,6 +591,10 @@ public class MainMenu extends Application {
     startGame.setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
+          if(autoSetUpGame){
+            autoSetup();
+            return;
+          }
           PlayerMenu playerMenu = new PlayerMenu();
           Pane playerPane = playerMenu.getPane();
           initializeBoard = new InitializeBoard();
@@ -610,6 +616,34 @@ public class MainMenu extends Application {
 
     
 
+  }
+
+  /**
+   * automatically sets up the game so that one player owns majority
+   * used for testing
+   */
+  static private void autoSetup(){
+    String[] names = new String[2];
+    names[0] = "Alice";
+    names[1] = "Bob";
+    initializePlayers(2,0, names);
+    initializeTurn();
+
+    ArrayList<Country> countries;
+    countries = MainMenu.getMap().getCountries();
+    for(int i=0; i < countries.size()-1;i++){
+      currentPlayer.setAvailableUnits(5);
+      countries.get(i).setOwner(currentPlayer);
+      currentPlayer.placeUnits(countries.get(i), 5);
+    }
+
+    nextTurn();
+    turn = true;
+    countries.get(countries.size()-1).setOwner(currentPlayer);
+    currentPlayer.setAvailableUnits(5);
+    currentPlayer.placeUnits(countries.get(countries.size()-1), 5);
+    nextPane = getMapPane();
+    nextPane();
   }
 }
 
