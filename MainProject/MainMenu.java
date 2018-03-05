@@ -298,6 +298,7 @@ public class MainMenu extends Application {
     for(int i=0; i < numHuman; i++){
       players[i] = new Player(names[i]);
     }
+    getMap().showLegend();
     //for(; i < numPlayers; i++){
     //  players[i] = new AIPlayer();
     //}
