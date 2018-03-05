@@ -61,23 +61,11 @@ public class BankAccount{
     /**
      * withdraws the requested amount from the balance without exceeding the overdraftAmount
      * @param amount is the desired withdraw amount
-     */
+    */
     public void withdraw(double amount){
         if (balance-amount >= 0){
             balance -= amount;
-           // return true;
         } 
-        // else {
-        //     return false;
-        // }
-        // if (amount < 0) {
-        //     System.out.println("Cannot withdraw a negative amount");
-        // }
-        // else if ((amount - balance) <= overdraftAmount){
-        //     balance -= amount;
-        // } else{
-        //   System.out.println("Not enough money in account");
-        // }
     }
 
     /**
@@ -97,7 +85,11 @@ public class BankAccount{
     //     overdraftAmount = value;
     // }
 
-
+    /**
+     * Will transfer from one account to another
+     * @param value to transfer
+     * @param the account to transfer to
+    */
     public void transfer(double amount, BankAccount toAccount) {
         if (balance-amount >= 0){
             withdraw(amount);
@@ -106,6 +98,10 @@ public class BankAccount{
         
     }
 
+    /**
+     * Will transfer from one account to another
+     * @param Amount to set balance to
+    */
     protected void setBalance(double amount) {
         balance = amount;
     }
