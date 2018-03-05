@@ -25,6 +25,16 @@ public class infoView {
 	private Circle colorIcon;
 	private Pane root;
 
+	/**
+	 * Contructor used to build a infoView
+	 * @param The x position for the view
+	 * @param The y position for the view
+	 * @param The owners name
+	 * @param The number of units on the country
+	 * @param The country's name
+	 * @param The owners ID number
+	 * @param The Pane to add the infoView too
+	*/
 	infoView(double corX, double corY, String ownerName, int units, String countryName, int ownerId, Pane mainRoot) {
 		root = mainRoot;
 
@@ -46,6 +56,8 @@ public class infoView {
 		amountOfUnitsLabel.setLayoutX(amountOfUnitsLabelcorX);
 		amountOfUnitsLabel.setLayoutY(amountOfUnitsLabelcorY);
 
+		// THE PLAN IS TO MAKE THE WIDTH DYNAMIC SO THAT IT IS ONLY AS BIG AS IT NEEDS TO BE.
+		// FOR NOW IT IS SET TO 140
 		// int titleWidth = 100;
 		// int ownerWidth = 30;
 		// int amountOfUnitsLabelWidth = 30;
@@ -84,6 +96,12 @@ public class infoView {
 		root.getChildren().add(colorIcon);
 	}
 
+	/**
+	 * Used to get the countries
+	 * @param The player ID number to get the color
+	 * @param The circle to change the color of
+	 * @return The modified circle
+	*/
 	public Circle iconBackgroundColor(int playerNumber, Circle circle) {
 		int R = 0;
 		int G = 0;
@@ -132,6 +150,7 @@ public class infoView {
 				G = 255;
 				B = 255;
 		}
+
 		double alphaValue = 1.0;
 
 		circle.setFill(Color.rgb(R, G, B, alphaValue));
@@ -139,6 +158,9 @@ public class infoView {
 		return circle;
 	}
 
+	/**
+	 * Used to remove the infoView
+	*/
 	public void clear() {
 		root.getChildren().remove(colorIcon);
 		root.getChildren().remove(background);

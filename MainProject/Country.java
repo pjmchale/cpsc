@@ -29,7 +29,14 @@ public class Country {
 	private int ownerID;
 
 	/**
-	 * Constructor to set the id, neighbours, and name
+	 * Constructor to add the country image to the view, set the id, neighbours, name, ownerID, ownerName, amount of units, and pane
+	 * @param The country ID
+	 * @param The countrys neighbours
+	 * @param The country's name
+	 * @param The owners ID number
+	 * @param The owners name
+	 * @param The number of units on the country
+	 * @param The Pane to add the country too
 	*/
 	Country(int id, ArrayList<Integer> newNeighbours, String newName, int newOwnerID, String newOwnerName, int newNumUnits, Pane newRoot){
 		root = newRoot;
@@ -49,6 +56,7 @@ public class Country {
 		imageView.setSmooth(true);
 		imageView.setLayoutX(0);
 		imageView.setLayoutY(0);
+		// Based on hover of click create or remove the infoView
 		imageView.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 			@Override
 		     public void handle(MouseEvent event) {
