@@ -30,7 +30,7 @@ import java.util.*;
 
 
 public class MainMenu extends Application { 
-  static private boolean autoSetUpGame = true;
+  static private boolean autoSetUpGame = false;
 
   static private Pane currentPane;
   static private Pane nextPane;
