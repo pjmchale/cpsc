@@ -30,7 +30,7 @@ import java.util.*;
 
 
 public class MainMenu extends Application { 
-  static private boolean autoSetUpGame = false;
+  static private boolean autoSetUpGame = true;
 
   static private Pane currentPane;
   static private Pane nextPane;
@@ -45,6 +45,7 @@ public class MainMenu extends Application {
   static private Button cancelButton;
   static private Button confirmButton;
   static private TextField numUnitsTextField;
+  static private ImageView ivBackground;
 
   static private int numPlayers;
   static private Player[] players;
@@ -274,7 +275,7 @@ public class MainMenu extends Application {
       System.out.println(players[i].getName() + ":" + players[i].getCountriesOwned().size() + "/" + allCountries.size());
       if(players[i].getCountriesOwned().size() >= allCountries.size()){
         root.getChildren().clear();
-        //root.getChildren().add(ivBackground);
+        root.getChildren().add(ivBackground);
         Label winnerLabel = new Label();
         winnerLabel.setFont(new Font("Times New Roman Bold", 45));
         winnerLabel.setTextFill(Color.RED);
@@ -415,7 +416,7 @@ public class MainMenu extends Application {
 
     /* Set the background image for the game */
     Image backgroundImage = new Image("BlueRadialGradient.jpg");
-    ImageView ivBackground = new ImageView();
+    ivBackground = new ImageView();
     ivBackground.setImage(backgroundImage);
     ivBackground.setFitWidth(resX);
     ivBackground.setPreserveRatio(true);
