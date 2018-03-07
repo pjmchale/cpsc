@@ -48,13 +48,14 @@ public class Player{
 
     public void setAvailableUnits(int units) {
         availableUnits = units;
-//        totalUnits += units;
+        totalUnits += units;
     }
 
     public int getAvailableUnits() {
         return availableUnits;
     }
 
+    public void loseUnits(int units){totalUnits -= units;}
 
     /**
      * Methods to gain and lose a country
