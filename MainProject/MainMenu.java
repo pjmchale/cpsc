@@ -30,7 +30,7 @@ import java.util.*;
 
 
 public class MainMenu extends Application { 
-  static private boolean autoSetUpGame = false;
+  static private boolean autoSetUpGame = true;
 
   static private Pane currentPane;
   static private Pane nextPane;
@@ -158,18 +158,25 @@ public class MainMenu extends Application {
   }
 
   /**
-   * Determines what to do with country click based off game state
+   * Determines what to do with country click based off 4 possible game states:
+   *  Distributing Units: Inital distribution of units at beginning of game
+   *  Attacking: Current player attacking from owned country to other players country
+   *  Fortifying: Move units from owned country to another owned country (also ends turn)
+   *  Placing Units: At beginning of each turn player gets to place new units onto board
+   * 
    */
   static public void processCountryClick(){
 
     /* Distributing units phase, set country owner */
     if(distributeUnits){
+      // if Country is not owned, set owner and place unit on country
       if(countryClicked.getOwner() == null){
         countryClicked.setOwner(currentPlayer);
         currentPlayer.placeUnits(countryClicked, 1);
         distributeUnits = false;
         nextTurn();
         return;
+      // if all countries owned just place a unit
       }else if(allCountriesOwned()){
         if(countryClicked.getOwner() == currentPlayer){
           currentPlayer.placeUnits(countryClicked, 1);
@@ -181,6 +188,7 @@ public class MainMenu extends Application {
 
     /* For when player is attacking */
     if(attacking){
+      // if country they area attacking from is not set, ensure they own the country and their is enough units
       if(fromCountry == null){
         if(countryClicked.getOwner() == currentPlayer && countryClicked.getUnits() > 1){
           fromCountry = countryClicked;
@@ -189,6 +197,7 @@ public class MainMenu extends Application {
         }else{
           return;
         }
+      // if country they area attacking from is not set, ensure they own the country and their is enough units
       }else{
         if(countryClicked.getOwner() != currentPlayer && countryClicked.isNeighbour(fromCountry)){
           toCountry = countryClicked;
@@ -205,6 +214,7 @@ public class MainMenu extends Application {
 
     /* For when player is fortifying*/
     if(fortify){
+      // Select country to move units from 
       if(fromCountry == null){
         if(countryClicked.getOwner() == currentPlayer){
           fromCountry = countryClicked;
@@ -213,6 +223,7 @@ public class MainMenu extends Application {
         }else{
           return;
         }
+      // Select country to move units too
       }else if(toCountry == null)
         if(countryClicked.getOwner() == currentPlayer && countryClicked.isNeighbour(fromCountry)){
           toCountry = countryClicked;
@@ -227,6 +238,7 @@ public class MainMenu extends Application {
 
     /* For when player is placing new units */
     if(placeUnits){
+      // Select country to place a unit
       if(countryClicked.getOwner() == currentPlayer){
         currentPlayer.placeUnits(countryClicked, 1);
         gainedUnitsLabel.setText(currentPlayer.getName() + " Select Country To Place Gained Units! (" + currentPlayer.getAvailableUnits() + " available)");
@@ -371,7 +383,7 @@ public class MainMenu extends Application {
 
     gainedUnitsLabel.setText(currentPlayer.getName() + " Select Country To Place Gained Units! (" + currentPlayer.getAvailableUnits() + " available)");
     root.getChildren().add(gainedUnitsLabel);
-    
+
     attacking = false;
     fortify = false;
     distributeUnits = false;
@@ -610,7 +622,6 @@ public class MainMenu extends Application {
           initializeBoard = new InitializeBoard();
           Pane initializeBoardPane = initializeBoard.getPane();
           setPane(playerPane, initializeBoardPane);
-          //primaryStage.setScene(createAccountScene);
         }
     });
     menuPane.getChildren().add(startGame);
@@ -618,13 +629,10 @@ public class MainMenu extends Application {
     /* Create the stage */
     ivBackground.toBack(); 
 		Scene scene = new Scene(root, resX, resY);
-    //scene.getStylesheets().add("css_styles.css");
 		primaryStage.setTitle("RISK Game");
 		primaryStage.setScene(scene);
     primaryStage.setResizable(false);
 	  primaryStage.show();
-
-    
 
   }
 
