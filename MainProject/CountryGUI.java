@@ -1,0 +1,182 @@
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.text.*;
+import javafx.scene.layout.Pane;
+import javafx.geometry.Insets;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import java.util.*;
+import javafx.scene.*;
+import javafx.scene.effect.ColorAdjust;
+import javafx.beans.binding.Bindings;
+
+public class CountryGUI {
+	private Pane root;
+	private ImageView imageView;
+	private boolean clickable = true;
+	private infoView popUp;
+	private String name = "";
+	private int countryID;
+	private Player owner;
+	private int numUnits;
+	private String ownerName;
+	private int ownerID;
+
+	CountryGUI(String newName, int newNumUnits, String newOwnerName, int newOwnerID) {
+		root = MapGUI.getPane();
+		name = newName;
+		numUnits = newNumUnits;
+		ownerName = newOwnerName;
+		ownerID = newOwnerID;
+
+		String path = "mapAssets/"+name+".png";
+		Image img = new Image(path);
+		imageView = new ImageView();
+		imageView.setImage(img);
+		imageView.setOpacity(1);
+		imageView.setPreserveRatio(true);
+		imageView.setSmooth(true);
+		imageView.setLayoutX(0);
+		imageView.setLayoutY(0);
+
+		// Based on hover or click create or destroy the infoView
+		imageView.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+			@Override
+		     public void handle(MouseEvent event) {
+		     	if (clickable){
+		     		clearInfoView();
+			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);    
+			    }
+			    event.consume();
+		     }
+		});
+		imageView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+			@Override
+		     public void handle(MouseEvent event) {
+		     	clearInfoView();
+			    event.consume();
+		     }
+		});
+		imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent event) {
+		    	if (clickable){
+			        MainGUI.setCountryClicked(Country.this);
+			        clearInfoView();
+			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);
+			    }
+		        event.consume();
+		    }
+		});
+
+		root.getChildren().add(colorView(ownerID, imageView));
+	}
+
+
+	/**
+	 * Used to get the color of a country imageView
+	 * @param the player number to determine what color to use
+	 * @param the imageView to modify
+	 * @return the modified imageView
+	*/
+	public ImageView colorView(int playerNumber, ImageView iV){
+		double con = 0;
+		double hue = 0;
+		double sat = 0;
+		double bri = 0;
+
+		switch(playerNumber) {
+			case 1:
+				// Green
+				con = 0;
+				hue = 0.5;
+				sat = 0.6;
+				bri = 0;
+			break;
+			case 2:
+				// Red
+				con = 0;
+				hue = 0;
+				sat = 0.8;
+				bri = 0;
+			break;
+			case 3:
+				// Orange
+				con = 0;
+				hue = 0.1;
+				sat = 0.6;
+				bri = 0;
+			break;
+			case 4:
+				// Purple
+				con = 0;
+				hue = -0.7;
+				sat = 0.5;
+				bri = 0;
+			break;
+			case 5:
+				// Brown
+				con = 0;
+				hue = 0.1;
+				sat = 0.8;
+				bri = -0.5;
+			break;
+			case 6:
+				// Magenta
+				con = 0;
+				hue = -0.3;
+				sat = 0.8;
+				bri = -0.5;
+			break;
+		}
+		
+		ColorAdjust colorAdjust = new ColorAdjust();
+		colorAdjust.setContrast(con);
+		colorAdjust.setHue(hue);
+		colorAdjust.setBrightness(bri);
+		colorAdjust.setSaturation(sat);
+
+		iV.setEffect(colorAdjust);
+
+		return iV;
+	}
+
+
+	/**
+	 * Used to clear in info pop up view
+	*/
+	public void clearInfoView() {
+ 		if (popUp != null){
+	        popUp.clear();
+	        popUp = null;
+	    }
+	}
+
+	public void updateCountryDetails(String ownerName, int ownerID) {
+		colorView(ownerID, imageView);
+	}
+
+	public void setImageOpacity(double alpha){
+		imageView.setOpacity(alpha);
+	}
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
