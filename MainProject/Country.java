@@ -82,7 +82,7 @@ public class Country {
 		ownerName = player.getName();
 		ownerID = player.getId();
 		player.gainCountry(this);
-		countryGUI.updateCountryDetails(ownerName, ownerID);
+		countryGUI.updateOwnerVisual(ownerName, ownerID);
 	}
 
 	/**
@@ -91,6 +91,22 @@ public class Country {
 	*/
 	public Player getOwner(){
 		return owner;
+	}
+
+	/**
+	 * Used to get the owner of the country
+	 * @return the owner
+	*/
+	public String getOwnerName(){
+		return ownerName;
+	}
+
+	/**
+	 * Used to get the owner of the country
+	 * @return the owner
+	*/
+	public int getOwnerID(){
+		return ownerID;
 	}
 
 	/**

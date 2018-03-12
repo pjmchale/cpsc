@@ -25,13 +25,15 @@ public class CountryGUI {
 	private int numUnits;
 	private String ownerName;
 	private int ownerID;
+	private Country countryLogic;
 
-	CountryGUI(String newName, int newNumUnits, String newOwnerName, int newOwnerID) {
+	CountryGUI(String newName, int newNumUnits, String newOwnerName, int newOwnerID, Country country) {
 		root = MapGUI.getPane();
 		name = newName;
 		numUnits = newNumUnits;
 		ownerName = newOwnerName;
 		ownerID = newOwnerID;
+		countryLogic = country;
 
 		String path = "mapAssets/"+name+".png";
 		Image img = new Image(path);
@@ -49,6 +51,7 @@ public class CountryGUI {
 		     public void handle(MouseEvent event) {
 		     	if (clickable){
 		     		clearInfoView();
+		     		pullDateForInfoView();
 			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);    
 			    }
 			    event.consume();
@@ -65,8 +68,10 @@ public class CountryGUI {
 		    @Override
 		    public void handle(MouseEvent event) {
 		    	if (clickable){
+		    		// Tell the MainGUI the country was clicked, remove all popUps and show a new one
 			        MainGUI.setCountryClicked(Country.this);
 			        clearInfoView();
+			        pullDateForInfoView();
 			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);
 			    }
 		        event.consume();
@@ -156,12 +161,19 @@ public class CountryGUI {
 	    }
 	}
 
-	public void updateCountryDetails(String ownerName, int ownerID) {
+	public void updateOwnerVisual(String ownerName, int ownerID) {
 		colorView(ownerID, imageView);
 	}
 
 	public void setImageOpacity(double alpha){
 		imageView.setOpacity(alpha);
+	}
+
+	public void pullDateForInfoView() {
+		ownerName = countryLogic.getOwnerName();
+		numUnits = countryLogic.getUnits();
+		name = countryLogic.getName();
+		ownerID = countryLogic.getOwnerID();
 	}
 
 

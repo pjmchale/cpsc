@@ -128,8 +128,7 @@ public class Map {
 		neighbours = new ArrayList<Integer>(Arrays.asList(24,25));
 		buildMap(26, neighbours, "Eastern Australia");		
 
-		MapGUI.addMapDetials();
-			
+		MapGUI.addMapDetials();		
 	}
 
 	/**
