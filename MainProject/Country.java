@@ -154,6 +154,18 @@ public class Country {
 
 
 	/**
+	 * Used to set the opactity of a country image
+	 * @param a boolean to set the state
+	*/
+	public void setClickable(boolean state){
+		if (state) {
+			countryGUI.setImageOpacity(1);
+		} else {
+			countryGUI.setImageOpacity(0.1);
+		}
+	}
+
+	/**
 	 * THIS METHOD IS NO LONGER NEEDED IN THE GUI VERSION OF THE GAME
 	 * Used to ask user how many units they want to send
 	 * @return int the amount of units that have chosen to send

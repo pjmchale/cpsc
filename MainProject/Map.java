@@ -128,7 +128,7 @@ public class Map {
 		neighbours = new ArrayList<Integer>(Arrays.asList(24,25));
 		buildMap(26, neighbours, "Eastern Australia");		
 
-		MapGUI.addMapDetials();		
+		// MapGUI.addMapDetials();		
 	}
 
 	/**
@@ -159,18 +159,6 @@ public class Map {
 			}
 		}
 		return output;
-	}
-
-	/**
-	 * Used to set the opactity of a country image
-	 * @param a boolean to set the state
-	*/
-	public void setClickable(boolean state){
-		if (state) {
-			GUI.setImageOpacity(1);
-		} else {
-			GUI.setImageOpacity(0.1);
-		}
 	}
 
 	/**

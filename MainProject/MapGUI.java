@@ -26,7 +26,7 @@ public class MapGUI {
 		return root;
 	}
 
-	public void addMapDetails() {
+	MapGUI() {
 
 		// Add the connections
 		String imagePathConnections = "mapAssets/Connections.png";
