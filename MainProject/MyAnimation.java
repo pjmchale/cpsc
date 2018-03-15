@@ -25,16 +25,26 @@ public class MyAnimation extends AnimationTimer {
 	 * @param pane the pane this animation will be drawn on
 	 * @param isLoop determines if the animation will loop
 	 */
-	public MyAnimation(Pane pane, boolean isLoop){
-		this.frames = new ArrayList<Image>();
-		frameImage = new ImageView();
+	public MyAnimation(MyAnimation ma) {
+		this(ma.getPane(),ma.getLoop());
+		frames = ma.getFrames();
 		
-		loop = isLoop;
+	}
+	public MyAnimation(Pane pane, boolean isLoop){
 		this.pane = pane;
+		this.frames = new ArrayList<Image>();
+		frameImage = new ImageView();	
+		loop = isLoop;
 		middleX = 960/2;
 		middleY = 600/2;
 	}
-	
+	public MyAnimation(boolean isLoop) {
+		this.frames = new ArrayList<Image>();
+		frameImage = new ImageView();	
+		loop = isLoop;
+		middleX = 960/2;
+		middleY = 600/2;
+	}
 	/**
 	 * set the center coordinate of the animation
 	 * @param x the x-value of the center coordinate
@@ -63,7 +73,12 @@ public class MyAnimation extends AnimationTimer {
 		pane.getChildren().add(frameImage);
 		totalFrames = frames.size();
 	}
-
+	public void setFrames(ArrayList<Image>frames) {
+		this.frames = frames;
+		frameImage.setImage(frames.get(0));
+		pane.getChildren().add(frameImage);
+		totalFrames = frames.size();
+	}
 	/**
 	 * add a collection of images by the name of the animation sequence
 	 * @param name the name of the animation
@@ -83,6 +98,18 @@ public class MyAnimation extends AnimationTimer {
 		pane.getChildren().add(frameImage);
 		totalFrames = frames.size();
 	}
+	public ArrayList<Image> getFrames(){
+		return frames;
+	}
+	public void setPane(Pane p) {
+		pane = p;
+	}
+	public Pane getPane() {
+		return pane;
+	}
+	public boolean getLoop() {
+		return loop;
+	}
 
     @Override
     public void handle(long now) {
@@ -90,7 +117,7 @@ public class MyAnimation extends AnimationTimer {
 		if(curTime - prevTime >= 42_000_000) {
 			prevTime = curTime;
 			if(loop == false && curFrame == totalFrames) {
-				curFrame--;
+				curFrame = totalFrames-1;
 			}else{
 				curFrame %= totalFrames;
 			}
