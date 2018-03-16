@@ -17,6 +17,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.beans.binding.Bindings;
 
 public class CountryGUI {
+
 	private Pane root;
 	private ImageView imageView;
 	private boolean clickable = true;
@@ -29,6 +30,15 @@ public class CountryGUI {
 	private int ownerID;
 	private Country countryLogic;
 
+	/**
+	 * Constructor to add the country image to the view, set the id, neighbours, name, ownerID, ownerName, amount of units, and pane
+	 * @param The country's name
+	 * @param The number of units
+	 * @param The owners name
+	 * @param The owners id
+	 * @param The country that holds the logic for this GUI
+	 * @param Wether to build the GUI or not
+	*/
 	CountryGUI(String newName, int newNumUnits, String newOwnerName, int newOwnerID, Country country) {
 		MapGUI mapGUI = MainGUI.getMapGUI();
 		root = mapGUI.getPane();
@@ -164,14 +174,26 @@ public class CountryGUI {
 	    }
 	}
 
+	/**
+	 * Will update the colors of the country
+	 * @param The owners name
+	 * @param The owners ID number
+	*/
 	public void updateOwnerVisual(String ownerName, int ownerID) {
 		colorView(ownerID, imageView);
 	}
 
+	/**
+	 * Sets the countries opacity
+	 * @param The image opactiy to set
+	*/
 	public void setImageOpacity(double alpha){
 		imageView.setOpacity(alpha);
 	}
 
+	/**
+	 * Will pull data to update the hover view from the logic country
+	*/
 	public void pullDateForInfoView() {
 		ownerName = countryLogic.getOwnerName();
 		numUnits = countryLogic.getUnits();
@@ -180,3 +202,7 @@ public class CountryGUI {
 	}
 
 }
+
+
+
+

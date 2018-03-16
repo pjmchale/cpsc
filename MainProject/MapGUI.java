@@ -33,6 +33,10 @@ public class MapGUI {
 		return root;
 	}
 
+	/**
+	 * Will build the GUI parts of the initial map
+	 * The connections image and the boarders image
+	*/
 	MapGUI() {
 
 		// Add the connections
@@ -62,6 +66,10 @@ public class MapGUI {
 		root.getChildren().add(imageViewBoarders);
 	}
 
+	/**
+	 * Will add the legend to the map
+	 * Only called once all player are created
+	*/
 	public void showLegend() {
 		// Get the players and create a rectange background
 		Player[] players = MainGUI.getAllPlayers();
