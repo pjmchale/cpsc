@@ -22,15 +22,16 @@ public class Country {
 	 * @param The number of units on the country
 	 * @param The Pane to add the country too
 	*/
-	Country(int id, ArrayList<Integer> newNeighbours, String newName){
+	Country(int id, ArrayList<Integer> newNeighbours, String newName, boolean buildGUI){
 		name = newName;
 		numUnits = 0;
 		ownerName = "OPEN";
 		ownerID = 0;
 		countryID = id;
 		neighbours = newNeighbours;
-
-		countryGUI = new CountryGUI(name, numUnits, ownerName, ownerID, this);
+		if (buildGUI){
+			countryGUI = new CountryGUI(name, numUnits, ownerName, ownerID, this);
+		}
 	}
 
 	/**

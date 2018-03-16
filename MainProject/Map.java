@@ -5,7 +5,7 @@ import java.util.*;
 public class Map {
 
 	private ArrayList<Country> countries;
-
+	private boolean buildGUI = true;
 	// /**
 	//  * Initialize the map
 	//  * This is blank for now but may contain code to help build the gui
@@ -17,7 +17,8 @@ public class Map {
 	/**
 	 * Contructor used to build the map
 	*/
-	Map(){
+	Map(boolean newBuildGUI){
+		buildGUI = newBuildGUI;
 		// North America
 		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2,22));
 		buildMap(1, neighbours, "Alaska");
@@ -136,7 +137,7 @@ public class Map {
 	 * @param a String to be the name of the country
 	*/
 	private void buildMap(int id, ArrayList<Integer> neighbours, String name) {
-		Country country = new Country(id, neighbours, name);
+		Country country = new Country(id, neighbours, name, buildGUI);
 		if (countries == null){
 			countries = new ArrayList<Country>(Arrays.asList(country));		
 		} else {
