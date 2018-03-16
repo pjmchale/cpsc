@@ -26,7 +26,12 @@ public class GameManager{
 
   /* Consstructor initializes the map*/
   GameManager(){
-    initializeMap();
+    initializeMap(false);
+  }
+
+  /* Constructor initilaize map with gui */
+  GameManager(boolean withGUI){
+    initializeMap(withGUI);
   }
 
   /**
@@ -39,8 +44,8 @@ public class GameManager{
   /**
    * creates the map for the game
    */
-  private void initializeMap(){
-    map = new Map();
+  private void initializeMap(boolean withGUI){
+    map = new Map(withGUI);
   }
 
   /**

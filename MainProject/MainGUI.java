@@ -105,10 +105,10 @@ public class MainGUI extends Application {
   }
 
   /**
-   * Initialize game manager
+   * Initialize game manager with gui
    */
   public void initializeGameManager(){
-    gameManager = new GameManager();
+    gameManager = new GameManager(true);
   }
 
   /**
