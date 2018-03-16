@@ -21,24 +21,32 @@ public class AiPlayerSimple extends Player{
     }
 
     /**
+     * @return a string signifying that this player is AI
+     */
+    public String getPlayerType(){return "AI";}
+
+    /**
      * Main method that plays the turn
      * Since this is the simple version of the ai, it only looks at the most valuable move it can and does it.
      * This method will simulate the whole turn until it can no longer do an action
      */
-
     public void playTurn(){
         turnOver = false;
         AiMove move = determineMove();
         move.getFromCountry().addUnits(getAvailableUnits());
         setAvailableUnits(0);
-        //do the attacks
+        int unitsLost;
+        Combat combat;
         while (turnOver == false){
-            move = determineMove();
             if (move == null){
                 turnOver = true;
             }
             else{
-                //do the attackS
+                while (move.getNumUnits() > 0 && move.getToCountry().getOwner() != this){
+                    combat = new Combat(move.getFromCountry(), move.getToCountry());
+                    move.setNumUnits(move.getFromCountry().getUnits() - 1);
+                }
+                move = determineMove();
             }
         }
         AiMove fortification = determineFortification();
@@ -47,6 +55,18 @@ public class AiPlayerSimple extends Player{
             fortification.getToCountry().addUnits(fortification.getNumUnits());
         }
     }
+    public int getAttackingUnits(Country country){
+        if (country.getUnits() >= 3){
+            return 3;
+        }
+        return country.getUnits();
+    }
+    public int getDefendingUnits(Country country){
+        if (country.getUnits() >= 2){
+            return 2;
+        }
+        return country.getUnits();
+    }
 
     /**
      * Calculates a relative value for each country on the game board
@@ -54,18 +74,17 @@ public class AiPlayerSimple extends Player{
      */
     public void calculateTurnValues(){
         Player owner;
-        double baseValue;
+        double baseValue = 1.0/3.0;
         double value;
         int numUnowned;
         int numNeighboursUnowned;
         ArrayList<Country> countries = map.getCountries();
         int ownerStanding;
-        Player[] players = MainMenu.getAllPlayers();
+        Player[] players = MainGUI.getAllPlayers();
         LinkedHashMap<Country,Double> unsortedValues = new LinkedHashMap<Country,Double>();
         turnValues.clear();
 
         for (Country country : countries){
-            baseValue = 1.0/3.0;
             owner = country.getOwner();
             if (owner == this){
                 value = 0;
@@ -73,12 +92,15 @@ public class AiPlayerSimple extends Player{
             else {
                 value = baseValue;
                 numNeighboursUnowned = 0;
+                if ( country.getUnits() > 0 && country.getUnits() <= 10){
+                    value += (1 / Math.pow(2, country.getUnits()-1));
+                }
                 for (Country neighbour : map.getNeighbours(country)) {
                     if (neighbour.getOwner() != this) {
                         numNeighboursUnowned++;
                     }
                 }
-                value += ((double) (map.getNeighbours(country).size() - numNeighboursUnowned)) / (map.getNeighbours(country).size());
+                value += ((double)(map.getNeighbours(country).size() - numNeighboursUnowned)) / (map.getNeighbours(country).size());
 
                 ownerStanding = 1;
                 for (Player player : players) {
@@ -86,7 +108,7 @@ public class AiPlayerSimple extends Player{
                         ownerStanding++;
                     }
                 }
-                value += ((double) ownerStanding / players.length);
+                value += ((double)(players.length - ownerStanding + 1) / players.length );
             }
             unsortedValues.put(country,value);
         }
@@ -186,7 +208,7 @@ public class AiPlayerSimple extends Player{
             return move;
         }
 
-        else if (canAttack() == true){
+        else if (canAttack()){
             for (Country conflict: conflicts){
                 neighbours = map.getNeighbours(conflict);
                 for (Country neighbour: neighbours){
@@ -197,7 +219,7 @@ public class AiPlayerSimple extends Player{
                     }
                 }
             }
-            move = new AiMove(toCountry, fromCountry, getAvailableUnits() + fromCountry.getUnits() - 1 );
+            move = new AiMove(toCountry, fromCountry, fromCountry.getUnits() - 1 );
             return move;
         }
         else {
@@ -210,11 +232,14 @@ public class AiPlayerSimple extends Player{
      * @return true if it can, false if not
      */
     public boolean canAttack(){
-        for (Country country : conflicts){
-            if (country.getUnits() > 1){
-                return true;
+        if (conflicts.size() > 0){
+            for (Country country : conflicts){
+                if (country.getUnits() > 1){
+                    return true;
+                }
             }
         }
         return false;
+
     }
 }

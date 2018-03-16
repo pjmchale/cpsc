@@ -56,6 +56,10 @@ public class Player{
     }
 
     public void loseUnits(int units){totalUnits -= units;}
+    /**
+     * @return a string signifying that this player is Human
+     */
+    public String getPlayerType(){return "HUMAN";}
 
     /**
      * Methods to gain and lose a country
