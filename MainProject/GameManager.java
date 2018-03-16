@@ -11,7 +11,6 @@ public class GameManager{
   private int numPlayers;
   private Player[] players;
   private Map map;
-  private MapGUI mapGUI;
   private Player currentPlayer;
   private Country countryClicked;
   private Country toCountry;
@@ -38,17 +37,10 @@ public class GameManager{
   }
 
   /**
-   * getter for game mapGUI
-   */
-  public MapGUI getMapGUI(){
-    return mapGUI;
-  }
-  /**
    * creates the map for the game
    */
   private void initializeMap(){
     map = new Map();
-    mapGUI = new MapGUI();
   }
 
   /**
@@ -186,7 +178,7 @@ public class GameManager{
   public boolean allCountriesOwned(){
 	  ArrayList<Country> countries;
 
-    countries = MainMenu.getMap().getCountries();
+    countries = getMap().getCountries();
     for(int i=0; i < countries.size();i++){
       if(countries.get(i).getOwner() == null){
         return false;
@@ -211,7 +203,6 @@ public class GameManager{
   public void checkIfGameOver(){
     ArrayList<Country> allCountries = map.getCountries();
     for(int i=0; i < players.length ; i++){
-      System.out.println(players[i].getName() + ":" + players[i].getCountriesOwned().size() + "/" + allCountries.size());
       if(players[i].getCountriesOwned().size() >= allCountries.size()){
         MainGUI.gameOver(players[i]);
       }

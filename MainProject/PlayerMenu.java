@@ -170,9 +170,9 @@ public class PlayerMenu{
         playerNameLabel.setText("Player " + (currPlayer+1) + " Please Enter Your Name");
 
         if(currPlayer == numPlayers){
-          MainMenu.initializePlayers(numPlayers, numAIPlayers, playerNames);
+          MainGUI.getGameManager().initializePlayers(numPlayers, numAIPlayers, playerNames);
           playerMenu.getChildren().clear();
-          MainMenu.nextPane();
+          MainGUI.nextPane();
         }
       }
     });

@@ -32,6 +32,7 @@ import java.util.*;
 public class MainGUI extends Application { 
   static private boolean autoSetUpGame = false;
   static private GameManager gameManager;
+  static private MapGUI mapGUI;
 
   static private Pane currentPane;
   static private Pane nextPane;
@@ -97,6 +98,13 @@ public class MainGUI extends Application {
   }
 
   /**
+   * Initializes the map gui
+   */
+  public void initializeMapGUI(){
+    mapGUI = new MapGUI();
+  }
+
+  /**
    * gets all the players (needed by Map.java)
    */
   static public Player[] getAllPlayers(){
@@ -107,14 +115,14 @@ public class MainGUI extends Application {
    * getter for getting map pane
    */
   static public Pane getMapPane(){
-    return gameManager.getMapGUI().getPane();
+    return mapGUI.getPane();
   }
 
   /**
    * getter for getting map GUI
    */
   static public MapGUI getMapGUI(){
-    return gameManager.getMapGUI();
+    return mapGUI;
   }
   /**
    * getter for country clicked
@@ -189,7 +197,7 @@ public class MainGUI extends Application {
    * Shows the legend on the map
    */
   static public void showLegend(){
-    gameManager.getMapGUI().showLegend();
+    mapGUI.showLegend();
   }
 
   /**
@@ -205,6 +213,8 @@ public class MainGUI extends Application {
     root.getChildren().add(gainedUnitsLabel);
 
   }
+
+  
 
   /**
    * initiates the combat
@@ -224,7 +234,8 @@ public class MainGUI extends Application {
     int resY;
     double gapSize, centerX, centerY;
 
-    /* Create the game manager */
+    /* Create the game manager and map gui*/
+    initializeMapGUI();
     gameManager = new GameManager();
 
 
