@@ -111,7 +111,7 @@ public class Player{
             if (attackingCountry.isNeighbour(defendingCountry)){
                 Combat battle;
                 battle = new Combat(attackingCountry, defendingCountry);
-                //battle.simulateBattle();
+                battle.simulateBattle();
                 //return true;
             }
             else {
