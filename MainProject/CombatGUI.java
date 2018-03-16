@@ -55,7 +55,7 @@ public class CombatGUI{
 		transitionAnimation.setFrames(AnimationTransition.getToBattleTransition(transition));
 		transitionAnimation.start();
 		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.5), ae -> {
-			pane.getChildren().remove(MainMenu.getMapPane());
+			pane.getChildren().remove(MainGUI.getMapPane());
 			displaySelection(backDrop);
 			transition.toFront();
 		}));
@@ -78,7 +78,7 @@ public class CombatGUI{
 		final double paneX = (960 - WIDTH) / 2;
 		final double paneY = (600 - HEIGHT) / 2;
 		Rectangle backDrop = new Rectangle(paneX, paneY, WIDTH, HEIGHT);
-		pane.getChildren().add(MainMenu.getMapPane());
+		pane.getChildren().add(MainGUI.getMapPane());
 		displayTransition(backDrop);
 		// displaySelection(backDrop);
 	}
@@ -241,7 +241,7 @@ public class CombatGUI{
 					defendingCountry.setOwner(attacker);
 					attacker.moveUnits(attackingCountry, defendingCountry, amount);
 					pane.getChildren().clear();
-					MainMenu.nextPane();
+					MainGUI.nextPane();
 				}
 			}
 		};
@@ -263,7 +263,7 @@ public class CombatGUI{
 				@Override
 				public void handle(ActionEvent event) {
 					pane.getChildren().clear();
-					MainMenu.nextPane();
+					MainGUI.nextPane();
 				}
 			});
 		}
