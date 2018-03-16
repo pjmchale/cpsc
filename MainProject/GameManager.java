@@ -403,6 +403,42 @@ public class GameManager{
     return placeUnits;
   }
 
+  /**
+   * automatically sets up the game.
+   * Creates players and sets all countries owned
+   * to one player except one country
+   */
+  public void autoSetup(){
+    ArrayList<Country> countries;
+    String[] names = new String[2];
+
+    // Create players
+    names[0] = "Alice";
+    names[1] = "Bob";
+    initializePlayers(2, 0, names);
+
+    // start turn
+    initializeTurn();
+
+    // set owners of all except one country to player 
+    countries = getMap().getCountries();
+    for(int i=0; i < countries.size()-1; i++){
+      countries.get(i).setOwner(currentPlayer);
+      currentPlayer.setAvailableUnits(5);
+      currentPlayer.placeUnits(countries.get(i), 5);
+    }
+
+    // go to next players turn and set them to own last country
+    nextTurn();
+    countries.get(countries.size()-1).setOwner(currentPlayer);
+    currentPlayer.setAvailableUnits(1);
+    currentPlayer.placeUnits(countries.get(countries.size()-1), 1);
+
+    // begin regular turn play
+    nextTurn();
+    setTurnState();
+
+  }
 
 }
 

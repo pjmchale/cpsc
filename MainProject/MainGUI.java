@@ -30,7 +30,7 @@ import java.util.*;
 
 
 public class MainGUI extends Application { 
-  static private boolean autoSetUpGame = false;
+  static private boolean autoSetUpGame = true;
   static private GameManager gameManager;
   static private MapGUI mapGUI;
 
@@ -76,7 +76,7 @@ public class MainGUI extends Application {
     root.getChildren().add(pane);
     currentPane = pane;
   }
-  
+
   /**
    * sets the current scene to the input pane and also sets the next pane
    */
@@ -432,7 +432,9 @@ public class MainGUI extends Application {
         @Override
         public void handle(ActionEvent event) {
           if(autoSetUpGame){
-            //gameManager.autoSetup();
+            gameManager.autoSetup();
+            nextPane = getMapPane();
+            nextPane();
             return;
           }
           PlayerMenu playerMenu = new PlayerMenu();
