@@ -169,7 +169,6 @@ public class AiPlayerSimple extends Player{
 
     /**
      * Method used in the claiming of countries (before the actual game begins)
-     * @return a country to be claimed , null if no countries are available
      */
     public void claimCountry(){
         calculateTurnValues();
@@ -181,6 +180,9 @@ public class AiPlayerSimple extends Player{
             }
         }
     }
+    /**
+     * Method used in the claiming of countries (before the actual game begins)
+     */
     public void claimCountry2(){
         for (Country country: map.getCountries()) {
             if (country.getOwner() == null) {

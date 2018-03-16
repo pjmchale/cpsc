@@ -178,4 +178,5 @@ public class Player{
 
     public void claimCountry(){}
     public void claimCountry2(){}
+    public void playTurn(){}
 }
