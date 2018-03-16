@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 public class AiPlayerSimple extends Player{
     private ArrayList<Country> conflicts;
     private Map map;
-    private LinkedHashMap<Country,Double> turnValues;
+    private LinkedHashMap<Country,Double> turnValues = new LinkedHashMap<Country,double>();
     private boolean turnOver;
 
     /**
