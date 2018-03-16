@@ -1,3 +1,6 @@
+// package map;
+import java.util.*;
+
 public class Country {
 
 	private String name = "";
@@ -27,7 +30,7 @@ public class Country {
 		countryID = id;
 		neighbours = newNeighbours;
 
-		countryGUI = new CountryGUI(name, numUnits, ownerName, ownerID);
+		countryGUI = new CountryGUI(name, numUnits, ownerName, ownerID, this);
 	}
 
 	/**
@@ -52,7 +55,6 @@ public class Country {
 	*/
 	public void addUnits(int units) {
 		numUnits = numUnits + units;
-		// amountOfUnitsLabel.setText("Units: "+numUnits);
 	}
 
 	/**
@@ -170,22 +172,22 @@ public class Country {
 	 * Used to ask user how many units they want to send
 	 * @return int the amount of units that have chosen to send
 	*/
-	// public int selectUnitAmount(){
-	// 	System.out.println("How many units do you want to send? ");
-	// 	Scanner kb = new Scanner(System.in);
-	// 	int input = kb.nextInt();
-	// 	return input;
-	// }
+	public int selectUnitAmount(){
+		System.out.println("How many units do you want to send? ");
+		Scanner kb = new Scanner(System.in);
+		int input = kb.nextInt();
+		return input;
+	}
 
 	/**
 	 * THIS METHOD IS NO LONGER NEEDED IN THE GUI VERSION OF THE GAME
 	 * Used to get the countries stats and present them
 	 * @return String of nicely formated information
 	*/
-	// public String toString(){
-	// 	String numUnitsString = Integer.toString(numUnits);
-	// 	String countryIDString = Integer.toString(countryID);
-	// 	return "Name: " + name + "(" + countryIDString +  ")" + "\n" + "Owner: " + owner.getName() + "\n" + "Units: " + numUnitsString;
-	// }
+	public String toString(){
+		String numUnitsString = Integer.toString(numUnits);
+		String countryIDString = Integer.toString(countryID);
+		return "Name: " + name + "(" + countryIDString +  ")" + "\n" + "Owner: " + owner.getName() + "\n" + "Units: " + numUnitsString;
+	}
 
 }

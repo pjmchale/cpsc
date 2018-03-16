@@ -1,48 +1,23 @@
+// package map;
+
 import java.util.*;
 
 public class Map {
 
 	private ArrayList<Country> countries;
 
-	/**
-	 * Used to get the countries
-	 * @return the ArrayList of countries
-	*/
-	public ArrayList<Country> getCountries(){
-		return countries;
-	}
+	// /**
+	//  * Initialize the map
+	//  * This is blank for now but may contain code to help build the gui
+	// */
+	// public void initializeMap() {
 
-	/**
-	 * Used to set the amount of units in a country
-	 * @param a Country to set the number of units of
-	 * @param the number of units
-	*/
-	public void setUnitsTo(Country country, int numUnits) {
-		country.setUnits(numUnits);
-	}
-
-	/**
-	 * Used to set the owner of a country
-	 * @param a Country to set the owner of
-	 * @param a Player to be the owner 
-	*/
-	public void setOwnerTo(Country country, Player player) {
-		country.setOwner(player);
-	}
-
-	/**
-	 * Initialize the map
-	 * This is blank for now but may contain code to help build the gui
-	*/
-	public void initializeMap() {
-
-	}
+	// }
 
 	/**
 	 * Contructor used to build the map
 	*/
 	Map(){
-
 		// North America
 		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2,22));
 		buildMap(1, neighbours, "Alaska");
@@ -90,8 +65,7 @@ public class Map {
 		buildMap(14, neighbours, "Central Africa");
 		
 		neighbours = new ArrayList<Integer>(Arrays.asList(14));
-		buildMap(15, neighbours, "South Africa");
-			
+		buildMap(15, neighbours, "South Africa");	
 
 		// Asia
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,12,13,14,17,18,19));
@@ -126,9 +100,33 @@ public class Map {
 		buildMap(25, neighbours, "Western Australia");
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(24,25));
-		buildMap(26, neighbours, "Eastern Australia");		
+		buildMap(26, neighbours, "Eastern Australia");	
+	}
 
-		// MapGUI.addMapDetials();		
+	/**
+	 * Used to get the countries
+	 * @return the ArrayList of countries
+	*/
+	public ArrayList<Country> getCountries(){
+		return countries;
+	}
+
+	/**
+	 * Used to set the amount of units in a country
+	 * @param a Country to set the number of units of
+	 * @param the number of units
+	*/
+	public void setUnitsTo(Country country, int numUnits) {
+		country.setUnits(numUnits);
+	}
+
+	/**
+	 * Used to set the owner of a country
+	 * @param a Country to set the owner of
+	 * @param a Player to be the owner 
+	*/
+	public void setOwnerTo(Country country, Player player) {
+		country.setOwner(player);
 	}
 
 	/**
@@ -162,32 +160,61 @@ public class Map {
 	}
 
 	/**
+	 * Used to highlight only a country's neighbours
+	 * @param a Country to show its neighbours 
+	*/
+	public void showNeighbours(Country country) {
+		
+		for (Country i:countries){
+			i.setClickable(country.isNeighbour(i));
+		}
+	}
+
+	/**
+	 * Used to highlight only a country's neighbours
+	 * @param a Country to show its neighbours 
+	*/
+	public void showNeighboursOwner(Country country, Player owner) {
+		for (Country i:countries){
+			i.setClickable(i.isOwner(owner) && country.isNeighbour(i));
+		}
+	}
+
+	/**
+	 * Used to reset the highlighted country's
+	*/
+	public void hideNeighbours() {
+		for (Country i:countries){
+			i.setClickable(true);
+		}
+	}
+	
+	/**
 	 * THIS METHOD IS NO LONGER NEEDED IN THE GUI VERSION OF THE GAME
 	 * Used to print the ASCII Map
 	*/
 	public void printMap(){
-		System.out.print("");
-	// 	System.out.println(
-	//   "	  |-----------___                                       | \n"
-	// + "	  |        |      \\------------------------------------/ \n"
-	// + "	 /         |                 \\                       /  \n"
-	// + "	 |  CANADA  \\                 |                      |  \n"
-	// + "	/            |     SWEDEN     \\        RUSSIA        |  \n"
-	// + "	|----__      |                |                      |  \n"
-	// + "	|      |_____|                \\                      |  \n"
-	// + "	|            -----------       \\                     | \n"
-	// + "	 |             |       |        |                    |\n"
-	// + "	 |             |       |        |                    |\n"
-	// + "	  |    USA     | CHINA |--------|____________________|_\n"
-	// + "	  |_           |       |         |                   /\n"
-	// + "	    |          |       |         |     AUSTRALIA    /\n"
-	// + "	    |____      |       |         |                 /\n"
-	// + "	         |___  | ______|  JAPAN  |                /\n"
-	// + "	             |__|   \\           _|______________/\n"
-	// + "	                     \\        /                \n"
-	// + "	                       \\     /                 \n"
-	// + "	                        \\    |                   \n"
-	// + "	                         |___| \n");
+		System.out.println(
+	  "	  |-----------___                                       | \n"
+	+ "	  |        |      \\------------------------------------/ \n"
+	+ "	 /         |                 \\                       /  \n"
+	+ "	 |  CANADA  \\                 |                      |  \n"
+	+ "	/            |     SWEDEN     \\        RUSSIA        |  \n"
+	+ "	|----__      |                |                      |  \n"
+	+ "	|      |_____|                \\                      |  \n"
+	+ "	|            -----------       \\                     | \n"
+	+ "	 |             |       |        |                    |\n"
+	+ "	 |             |       |        |                    |\n"
+	+ "	  |    USA     | CHINA |--------|____________________|_\n"
+	+ "	  |_           |       |         |                   /\n"
+	+ "	    |          |       |         |     AUSTRALIA    /\n"
+	+ "	    |____      |       |         |                 /\n"
+	+ "	         |___  | ______|  JAPAN  |                /\n"
+	+ "	             |__|   \\           _|______________/\n"
+	+ "	                     \\        /                \n"
+	+ "	                       \\     /                 \n"
+	+ "	                        \\    |                   \n"
+	+ "	                         |___| \n");
 	}
 
 

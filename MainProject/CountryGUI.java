@@ -1,3 +1,5 @@
+// package map;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -28,7 +30,8 @@ public class CountryGUI {
 	private Country countryLogic;
 
 	CountryGUI(String newName, int newNumUnits, String newOwnerName, int newOwnerID, Country country) {
-		root = MapGUI.getPane();
+		MapGUI mapGUI = MainGUI.getMapGUI();
+		root = mapGUI.getPane();
 		name = newName;
 		numUnits = newNumUnits;
 		ownerName = newOwnerName;
@@ -69,7 +72,7 @@ public class CountryGUI {
 		    public void handle(MouseEvent event) {
 		    	if (clickable){
 		    		// Tell the MainGUI the country was clicked, remove all popUps and show a new one
-			        MainGUI.setCountryClicked(Country.this);
+			        MainGUI.setCountryClicked(countryLogic);
 			        clearInfoView();
 			        pullDateForInfoView();
 			        popUp = new infoView(event.getX()+10, event.getY()+10, ownerName, numUnits, name, ownerID, root);
@@ -176,19 +179,4 @@ public class CountryGUI {
 		ownerID = countryLogic.getOwnerID();
 	}
 
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-

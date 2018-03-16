@@ -1,3 +1,5 @@
+// package map;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -13,6 +15,11 @@ import java.util.*;
 import javafx.scene.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.beans.binding.Bindings;
+import javafx.scene.shape.Rectangle; 
+import javafx.scene.shape.Circle;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.control.Label;
+import javafx.scene.paint.*;
 
 public class MapGUI {
 
@@ -98,37 +105,6 @@ public class MapGUI {
 			corY += 30;
 	    }
 
-	}
-
-
-	/**
-	 * Used to highlight only a country's neighbours
-	 * @param a Country to show its neighbours 
-	*/
-	public void showNeighbours(Country country) {
-		
-		for (Country i:countries){
-			i.setClickable(country.isNeighbour(i));
-		}
-	}
-
-	/**
-	 * Used to highlight only a country's neighbours
-	 * @param a Country to show its neighbours 
-	*/
-	public void showNeighboursOwner(Country country, Player owner) {
-		for (Country i:countries){
-			i.setClickable(i.isOwner(owner) && country.isNeighbour(i));
-		}
-	}
-
-	/**
-	 * Used to reset the highlighted country's
-	*/
-	public void hideNeighbours() {
-		for (Country i:countries){
-			i.setClickable(true);
-		}
 	}
 
 	/**
