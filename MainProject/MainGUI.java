@@ -29,14 +29,14 @@ import java.util.*;
 
 
 
-public class MainMenu extends Application { 
-  static private boolean autoSetUpGame = true;
+public class MainGUI extends Application { 
+  static private boolean autoSetUpGame = false;
+  static private GameManager gameManager;
 
   static private Pane currentPane;
   static private Pane nextPane;
   static private Pane root;
   static private HBox turnHBox;
-  //static public GameManager gameManager;
 
   static private InitializeBoard initializeBoard;
   static private Label countrySelectionLabel;
@@ -47,22 +47,6 @@ public class MainMenu extends Application {
   static private TextField numUnitsTextField;
   static private ImageView ivBackground;
 
-  static private int numPlayers;
-  static private Player[] players;
-  static private Map map;
-  static private Player currentPlayer;
-  static private Country countryClicked;
-  static private Country toCountry;
-  static private Country fromCountry;
-  static private int turnIndex;
-  static private Player firstTurn;
-  static private int firstTurnIndex;
-  static private boolean distributeUnits = false;
-  static private boolean attacking = false;
-  static private boolean fortify = false;
-  static private boolean placeUnits = false;
-  static private boolean turn = false;
-
   /**
    * moves the scene to the next pane
    */
@@ -71,11 +55,11 @@ public class MainMenu extends Application {
     if(nextPane == getMapPane()){
       getMapPane().toFront();
       root.getChildren().add(turnHBox);
-      turn = true;
+      gameManager.setTurnState();
       playerTurnLabel.setVisible(true);
     }
 
-    checkIfGameOver();
+    gameManager.checkIfGameOver();
 
     nextPane = getMapPane();
   }
@@ -92,8 +76,8 @@ public class MainMenu extends Application {
     currentPane = pane;
   }
   
-  /* sets the current scene to the input pane and also sets the next pane
-   *
+  /**
+   * sets the current scene to the input pane and also sets the next pane
    */
   static private void setPane(Pane pane, Pane nPane){
     root.getChildren().remove(currentPane);
@@ -106,300 +90,123 @@ public class MainMenu extends Application {
   } 
 
   /**
+   * gets the game manager
+   */
+  static public GameManager getGameManager(){
+    return gameManager;
+  }
+
+  /**
+   * gets all the players (needed by Map.java)
+   */
+  static public Player[] getAllPlayers(){
+    return gameManager.getAllPlayers();
+  }
+
+  /**
    * getter for getting map pane
    */
   static public Pane getMapPane(){
-    return getMap().getPane();
-  }
-
-  /**
-   * getter for game map
-   */
-  static public Map getMap(){
-    return map;
-  }
-
-  /**
-   * creates the map for the game
-   */
-  private void initializeMap(){
-    map = new Map();
-  }
-
-  /**
-   * getter for current player
-   */
-  static public Player getCurrentPlayer(){
-    return currentPlayer;
-  }
-
-  /**
-   * getter for all players
-   */
-  static public Player[] getAllPlayers(){
-    return players;
+    return gameManager.getMapGUI().getPane();
   }
 
   /**
    * getter for country clicked
    */
   static public void setCountryClicked(Country country){
-    countryClicked = country;
-    processCountryClick();
-    
+    gameManager.setCountryClicked(country);
+  }
+
+  
+  /**
+   * sets the country selection label
+   */
+  static public void setCountrySelectionLabel(String inputString){
+    countrySelectionLabel.setText(inputString);
+  }
+
+  /** 
+   * sets the player current turn label
+   */
+  static public void setPlayerTurnLabel(String inputString){
+    playerTurnLabel.setText(inputString);
   }
 
   /**
-   * setter for country clicked
-   * @return country
+   * sets the country selection label
    */
-  static public Country getCountryClicked(){
-    return countryClicked;
+  static public void setGainedUnitsLabel(String inputString){
+    gainedUnitsLabel.setText(inputString);
   }
 
   /**
-   * Determines what to do with country click based off 4 possible game states:
-   *  Distributing Units: Inital distribution of units at beginning of game
-   *  Attacking: Current player attacking from owned country to other players country
-   *  Fortifying: Move units from owned country to another owned country (also ends turn)
-   *  Placing Units: At beginning of each turn player gets to place new units onto board
-   * 
+   * removes the GUI elements present during attack setup
    */
-  static public void processCountryClick(){
-
-    /* Distributing units phase, set country owner */
-    if(distributeUnits){
-      // if Country is not owned, set owner and place unit on country
-      if(countryClicked.getOwner() == null){
-        countryClicked.setOwner(currentPlayer);
-        currentPlayer.placeUnits(countryClicked, 1);
-        distributeUnits = false;
-        nextTurn();
-        return;
-      // if all countries owned just place a unit
-      }else if(allCountriesOwned()){
-        if(countryClicked.getOwner() == currentPlayer){
-          currentPlayer.placeUnits(countryClicked, 1);
-          distributeUnits = false;
-          nextTurn();
-        }
-      }
-    }
-
-    /* For when player is attacking */
-    if(attacking){
-      // if country they area attacking from is not set, ensure they own the country and their is enough units
-      if(fromCountry == null){
-        if(countryClicked.getOwner() == currentPlayer && countryClicked.getUnits() > 1){
-          fromCountry = countryClicked;
-          getMap().showNeighbours(countryClicked);
-          countrySelectionLabel.setText("Please Select Country To Attack");
-        }else{
-          return;
-        }
-      // if country they area attacking from is not set, ensure they own the country and their is enough units
-      }else{
-        if(countryClicked.getOwner() != currentPlayer && countryClicked.isNeighbour(fromCountry)){
-          toCountry = countryClicked;
-          getMap().hideNeighbours();
-          root.getChildren().remove(getMapPane());
-          root.getChildren().remove(countrySelectionLabel);
-          root.getChildren().remove(cancelButton);
-          startAttack(fromCountry, toCountry);
-        }else{
-          return;
-        }
-      }
-    }
-
-    /* For when player is fortifying*/
-    if(fortify){
-      // Select country to move units from 
-      if(fromCountry == null){
-        if(countryClicked.getOwner() == currentPlayer){
-          fromCountry = countryClicked;
-          getMap().showNeighboursOwner(countryClicked, currentPlayer);
-          countrySelectionLabel.setText("Please Select Country To Move Units To");
-        }else{
-          return;
-        }
-      // Select country to move units too
-      }else if(toCountry == null)
-        if(countryClicked.getOwner() == currentPlayer && countryClicked.isNeighbour(fromCountry)){
-          toCountry = countryClicked;
-          getMap().hideNeighbours();
-          countrySelectionLabel.setText("How Many Units Would You Like To Move? (" + (fromCountry.getUnits()-1) + " available)");
-          root.getChildren().add(numUnitsTextField);
-          root.getChildren().add(confirmButton);
-        }else{
-          return;
-        }
-    }
-
-    /* For when player is placing new units */
-    if(placeUnits){
-      // Select country to place a unit
-      if(countryClicked.getOwner() == currentPlayer){
-        currentPlayer.placeUnits(countryClicked, 1);
-        gainedUnitsLabel.setText(currentPlayer.getName() + " Select Country To Place Gained Units! (" + currentPlayer.getAvailableUnits() + " available)");
-        if(currentPlayer.getAvailableUnits() == 0){
-          root.getChildren().remove(gainedUnitsLabel);
-          placeUnits = false;
-          nextPane();
-        }
-      }
-    }
+  static public void removeAttackGUIElements(){
+    root.getChildren().remove(getMapPane());
+    root.getChildren().remove(countrySelectionLabel);
+    root.getChildren().remove(cancelButton);
+  }
+  
+  /**
+   * adds the GUI elements present during fortify setup
+   */
+  static public void addFortifyGUIElements(){
+    root.getChildren().add(numUnitsTextField);
+    root.getChildren().add(confirmButton);
   }
 
   /**
-   * determines if all countries are owned by someone
-   * @return true is all countries are owned false if not
+   * removes the GUI elements present during placing units setup at beginning of turn
    */
-  static public boolean allCountriesOwned(){
-	  ArrayList<Country> countries;
-
-    countries = MainMenu.getMap().getCountries();
-    for(int i=0; i < countries.size();i++){
-      if(countries.get(i).getOwner() == null){
-        return false;
-      }
-    }
-
-    return true;
+  static public void removePlaceUnitsGUIElements(){
+    root.getChildren().remove(gainedUnitsLabel);
   }
 
   /**
-   * sets boolean for distributing units phase
-   * @state distributing units state (true false)
-   */
-  static public void setDistributeUnits(boolean state){
-    distributeUnits = state;
-  } 
-
-  /**
-   * Checks if player has won the game i.e. owns every territory on the map
+   *  Called when game is over and dsiplays winner 
    * @return gameOver true if player owns every territory otherwise false
    */
-  static public boolean checkIfGameOver(){
-    ArrayList<Country> allCountries = map.getCountries();
-
-    for(int i=0; i < players.length ; i++){
-      System.out.println(players[i].getName() + ":" + players[i].getCountriesOwned().size() + "/" + allCountries.size());
-      if(players[i].getCountriesOwned().size() >= allCountries.size()){
-        root.getChildren().clear();
-        root.getChildren().add(ivBackground);
-        Label winnerLabel = new Label();
-        winnerLabel.setFont(new Font("Times New Roman Bold", 45));
-        winnerLabel.setTextFill(Color.RED);
-        winnerLabel.setText("Congratulations " + players[i].getName() + " You Won The Game!");
-        winnerLabel.layoutXProperty().bind(root.widthProperty().subtract(winnerLabel.widthProperty()).divide(2));
-        winnerLabel.layoutYProperty().bind(root.heightProperty().divide(2));
-        root.getChildren().add(winnerLabel);
-        return true;
-      }
-    }
-    return false;
+  static public void gameOver(Player winningPlayer){
+      root.getChildren().clear();
+      root.getChildren().add(ivBackground);
+      Label winnerLabel = new Label();
+      winnerLabel.setFont(new Font("Times New Roman Bold", 45));
+      winnerLabel.setTextFill(Color.RED);
+      winnerLabel.setText("Congratulations " + winningPlayer.getName() + " You Won The Game!");
+      winnerLabel.layoutXProperty().bind(root.widthProperty().subtract(winnerLabel.widthProperty()).divide(2));
+      winnerLabel.layoutYProperty().bind(root.heightProperty().divide(2));
+      root.getChildren().add(winnerLabel);
   }
 
   /**
-   * Creates all players for the game
+   * Shows the legend on the map
    */
-  static public void initializePlayers(int numHuman, int numAI, String[] names){
-
-    numPlayers = numHuman + numAI;
-    players = new Player[numPlayers];
-    for(int i=0; i < numHuman; i++){
-      players[i] = new Player(names[i]);
-    }
-    getMap().showLegend();
-    //for(; i < numPlayers; i++){
-    //  players[i] = new AIPlayer();
-    //}
+  static public void showLegend(){
+    gameManager.getMapGUI().showLegend();
   }
 
   /**
-   * getter for number of players
+   * Distributes new units at beginning of turn
+   * amount determined by GameManager
    */
-  static public int getNumPlayers(){
-    return numPlayers;
-  }
-
-  /**
-   * Switches turn to next player
-   */
-  static public void nextTurn(){
-    turnIndex++;
-    turnIndex %= numPlayers;
-    currentPlayer = players[turnIndex];
-    playerTurnLabel.setText(currentPlayer.getName() + "'s Turn");
-
-    if(turn){
-      calcDistributeUnits();
-    }
-  }
-
-  /**
-   * initializes turn order randomly
-   */
-  static public void initializeTurn(){
-
-    // sleep for 1 second
-    /*
-    try{
-      Thread.sleep(1000);
-    } catch (Exception e) {
-      System.out.println(e);
-    }
-    */
-
-    Random rand = new Random();
-    turnIndex = rand.nextInt(numPlayers);
-    currentPlayer = players[turnIndex];
-    firstTurn = currentPlayer;
-    firstTurnIndex = turnIndex;
-
-  }
-
-  /**
-   * calculates and distributes new units at beginning of turn
-   */
-  static private void calcDistributeUnits(){
-    int numNewUnits = 3;
-    int numUnits;
-    int userChoice;
-    ArrayList<Country> countriesOwned;
-    Country country;
-
+  static public void distributeUnitsTurn(Player currentPlayer){
     root.getChildren().remove(turnHBox);
     root.getChildren().remove(getMapPane());
     root.getChildren().add(getMapPane());
 
-    countriesOwned = currentPlayer.getCountriesOwned();
-
-    if(countriesOwned.size() > numNewUnits){
-      numNewUnits = countriesOwned.size();
-    }
-    currentPlayer.setAvailableUnits(numNewUnits);
-
     gainedUnitsLabel.setText(currentPlayer.getName() + " Select Country To Place Gained Units! (" + currentPlayer.getAvailableUnits() + " available)");
     root.getChildren().add(gainedUnitsLabel);
-
-    attacking = false;
-    fortify = false;
-    distributeUnits = false;
-    placeUnits = true;
 
   }
 
   /**
    * initiates the combat
    */
-  static private void startAttack(Country fromCountry, Country toCountry){
+  static public void startAttack(Country fromCountry, Country toCountry){
     Combat combat = new Combat(fromCountry, toCountry);
     setPane(combat.getPane(), getMapPane());
-    toCountry = null;
-    fromCountry = null;
-    attacking = false;
+    gameManager.clearState();
   }
 
   /**
@@ -412,7 +219,7 @@ public class MainMenu extends Application {
     double gapSize, centerX, centerY;
 
     /* Create the game manager */
-    initializeMap();
+    gameManager = new GameManager();
 
 
     /* Set screen size/resolution */
@@ -481,11 +288,7 @@ public class MainMenu extends Application {
     attackButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        attacking = true;
-        distributeUnits = false;
-        fortify = false;
-        toCountry = null;
-        fromCountry = null;
+        gameManager.setAttacking();
         root.getChildren().remove(turnHBox);
         countrySelectionLabel.setText("Please Select Country To Attack From");
         root.getChildren().add(countrySelectionLabel);
@@ -499,11 +302,7 @@ public class MainMenu extends Application {
     fortifyButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        fortify = true;
-        distributeUnits = false;
-        attacking = false;
-        toCountry = null;
-        fromCountry = null;
+        gameManager.setFortify();
         root.getChildren().remove(turnHBox);
         countrySelectionLabel.setText("Please Select Country To Move Units From");
         root.getChildren().add(countrySelectionLabel);
@@ -518,7 +317,7 @@ public class MainMenu extends Application {
     endTurnButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        nextTurn();
+        gameManager.nextTurn();
       }
     });
 
@@ -539,15 +338,13 @@ public class MainMenu extends Application {
           numUnitsTextField.setStyle("-fx-text-fill: red;");
           return;
         }       
-        if(numUnits < fromCountry.getUnits()){
+        if(numUnits < gameManager.getFromCountry().getUnits()){
           root.getChildren().remove(getMapPane());
           root.getChildren().remove(countrySelectionLabel);
           root.getChildren().remove(numUnitsTextField);
           root.getChildren().remove(confirmButton);
           root.getChildren().remove(cancelButton);
-          currentPlayer.moveUnits(fromCountry, toCountry, numUnits);
-          nextTurn();
-          //nextPane();
+          gameManager.fortify(numUnits);
         }else{
           numUnitsTextField.setStyle("-fx-text-fill: red;");
           return;
@@ -564,11 +361,8 @@ public class MainMenu extends Application {
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        attacking = false;
-        fortify = false;
-        toCountry = null;
-        fromCountry = null;
-        getMap().hideNeighbours();
+        gameManager.clearState();
+        gameManager.getMap().hideNeighbours();
         root.getChildren().remove(cancelButton);
         root.getChildren().remove(confirmButton);
         root.getChildren().remove(numUnitsTextField);
@@ -614,7 +408,7 @@ public class MainMenu extends Application {
         @Override
         public void handle(ActionEvent event) {
           if(autoSetUpGame){
-            autoSetup();
+            //gameManager.autoSetup();
             return;
           }
           PlayerMenu playerMenu = new PlayerMenu();
@@ -636,32 +430,5 @@ public class MainMenu extends Application {
 
   }
 
-  /**
-   * automatically sets up the game so that one player owns majority
-   * used for testing
-   */
-  static private void autoSetup(){
-    String[] names = new String[2];
-    names[0] = "Alice";
-    names[1] = "Bob";
-    initializePlayers(2,0, names);
-    initializeTurn();
-
-    ArrayList<Country> countries;
-    countries = MainMenu.getMap().getCountries();
-    for(int i=0; i < countries.size()-1;i++){
-      currentPlayer.setAvailableUnits(5);
-      countries.get(i).setOwner(currentPlayer);
-      currentPlayer.placeUnits(countries.get(i), 5);
-    }
-
-    nextTurn();
-    turn = true;
-    countries.get(countries.size()-1).setOwner(currentPlayer);
-    currentPlayer.setAvailableUnits(5);
-    currentPlayer.placeUnits(countries.get(countries.size()-1), 5);
-    nextPane = getMapPane();
-    nextPane();
-  }
 }
 
