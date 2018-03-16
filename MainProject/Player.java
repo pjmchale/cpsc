@@ -176,4 +176,6 @@ public class Player{
         return kb.nextInt();
     }
 
+    public void claimCountry(){}
+
 }
