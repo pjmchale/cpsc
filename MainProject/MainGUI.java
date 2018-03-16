@@ -105,6 +105,13 @@ public class MainGUI extends Application {
   }
 
   /**
+   * Initialize game manager
+   */
+  public void initializeGameManager(){
+    gameManager = new GameManager();
+  }
+
+  /**
    * gets all the players (needed by Map.java)
    */
   static public Player[] getAllPlayers(){
@@ -236,7 +243,7 @@ public class MainGUI extends Application {
 
     /* Create the game manager and map gui*/
     initializeMapGUI();
-    gameManager = new GameManager();
+    initializeGameManager();
 
 
     /* Set screen size/resolution */
@@ -355,7 +362,7 @@ public class MainGUI extends Application {
           numUnitsTextField.setStyle("-fx-text-fill: red;");
           return;
         }       
-        if(numUnits < gameManager.getFromCountry().getUnits()){
+        if(numUnits < gameManager.getFromCountry().getUnits() && numUnits >= 0){
           root.getChildren().remove(getMapPane());
           root.getChildren().remove(countrySelectionLabel);
           root.getChildren().remove(numUnitsTextField);

@@ -91,85 +91,109 @@ public class GameManager{
   public void processCountryClick(){
 
     /* Distributing units phase, set country owner */
-    if(distributeUnits){
-      // if Country is not owned, set owner and place unit on country
-      if(countryClicked.getOwner() == null){
-        countryClicked.setOwner(currentPlayer);
+    if(distributeUnits) distributeUnitsState();
+
+    /* For when player is attacking */
+    if(attacking) attackState();
+
+    /* For when player is fortifying*/
+    if(fortify) fortifyState();
+
+    /* For when player is placing new units */
+    if(placeUnits) placeUnitsState();
+   
+  }
+
+  /**
+   * Code to run when distribute units state is set at beginning of game
+   * after country is clicked
+   */
+  private void distributeUnitsState(){
+    // if Country is not owned, set owner and place unit on country
+    if(countryClicked.getOwner() == null){
+      countryClicked.setOwner(currentPlayer);
+      currentPlayer.placeUnits(countryClicked, 1);
+      distributeUnits = false;
+      nextTurn();
+      return;
+    // if all countries owned just place a unit
+    }else if(allCountriesOwned()){
+      if(countryClicked.getOwner() == currentPlayer){
         currentPlayer.placeUnits(countryClicked, 1);
         distributeUnits = false;
         nextTurn();
-        return;
-      // if all countries owned just place a unit
-      }else if(allCountriesOwned()){
-        if(countryClicked.getOwner() == currentPlayer){
-          currentPlayer.placeUnits(countryClicked, 1);
-          distributeUnits = false;
-          nextTurn();
-        }
-      }
-    }
-
-    /* For when player is attacking */
-    if(attacking){
-      // if country they area attacking from is not set, ensure they own the country and their is enough units
-      if(fromCountry == null){
-        if(countryClicked.getOwner() == currentPlayer && countryClicked.getUnits() > 1){
-          fromCountry = countryClicked;
-          getMap().showNeighbours(countryClicked);
-          MainGUI.setCountrySelectionLabel("Please Select Country To Attack");
-        }else{
-          return;
-        }
-      // if country they area attacking from is not set, ensure they own the country and their is enough units
-      }else{
-        if(countryClicked.getOwner() != currentPlayer && countryClicked.isNeighbour(fromCountry)){
-          toCountry = countryClicked;
-          getMap().hideNeighbours();
-          MainGUI.removeAttackGUIElements();
-          MainGUI.startAttack(fromCountry, toCountry);
-        }else{
-          return;
-        }
-      }
-    }
-
-    /* For when player is fortifying*/
-    if(fortify){
-      // Select country to move units from 
-      if(fromCountry == null){
-        if(countryClicked.getOwner() == currentPlayer){
-          fromCountry = countryClicked;
-          getMap().showNeighboursOwner(countryClicked, currentPlayer);
-          MainGUI.setCountrySelectionLabel("Please Select Country To Move Units To");
-        }else{
-          return;
-        }
-      // Select country to move units too
-      }else if(toCountry == null)
-        if(countryClicked.getOwner() == currentPlayer && countryClicked.isNeighbour(fromCountry)){
-          toCountry = countryClicked;
-          getMap().hideNeighbours();
-          MainGUI.setCountrySelectionLabel("How Many Units Would You Like To Move? (" + (fromCountry.getUnits()-1) + " available)");
-          MainGUI.addFortifyGUIElements();
-        }else{
-          return;
-        }
-    }
-
-    /* For when player is placing new units */
-    if(placeUnits){
-      // Select country to place a unit
-      if(countryClicked.getOwner() == currentPlayer){
-        currentPlayer.placeUnits(countryClicked, 1);
-        MainGUI.setGainedUnitsLabel(currentPlayer.getName() + " Select Country To Place Gained Units! (" + currentPlayer.getAvailableUnits() + " available)");
-        if(currentPlayer.getAvailableUnits() == 0){
-          MainGUI.removePlaceUnitsGUIElements();
-          clearState();
-          MainGUI.nextPane();
-        }
       }
     }
   }
+
+  /**
+   * Code to run when attack state is set after country click
+   */
+  private void attackState(){
+    // if country they area attacking from is not set, ensure they own the country and their is enough units
+    if(fromCountry == null){
+      if(countryClicked.getOwner() == currentPlayer && countryClicked.getUnits() > 1){
+        fromCountry = countryClicked;
+        getMap().showNeighbours(countryClicked);
+        MainGUI.setCountrySelectionLabel("Please Select Country To Attack");
+      }else{
+        return;
+      }
+    // if country they area attacking from is not set, ensure they own the country and their is enough units
+    }else{
+      if(countryClicked.getOwner() != currentPlayer && countryClicked.isNeighbour(fromCountry)){
+        toCountry = countryClicked;
+        getMap().hideNeighbours();
+        MainGUI.removeAttackGUIElements();
+        MainGUI.startAttack(fromCountry, toCountry);
+      }else{
+        return;
+      }
+    }
+  }
+
+  /**
+   * Code to run when attack state is set after country click
+   */
+  private void fortifyState(){
+    // Select country to move units from 
+    if(fromCountry == null){
+      if(countryClicked.getOwner() == currentPlayer){
+        fromCountry = countryClicked;
+        getMap().showNeighboursOwner(countryClicked, currentPlayer);
+        MainGUI.setCountrySelectionLabel("Please Select Country To Move Units To");
+      }else{
+        return;
+      }
+    // Select country to move units too
+    }else if(toCountry == null)
+      if(countryClicked.getOwner() == currentPlayer && countryClicked.isNeighbour(fromCountry)){
+        toCountry = countryClicked;
+        getMap().hideNeighbours();
+        MainGUI.setCountrySelectionLabel("How Many Units Would You Like To Move? (" + (fromCountry.getUnits()-1) + " available)");
+        MainGUI.addFortifyGUIElements();
+      }else{
+        return;
+      }
+  }
+  
+  /**
+   * Code to run when place units state is set (begginning of turn) after country click
+   */
+  private void placeUnitsState(){
+   // Select country to place a unit
+    if(countryClicked.getOwner() == currentPlayer){
+      currentPlayer.placeUnits(countryClicked, 1);
+      MainGUI.setGainedUnitsLabel(currentPlayer.getName() + " Select Country To Place Gained Units! (" + currentPlayer.getAvailableUnits() + " available)");
+      if(currentPlayer.getAvailableUnits() == 0){
+        MainGUI.removePlaceUnitsGUIElements();
+        clearState();
+        MainGUI.nextPane();
+      }
+    }
+  }
+
+
 
   /**
    * determines if all countries are owned by someone
