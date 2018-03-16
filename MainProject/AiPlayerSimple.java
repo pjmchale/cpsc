@@ -32,11 +32,15 @@ public class AiPlayerSimple extends Player{
      */
     public void playTurn(){
         turnOver = false;
+        int unitsLost;
+        Combat combat;
+
+        //Adds available units to the first country
         AiMove move = determineMove();
         move.getFromCountry().addUnits(getAvailableUnits());
         setAvailableUnits(0);
-        int unitsLost;
-        Combat combat;
+
+        //Plays the turn until it can no longer do a valid move
         while (turnOver == false){
             if (move == null){
                 turnOver = true;
@@ -49,18 +53,28 @@ public class AiPlayerSimple extends Player{
                 move = determineMove();
             }
         }
+        //Fortifies if it can
         AiMove fortification = determineFortification();
         if (fortification != null){
             fortification.getFromCountry().addUnits(-(fortification.getNumUnits()));
             fortification.getToCountry().addUnits(fortification.getNumUnits());
         }
     }
+
+    /**
+     * @param country is the country that it's attacking from
+     * @return the amount of units sent to attack
+     */
     public int getAttackingUnits(Country country){
         if (country.getUnits() >= 3){
             return 3;
         }
         return country.getUnits();
     }
+    /**
+     * @param country is the country that it's defending from
+     * @return the amount of units sent to defend
+     */
     public int getDefendingUnits(Country country){
         if (country.getUnits() >= 2){
             return 2;
@@ -84,6 +98,7 @@ public class AiPlayerSimple extends Player{
         LinkedHashMap<Country,Double> unsortedValues = new LinkedHashMap<Country,Double>();
         turnValues.clear();
 
+        //Loops through every country on the map, assigning a value and adding the two to a LinkedHashMap
         for (Country country : countries){
             owner = country.getOwner();
             if (owner == this){
@@ -92,9 +107,13 @@ public class AiPlayerSimple extends Player{
             else {
                 value = baseValue;
                 numNeighboursUnowned = 0;
-                if ( country.getUnits() > 0 && country.getUnits() <= 10){
+
+                //Adds value based on how many units are in the country
+                if ( country.getUnits() > 0 && country.getUnits() <= 5){
                     value += (1 / Math.pow(2, country.getUnits()-1));
                 }
+
+                //Adds value based on how many of a countries neighbour the AI owns
                 for (Country neighbour : map.getNeighbours(country)) {
                     if (neighbour.getOwner() != this) {
                         numNeighboursUnowned++;
@@ -102,6 +121,7 @@ public class AiPlayerSimple extends Player{
                 }
                 value += ((double)(map.getNeighbours(country).size() - numNeighboursUnowned)) / (map.getNeighbours(country).size());
 
+                //Adds value based on the standing of the owner, Higher Standing = higher value
                 ownerStanding = 1;
                 for (Player player : players) {
                     if (owner.getTotalUnits() < player.getTotalUnits()) {
