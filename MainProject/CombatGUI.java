@@ -23,9 +23,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 
-public class CombatGUI{
-	
-	
+public class CombatGUI {
+
 	private Combat combat;
 	private Dice dice;
 	private Player attacker;
@@ -35,6 +34,7 @@ public class CombatGUI{
 	private int numAttackers;
 	private int numDefenders;
 	private Pane pane;
+
 	public CombatGUI(Combat cb) {
 		pane = new Pane();
 		dice = cb.getDice();
@@ -51,7 +51,7 @@ public class CombatGUI{
 	public void displayTransition(Rectangle backDrop) {
 		Pane transition = new Pane();
 		pane.getChildren().add(transition);
-		MyAnimation transitionAnimation = new MyAnimation(transition,false);
+		MyAnimation transitionAnimation = new MyAnimation(transition, false);
 		transitionAnimation.setFrames(AnimationTransition.getToBattleTransition(transition));
 		transitionAnimation.start();
 		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.5), ae -> {
@@ -126,6 +126,7 @@ public class CombatGUI{
 				}
 			}
 		};
+
 		CallAction attackerDone = new CallAction() {
 			public void use(int amount) {
 				if (amount > 0 && amount < attackingCountry.getUnits()) {
@@ -135,14 +136,39 @@ public class CombatGUI{
 					combat.setNumAttackers(numAttackers);
 					pane.getChildren().clear();
 					constantDisplayElements(backDrop);
-					getUnits(defender.getName() + "(" + (defendingCountry.getUnits()) + ")", " how many units(DEFEND)",
-							backDrop, displayResults);
+					if (isHuman(defender)) {
+						getUnits(defender.getName() + "(" + (defendingCountry.getUnits()) + ")",
+								" how many units(DEFEND)", backDrop, displayResults);
+					}else {
+						defenderAI(displayResults);
+					}
 				}
 			}
 		};
-		getUnits(attacker.getName() + "(" + (attackingCountry.getUnits() - 1) + ")", " how many units(ATTACK)",
-				backDrop, attackerDone);
+		if (isHuman(attacker)) {
+			getUnits(attacker.getName() + "(" + (attackingCountry.getUnits() - 1) + ")", " how many units(ATTACK)",
+					backDrop, attackerDone);
+		} else {
+			attackerAI(attackerDone);
 
+		}
+
+	}
+
+	public void attackerAI(CallAction ca) {
+		AiPlayerSimple ai = (AiPlayerSimple) attacker;
+		int amount = ai.getAttackingUnits(attackingCountry);
+		ca.use(amount);
+	}
+
+	public void defenderAI(CallAction ca) {
+		AiPlayerSimple ai = (AiPlayerSimple) defender;
+		int amount = ai.getDefendingUnits(defendingCountry);
+		ca.use(amount);
+	}
+
+	public boolean isHuman(Player p) {
+		return p.getPlayerType().equalsIgnoreCase("HUMAN");
 	}
 
 	/**
