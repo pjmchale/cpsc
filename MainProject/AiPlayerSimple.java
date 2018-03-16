@@ -193,6 +193,13 @@ public class AiPlayerSimple extends Player{
         }
     }
 
+    public void placeUnit(){
+        for (Country country: getCountriesOwned()) {
+            this.placeUnits(country,1);
+            return;
+        }
+    }
+
     /**
      * Determines if it should fortify
      * @return an  AiMove or null if no fortification is required
