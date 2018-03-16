@@ -62,5 +62,20 @@ public class GameManagerTest{
     assertEquals("Player name should be test_1", gm.getAllPlayers()[0].getName(), "test_1");
   } 
 
+  @Test
+  public void test_distributeUnitsCalculation(){
+    GameManager gm = new GameManager();
+
+    /* create player and set all countries owned by player */
+    Player pl = new Player("test");
+    ArrayList<Country> countries = gm.getMap().getCountries();
+    for(int i=0;i < countries.size(); i++){
+      countries.get(i).setOwner(pl);
+    }
+    gm.setCurrentPlayer(pl);
+    gm.calcDistributeUnits();
+    assertEquals("Incorrect number of available units at beginning of turn", pl.getAvailableUnits(), countries.size());
+  }
+
 	
 }
