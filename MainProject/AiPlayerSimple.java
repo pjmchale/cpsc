@@ -96,7 +96,10 @@ public class AiPlayerSimple extends Player{
         int ownerStanding;
         Player[] players = MainGUI.getAllPlayers();
         LinkedHashMap<Country,Double> unsortedValues = new LinkedHashMap<Country,Double>();
-        turnValues.clear();
+        if (turnValues.size()>0){
+            turnValues.clear();
+        }
+
 
         //Loops through every country on the map, assigning a value and adding the two to a LinkedHashMap
         for (Country country : countries){
