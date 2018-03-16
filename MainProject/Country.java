@@ -11,6 +11,7 @@ public class Country {
 	private String ownerName;
 	private int ownerID;
 	private CountryGUI countryGUI;
+	private boolean hasGUI;
 
 	/**
 	 * Constructor to add the country image to the view, set the id, neighbours, name, ownerID, ownerName, amount of units, and pane
@@ -29,6 +30,7 @@ public class Country {
 		ownerID = 0;
 		countryID = id;
 		neighbours = newNeighbours;
+		hasGUI = buildGUI;
 		if (buildGUI){
 			countryGUI = new CountryGUI(name, numUnits, ownerName, ownerID, this);
 		}
@@ -85,7 +87,9 @@ public class Country {
 		ownerName = player.getName();
 		ownerID = player.getId();
 		player.gainCountry(this);
-		countryGUI.updateOwnerVisual(ownerName, ownerID);
+		if (hasGUI){
+			countryGUI.updateOwnerVisual(ownerName, ownerID);
+		}
 	}
 
 	/**
@@ -161,10 +165,12 @@ public class Country {
 	 * @param a boolean to set the state
 	*/
 	public void setClickable(boolean state){
-		if (state) {
-			countryGUI.setImageOpacity(1);
-		} else {
-			countryGUI.setImageOpacity(0.1);
+		if (hasGUI){
+			if (state) {
+				countryGUI.setImageOpacity(1);
+			} else {
+				countryGUI.setImageOpacity(0.1);
+			}
 		}
 	}
 
