@@ -177,5 +177,5 @@ public class Player{
     }
 
     public void claimCountry(){}
-
+    public void claimCountry2(){}
 }

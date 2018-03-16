@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 public class AiPlayerSimple extends Player{
     private ArrayList<Country> conflicts;
     private Map map;
-    private LinkedHashMap<Country,Double> turnValues = new LinkedHashMap<Country,double>();
+    private LinkedHashMap<Country,Double> turnValues = new LinkedHashMap<Country,Double>();
     private boolean turnOver;
 
     /**
@@ -174,6 +174,13 @@ public class AiPlayerSimple extends Player{
     public void claimCountry(){
         calculateTurnValues();
         for (Country key: turnValues.keySet()) {
+            if (key.getOwner() == null) {
+                key.setOwner(this);
+            }
+        }
+    }
+    public void claimCountry2(){
+        for (Country country: map.getCountries()) {
             if (key.getOwner() == null) {
                 key.setOwner(this);
             }
