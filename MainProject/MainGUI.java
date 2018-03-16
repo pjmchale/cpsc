@@ -111,6 +111,12 @@ public class MainGUI extends Application {
   }
 
   /**
+   * getter for getting map GUI
+   */
+  static public MapGUI getMapGUI(){
+    return gameManager.getMapGUI();
+  }
+  /**
    * getter for country clicked
    */
   static public void setCountryClicked(Country country){
