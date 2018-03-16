@@ -176,13 +176,17 @@ public class AiPlayerSimple extends Player{
         for (Country key: turnValues.keySet()) {
             if (key.getOwner() == null) {
                 key.setOwner(this);
+                this.placeUnits(key,1);
+                return;
             }
         }
     }
     public void claimCountry2(){
         for (Country country: map.getCountries()) {
-            if (key.getOwner() == null) {
-                key.setOwner(this);
+            if (country.getOwner() == null) {
+                country.setOwner(this);
+                this.placeUnits(country,1);
+                return;
             }
         }
     }
