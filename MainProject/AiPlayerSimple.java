@@ -168,14 +168,13 @@ public class AiPlayerSimple extends Player{
      * Method used in the claiming of countries (before the actual game begins)
      * @return a country to be claimed , null if no countries are available
      */
-    public Country claimCountry(){
+    public void claimCountry(){
         calculateTurnValues();
-        for (Country key: turnValues.keySet()){
-            if (key.getOwner() == null){
-                return key;
+        for (Country key: turnValues.keySet()) {
+            if (key.getOwner() == null) {
+                key.setOwner(this);
             }
         }
-        return null;
     }
 
     /**
