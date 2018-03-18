@@ -8,6 +8,7 @@ import java.util.*;
 
 public class GameManager{ 
 
+  private boolean usingGUI = false;
   private int numPlayers;
   private Player[] players;
   private Map map;
@@ -26,12 +27,13 @@ public class GameManager{
 
   /* Consstructor initializes the map*/
   GameManager(){
-    initializeMap(false);
+    initializeMap(usingGUI);
   }
 
   /* Constructor initilaize map with gui */
   GameManager(boolean withGUI){
-    initializeMap(withGUI);
+    usingGUI = withGUI;
+    initializeMap(usingGUI);
   }
 
   /**
@@ -53,6 +55,13 @@ public class GameManager{
    */
   public Player getCurrentPlayer(){
     return currentPlayer;
+  }
+
+  /**
+   * setter for current player
+   */
+  public void setCurrentPlayer(Player player){
+    currentPlayer = player;
   }
 
   /**
@@ -118,15 +127,15 @@ public class GameManager{
     if(countryClicked.getOwner() == null){
       countryClicked.setOwner(currentPlayer);
       currentPlayer.placeUnits(countryClicked, 1);
-      distributeUnits = false;
       nextTurn();
+      MainGUI.continueCountrySelection();
       return;
     // if all countries owned just place a unit
     }else if(allCountriesOwned()){
       if(countryClicked.getOwner() == currentPlayer){
         currentPlayer.placeUnits(countryClicked, 1);
-        distributeUnits = false;
         nextTurn();
+        MainGUI.continueCountrySelection();
       }
     }
   }
@@ -242,17 +251,22 @@ public class GameManager{
    * Creates all players for the game
    */
   public void initializePlayers(int numHuman, int numAI, String[] names){
+    int i;
+    int k=0;
 
     numPlayers = numHuman + numAI;
     players = new Player[numPlayers];
-    for(int i=0; i < numHuman; i++){
+    for(i=0; i < numHuman; i++){
       players[i] = new Player(names[i]);
     }
-    //for(; i < numPlayers; i++){
-    //  players[i] = new AIPlayer();
-    //}
+    for(; i < numPlayers; i++){
+      players[i] = new AiPlayerSimple("AI #" + k, getMap());
+      k++;
+    }
     
-    MainGUI.showLegend();
+    if(usingGUI){
+      MainGUI.showLegend();
+    }
   }
 
   /**
@@ -263,6 +277,33 @@ public class GameManager{
   }
 
   /**
+   * For running turn when an AI is the current player
+   */
+  public void AITurn(){
+
+    // if still in initial board distribution
+    if(distributeUnits){
+      // claim country if still open countries
+      // else place a unit on country owned
+      if(!allCountriesOwned()){
+        currentPlayer.claimCountry2();
+        nextTurn();
+        return;
+      }else{
+        currentPlayer.placeUnit();
+      }
+      nextTurn();
+      return;
+    }
+
+    // Play regular turn
+    currentPlayer.playTurn();
+    nextTurn();
+
+  }
+
+
+  /**
    * Switches turn to next player. 
    * If during regular turn, turn distribution of units is called
    */
@@ -271,6 +312,12 @@ public class GameManager{
     turnIndex %= numPlayers;
     currentPlayer = players[turnIndex];
     MainGUI.setPlayerTurnLabel(currentPlayer.getName() + "'s Turn");
+
+    // If current player is AI player then allow to run turn
+    if(currentPlayer.getPlayerType().equals("AI")){
+      AITurn();
+      return;
+    }
 
     if(turn){
       calcDistributeUnits();
@@ -302,7 +349,7 @@ public class GameManager{
   /**
    * calculates and distributes new units at beginning of turn
    */
-  private void calcDistributeUnits(){
+  public void calcDistributeUnits(){
     int numNewUnits = 3;
     int numUnits;
     int userChoice;
@@ -317,7 +364,9 @@ public class GameManager{
     currentPlayer.setAvailableUnits(numNewUnits);
 
     setPlaceUnits();
-    MainGUI.distributeUnitsTurn(currentPlayer);
+    if(usingGUI){
+      MainGUI.distributeUnitsTurn(currentPlayer);
+    }
   }
 
 

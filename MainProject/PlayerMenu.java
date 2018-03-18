@@ -162,8 +162,11 @@ public class PlayerMenu{
       @Override
       public void handle(ActionEvent event) {
 
-        /* get input name and capitalize first letter */
+        /* get input name and capitalize first letter ensuring length > 0*/
         String name = playerNameTextField.getText();
+        if(name.length() <= 0){
+          return;
+        }
         playerNames[currPlayer] = name.substring(0, 1).toUpperCase() + name.substring(1);
         currPlayer++;
         playerNameTextField.setText("");

@@ -30,7 +30,7 @@ import java.util.*;
 
 
 public class MainGUI extends Application { 
-  static private boolean autoSetUpGame = true;
+  static private boolean autoSetUpGame = false;
   static private GameManager gameManager;
   static private MapGUI mapGUI;
 
@@ -50,6 +50,7 @@ public class MainGUI extends Application {
 
   /**
    * moves the scene to the next pane
+   * Default is Map Pane shown at each turn
    */
   static public void nextPane(){
     setPane(nextPane);
@@ -100,15 +101,23 @@ public class MainGUI extends Application {
   /**
    * Initializes the map gui
    */
-  public void initializeMapGUI(){
+  static public void initializeMapGUI(){
     mapGUI = new MapGUI();
   }
 
   /**
    * Initialize game manager with gui
    */
-  public void initializeGameManager(){
+  static public void initializeGameManager(){
     gameManager = new GameManager(true);
+  }
+
+  /**
+   * Call for continuing country selection during initializeBoard
+   * method during distribution of initial units at beginning of game
+   */
+  static public void continueCountrySelection(){
+    initializeBoard.continueCountrySelection();
   }
 
   /**
@@ -228,7 +237,8 @@ public class MainGUI extends Application {
    */
   static public void startAttack(Country fromCountry, Country toCountry){
     Combat combat = new Combat(fromCountry, toCountry);
-    setPane(combat.getPane(), getMapPane());
+    CombatGUI combatGUI = new CombatGUI(combat);
+    setPane(combatGUI.getPane(), getMapPane());
     gameManager.clearState();
   }
 

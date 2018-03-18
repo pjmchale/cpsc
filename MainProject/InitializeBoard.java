@@ -92,41 +92,7 @@ public class InitializeBoard{
     selectedCountryLabel.setLayoutY(35);
     countrySelectionPane.getChildren().add(selectedCountryLabel);
 
-    /* Button for continuing after selection */
-    Button continueSelectionButton = new Button("Continue ...");
-    continueSelectionButton.setTextFill(Color.RED);
-    continueSelectionButton.setFont(new Font("Times New Roman Bold", 18));
-    continueSelectionButton.layoutXProperty().bind(countrySelectionPane.widthProperty().subtract(continueSelectionButton.widthProperty()).divide(2));
-    continueSelectionButton.layoutYProperty().bind(countrySelectionPane.heightProperty().subtract(50));
-    continueSelectionButton.setOnAction(new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-          /* if all units distributed we're done */
-          if(allUnitsDistributed()){
-              gameManager.clearState();
-              initializeBoardPane.getChildren().clear();
-              MainGUI.nextPane();
-          }
-          
-          if(gameManager.getCurrentPlayer() == currPlayer){
-              return;
-          }else{
-            if(!gameManager.allCountriesOwned()){
-              currPlayer = gameManager.getCurrentPlayer();
-              selectedCountryLabel.setText(currPlayer.getName() + " Please Choose A Country To Take Ownership");
-              gameManager.setDistributeUnits();
-            }else{
-              currPlayer = gameManager.getCurrentPlayer();
-              selectedCountryLabel.setText(currPlayer.getName() + " Please Choose A Country To Place Unit (" + gameManager.getCurrentPlayer().getAvailableUnits() + " available)");
-              gameManager.setDistributeUnits();
-            }
-
-          }
-        }
-    });
-    countrySelectionPane.getChildren().add(continueSelectionButton);
-
-
+    
     /* Randomize turn order button */
     clicked = false;
     Button randomizeTurnButton = new Button("Click to Randomize Turn Order....");
@@ -167,7 +133,39 @@ public class InitializeBoard{
   }
 
   /**
+   * Function for checking if taking ownership fo countries at beginning
+   * of game has completed (called by GameManager)
+   */
+  public void continueCountrySelection(){
+    /* if all units distributed we're done */
+    if(allUnitsDistributed()){
+        gameManager.clearState();
+        initializeBoardPane.getChildren().clear();
+        MainGUI.nextPane();
+        return;
+    }
+    
+    
+    if(gameManager.getCurrentPlayer() == currPlayer){
+        return;
+    }else{
+      if(!gameManager.allCountriesOwned()){
+        currPlayer = gameManager.getCurrentPlayer();
+        selectedCountryLabel.setText(currPlayer.getName() + " Please Choose A Country To Take Ownership");
+        gameManager.setDistributeUnits();
+      }else{
+        currPlayer = gameManager.getCurrentPlayer();
+        selectedCountryLabel.setText(currPlayer.getName() + " Please Choose A Country To Place Unit (" + gameManager.getCurrentPlayer().getAvailableUnits() + " available)");
+        gameManager.setDistributeUnits();
+      }
+
+    }
+  }
+
+
+  /**
    * Method for initial distribution of units on the board
+   * calculates number of units each player gets at beginning of game
    */
   private void distributeUnits(){
     int i;
