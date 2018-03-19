@@ -79,6 +79,9 @@ public class CombatGUI {
 		final double paneY = (600 - HEIGHT) / 2;
 		Rectangle backDrop = new Rectangle(paneX, paneY, WIDTH, HEIGHT);
 		pane.getChildren().add(MainGUI.getMapPane());
+		//int a[] = {1,2};
+		//int b[] = {2,2};
+		//displayBattle(a,b);
 		displayTransition(backDrop);
 		// displaySelection(backDrop);
 	}
@@ -202,6 +205,7 @@ public class CombatGUI {
 	 *            an array of values that will represent the defenders units
 	 */
 	public void displayBattle(int[] atkDice, int[] defDice) {
+		System.out.println("starting gui");
 		double alignY = 100.0;
 		int maxDice = Math.max(atkDice.length, defDice.length);
 		int minDice = Math.min(atkDice.length, defDice.length);
@@ -246,10 +250,15 @@ public class CombatGUI {
 		iv.setFitHeight(btnHeight);
 		iv.setFitWidth(btnHeight * ratio);
 		nextBtn.setGraphic(iv);
-		pane.getChildren().add(nextBtn);
 		nextBtn.setLayoutX((960 - image.getWidth()) - 60);
 		nextBtn.setLayoutY(500);
 		setNextBtnEvents(nextBtn);
+		pane.getChildren().add(nextBtn);
+	}
+	public void displayVictoryTransition(CallAction ca) {
+		getUnits("Move " + attackingCountry.getName() + "(" + (attackingCountry.getUnits() - 1) + ")",
+				"To " + defendingCountry.getName(), new Rectangle(0, 0, 960, 600), ca);
+		
 	}
 
 	/**
@@ -262,6 +271,7 @@ public class CombatGUI {
 		CallAction moveUnitAction = new CallAction() {
 			public void use(int amount) {
 				if (amount > 0 && amount < attackingCountry.getUnits()) {
+					System.out.println("using");
 					defender.loseCountry(defendingCountry);
 					attacker.gainCountry(defendingCountry);
 					defendingCountry.setOwner(attacker);
@@ -278,8 +288,7 @@ public class CombatGUI {
 				@Override
 				public void handle(ActionEvent event) {
 					pane.getChildren().clear();
-					getUnits("Move " + attackingCountry.getName() + "(" + (attackingCountry.getUnits() - 1) + ")",
-							"To " + defendingCountry.getName(), new Rectangle(0, 0, 960, 600), moveUnitAction);
+					displayVictoryTransition(moveUnitAction);
 				}
 			});
 
