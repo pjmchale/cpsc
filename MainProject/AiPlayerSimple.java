@@ -9,7 +9,7 @@ public class AiPlayerSimple extends Player{
     private Map map;
     private LinkedHashMap<Country,Double> turnValues = new LinkedHashMap<Country,Double>();
     private boolean turnOver;
-    static int counter = 0;
+    private int counter = 0;
 
     /**
      * Basic Constructor for an AiPlayerSimple
@@ -112,7 +112,7 @@ public class AiPlayerSimple extends Player{
 
     /**
      * Calculates a relative value for each country on the game board
-     * Takes into account who owns it, how many neighbours this owns, player ranking
+     * Takes into account who owns it, how many neighbours this owns and player ranking
      */
     public void calculateTurnValues(){
         Player owner;
@@ -129,7 +129,7 @@ public class AiPlayerSimple extends Player{
         }
 
 
-        //Loops through every country on the map, assigning a value and adding the two to a LinkedHashMap
+        //Loops through every country on the map, assigning a value and adding the two to a unsorted LinkedHashMap
         for (Country country : countries){
             owner = country.getOwner();
             if (owner == this){
@@ -144,7 +144,7 @@ public class AiPlayerSimple extends Player{
                     value += (1 / Math.pow(2, country.getUnits()-1));
                 }
 
-                //Adds value based on how many of a countries neighbour the AI owns
+                //Adds value based on how many of a countries neighbour this AI owns
                 for (Country neighbour : map.getNeighbours(country)) {
                     if (neighbour.getOwner() != this) {
                         numNeighboursUnowned++;
@@ -152,7 +152,7 @@ public class AiPlayerSimple extends Player{
                 }
                 value += ((double)(map.getNeighbours(country).size() - numNeighboursUnowned)) / (map.getNeighbours(country).size());
 
-                //Adds value based on the standing of the owner, Higher Standing = higher value
+                //Adds value based on the standing of the owner, Higher Standing = higher value, makes the AI go after the player in first place
                 ownerStanding = 1;
                 for (Player player : players) {
                     if (owner.getTotalUnits() < player.getTotalUnits()) {
@@ -163,7 +163,7 @@ public class AiPlayerSimple extends Player{
             }
             unsortedValues.put(country,value);
         }
-
+        //Sorts the unsorted LinkedHashMap into a sorted one base on the values
         double highest;
         Country country = null;
         while (unsortedValues.size() > 0){
@@ -227,6 +227,10 @@ public class AiPlayerSimple extends Player{
         }
     }
 
+    /**
+     * Method that places units in the place unit face of the game
+     * Perioritizes countries that are boarding a unowned country with more or equal units
+     */
     public void placeUnit(){
         //Test Print
         System.out.println("Available Units: \n" + getAvailableUnits() + "\n");
@@ -255,7 +259,7 @@ public class AiPlayerSimple extends Player{
 
     /**
      * Determines if it should fortify
-     * @return an  AiMove or null if no fortification is required
+     * @return AiMove if fortification required or null if no fortification required
      */
     public AiMove determineFortification(){
         determineConflicts();
@@ -289,6 +293,7 @@ public class AiPlayerSimple extends Player{
         Country fromCountry = null;
         AiMove move;
 
+        //This is only during the first move of a turn
         if (getAvailableUnits() > 0){
             for (Country conflict: conflicts){
                 neighbours = map.getNeighbours(conflict);
@@ -304,6 +309,7 @@ public class AiPlayerSimple extends Player{
             return move;
         }
 
+        //This happens as long as the AI has a valid attack it can do
         else if (canAttack()){
             for (Country conflict: conflicts){
                 if (conflict.getUnits() > 1){
