@@ -5,10 +5,11 @@ import java.util.LinkedHashMap;
  * Class representing an AI player
  */
 public class AiPlayerSimple extends Player{
-    private ArrayList<Country> conflicts;
+    private ArrayList<Country> conflicts = new ArrayList<Country>();;
     private Map map;
     private LinkedHashMap<Country,Double> turnValues = new LinkedHashMap<Country,Double>();
     private boolean turnOver;
+    static int counter = 0;
 
     /**
      * Basic Constructor for an AiPlayerSimple
@@ -31,23 +32,50 @@ public class AiPlayerSimple extends Player{
      * This method will simulate the whole turn until it can no longer do an action
      */
     public void playTurn(){
-        turnOver = false;
+        boolean turnOver = false;
         int unitsLost;
         Combat combat;
-
+        counter = 0;
+        System.out.print("Available Units:");
+        System.out.println(getAvailableUnits());
         //Adds available units to the first country
         AiMove move = determineMove();
         move.getFromCountry().addUnits(getAvailableUnits());
         setAvailableUnits(0);
 
+        //Test Print
+        System.out.println("Stuck 1.1 \n");
+        System.out.println("To Country:");
+        System.out.println(move.getToCountry() + "\n");
+        System.out.println("From Country:");
+        System.out.println(move.getFromCountry()+ "\n");
+        System.out.println("Move units:");
+        System.out.println(move.getNumUnits()+ "\n");
+
         //Plays the turn until it can no longer do a valid move
-        while (turnOver == false){
+
+        while (turnOver == false && counter < 5){
+            counter++;
+            System.out.println("Stuck 2.2 \n");
             if (move == null){
+                System.out.println("Turn Over");
                 turnOver = true;
             }
             else{
-                while (move.getNumUnits() > 0 && move.getToCountry().getOwner() != this){
-                    combat = new Combat(move.getFromCountry(), move.getToCountry());
+                counter = 0;
+                while (move.getNumUnits() > 0 && move.getToCountry().getOwner() != this && counter < 5){
+
+                    //Test Print
+                    counter++;
+                    System.out.println("Stuck 3.3 \n");
+                    System.out.println("To Country:");
+                    System.out.println(move.getToCountry() + "\n");
+                    System.out.println("From Country:");
+                    System.out.println(move.getFromCountry()+ "\n");
+                    System.out.println("Move units:");
+                    System.out.println(move.getNumUnits()+ "\n");
+
+                    MainGUI.startAttack(move.getFromCountry(), move.getToCountry());
                     move.setNumUnits(move.getFromCountry().getUnits() - 1);
                 }
                 move = determineMove();
@@ -155,7 +183,7 @@ public class AiPlayerSimple extends Player{
      * Determines what countries owned are bordering countries owned by other players
      */
     public void determineConflicts(){
-        conflicts = new ArrayList<Country>();
+        conflicts.clear();
         ArrayList<Country> neighbours;
         for (Country country : getCountriesOwned()) {
             neighbours = map.getNeighbours(country);
@@ -165,11 +193,12 @@ public class AiPlayerSimple extends Player{
                 }
             }
         }
+        //System.out.println(conflicts);
     }
 
     /**
      * Method used in the claiming of countries (before the actual game begins)
-     */
+     * Currently uses the second method since TurnValues is not the correct way to calculate the value for a country
     public void claimCountry(){
         calculateTurnValues();
         for (Country key: turnValues.keySet()) {
@@ -180,8 +209,13 @@ public class AiPlayerSimple extends Player{
             }
         }
     }
+     **/
+
+
     /**
      * Method used in the claiming of countries (before the actual game begins)
+     * Currently just claims countries in the order of the arraylist found in the map
+     * Basically goes NA > SA > EU etc...
      */
     public void claimCountry2(){
         for (Country country: map.getCountries()) {
@@ -194,8 +228,27 @@ public class AiPlayerSimple extends Player{
     }
 
     public void placeUnit(){
-        for (Country country: getCountriesOwned()) {
-            this.placeUnits(country,1);
+        //Test Print
+        System.out.println("Available Units: \n" + getAvailableUnits() + "\n");
+
+        determineConflicts();
+        ArrayList<Country> neighbours;
+        for (Country conflict: conflicts) {
+            neighbours = map.getNeighbours(conflict);
+            for (Country neighbour : neighbours) {
+                if (neighbour.getOwner() != this && neighbour.getUnits() >= conflict.getUnits()) {
+                    //Test Print
+                    System.out.println("Placed in: \n" + conflict.getName() + "\n");
+
+                    this.placeUnits(conflict, 1);
+                    return;
+                }
+            }
+        }
+        //Backup if somehow there is no neighbouring unowned country with more or even amount of units
+        for (Country conflict: conflicts){
+            System.out.println("Something's weird y'all");
+            this.placeUnits(conflict, 1);
             return;
         }
     }
@@ -229,6 +282,7 @@ public class AiPlayerSimple extends Player{
     public AiMove determineMove(){
         determineConflicts();
         calculateTurnValues();
+        System.out.println(turnValues);
         ArrayList<Country> neighbours = new ArrayList<Country>();
         double highestValue = 0.0;
         Country toCountry = null;
@@ -246,22 +300,24 @@ public class AiPlayerSimple extends Player{
                     }
                 }
             }
-            move = new AiMove(toCountry, fromCountry, getAvailableUnits() + fromCountry.getUnits() - 1 );
+            move = new AiMove(fromCountry, toCountry, getAvailableUnits() + fromCountry.getUnits() - 1 );
             return move;
         }
 
         else if (canAttack()){
             for (Country conflict: conflicts){
-                neighbours = map.getNeighbours(conflict);
-                for (Country neighbour: neighbours){
-                    if (turnValues.get(neighbour) > highestValue){
-                        highestValue = turnValues.get(neighbour);
-                        toCountry = neighbour;
-                        fromCountry = conflict;
+                if (conflict.getUnits() > 1){
+                    neighbours = map.getNeighbours(conflict);
+                    for (Country neighbour: neighbours){
+                        if (turnValues.get(neighbour) > highestValue){
+                            highestValue = turnValues.get(neighbour);
+                            toCountry = neighbour;
+                            fromCountry = conflict;
+                        }
                     }
                 }
             }
-            move = new AiMove(toCountry, fromCountry, fromCountry.getUnits() - 1 );
+            move = new AiMove(fromCountry, toCountry, fromCountry.getUnits() - 1 );
             return move;
         }
         else {
