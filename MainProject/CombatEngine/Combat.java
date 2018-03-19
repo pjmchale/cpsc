@@ -1,7 +1,7 @@
 package CombatEngine;
 import MapStage.*;
 import gameEngine.*;
-import Player.*;
+import PlayerPackage.*;
 import java.lang.Math;
 import java.util.Arrays;
 import java.util.Scanner;
