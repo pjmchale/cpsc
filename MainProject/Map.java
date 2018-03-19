@@ -1,24 +1,24 @@
-// package map;
+package Map;
 
 import java.util.*;
 
 public class Map {
 
-	private ArrayList<Country> countries;
+	private ArrayList<Country> countries = new ArrayList<Country>(Arrays.asList());
+	private ArrayList<Country> northAmerica = new ArrayList<Country>(Arrays.asList());
+	private ArrayList<Country> southAmerica = new ArrayList<Country>(Arrays.asList());
+	private ArrayList<Country> africa = new ArrayList<Country>(Arrays.asList());
+	private ArrayList<Country> europe = new ArrayList<Country>(Arrays.asList());
+	private ArrayList<Country> oceania = new ArrayList<Country>(Arrays.asList());
+	private ArrayList<Country> asia = new ArrayList<Country>(Arrays.asList());
 	private boolean buildGUI = true;
-	// /**
-	//  * Initialize the map
-	//  * This is blank for now but may contain code to help build the gui
-	// */
-	// public void initializeMap() {
-
-	// }
-
+	private String currentContinent = "";
 	/**
 	 * Contructor used to build the map
 	*/
 	Map(boolean newBuildGUI){
 		buildGUI = newBuildGUI;
+		currentContinent = "North America";
 		// North America
 		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2,22));
 		buildMap(1, neighbours, "Alaska");
@@ -35,6 +35,7 @@ public class Map {
 		neighbours = new ArrayList<Integer>(Arrays.asList(4,6));
 		buildMap(5, neighbours, "Mexico");
 		
+		currentContinent = "South America";
 		// South America
 		neighbours = new ArrayList<Integer>(Arrays.asList(5,7,8));
 		buildMap(6, neighbours, "Peru");
@@ -45,6 +46,7 @@ public class Map {
 		neighbours = new ArrayList<Integer>(Arrays.asList(6,7));
 		buildMap(8, neighbours, "Argentina");
 
+		currentContinent = "Europe";
 		// Europe
 		neighbours = new ArrayList<Integer>(Arrays.asList(3,10));
 		buildMap(9, neighbours, "Iceland");
@@ -58,6 +60,7 @@ public class Map {
 		neighbours = new ArrayList<Integer>(Arrays.asList(10,11,16,17));
 		buildMap(12, neighbours, "Eastern Europe");
 
+		currentContinent = "Africa";
 		// Africa
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,14,16));
 		buildMap(13, neighbours, "North Africa");
@@ -68,6 +71,7 @@ public class Map {
 		neighbours = new ArrayList<Integer>(Arrays.asList(14));
 		buildMap(15, neighbours, "South Africa");	
 
+		currentContinent = "Asia";
 		// Asia
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,12,13,14,17,18,19));
 		buildMap(16, neighbours, "Middle East");
@@ -90,6 +94,7 @@ public class Map {
 		neighbours = new ArrayList<Integer>(Arrays.asList(1,20,21));
 		buildMap(22, neighbours, "Kamchatka");
 
+		currentContinent = "Oceania";
 		// Oceania 
 		neighbours = new ArrayList<Integer>(Arrays.asList(19,24,25));
 		buildMap(23, neighbours, "Indonesia");
@@ -118,7 +123,9 @@ public class Map {
 	 * @param the number of units
 	*/
 	public void setUnitsTo(Country country, int numUnits) {
-		country.setUnits(numUnits);
+		if (numUnits >= 0){
+			country.setUnits(numUnits);
+		}	
 	}
 
 	/**
@@ -137,11 +144,31 @@ public class Map {
 	 * @param a String to be the name of the country
 	*/
 	private void buildMap(int id, ArrayList<Integer> neighbours, String name) {
-		Country country = new Country(id, neighbours, name, buildGUI);
-		if (countries == null){
-			countries = new ArrayList<Country>(Arrays.asList(country));		
-		} else {
-			countries.add(country);
+		Country country = new Country(id, neighbours, name, buildGUI, currentContinent);
+		countries.add(country);
+		
+		switch(currentContinent){
+			case "North America":
+				northAmerica.add(country);
+			break;
+			case "South America": 
+				southAmerica.add(country);
+				
+			break;
+			case "Europe": 
+				europe.add(country);
+				
+			break;
+			case "Africa": 
+				africa.add(country);
+			break;
+			case "Asia": 
+				asia.add(country);
+				
+			break;
+			case "Oceania": 
+				oceania.add(country);
+			break;
 		}
 	}
 
@@ -159,6 +186,48 @@ public class Map {
 		}
 		return output;
 	}
+
+	public ArrayList<Country> getContinentCountries(String continent){
+		ArrayList<Country> output;
+
+		switch(continent){
+			case "North America":
+				output = northAmerica;
+			break;
+			case "South America": 
+				output = southAmerica;
+			break;
+			case "Europe": 
+				output = europe;
+			break;
+			case "Africa": 
+				output = africa;
+			break;
+			case "Asia": 
+				output = asia;
+			break;
+			case "Oceania": 
+				output = oceania;
+			break;
+			default:
+				output = new ArrayList<Country>();
+		}
+
+		return output;
+	}
+
+	public boolean checkIfTheyOwenWholeContinenet(Country country){
+		boolean output = true;
+		Player owner = country.getOwner();
+		String contientName = country.getContinent();
+		
+		for (Country i: getContinentCountries(contientName)){
+			output = output&&(owner == i.getOwner());
+		}
+
+		return output;
+	}
+
 
 	/**
 	 * Used to highlight only a country's neighbours

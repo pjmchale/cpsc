@@ -1,4 +1,4 @@
-// package map;
+package Map;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

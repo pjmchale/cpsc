@@ -1,4 +1,5 @@
-// package map;
+package Map;
+
 import java.util.*;
 
 public class Country {
@@ -12,18 +13,16 @@ public class Country {
 	private int ownerID;
 	private CountryGUI countryGUI;
 	private boolean hasGUI;
+	private String continent = "";
 
 	/**
 	 * Constructor to add the country image to the view, set the id, neighbours, name, ownerID, ownerName, amount of units, and pane
 	 * @param The country ID
 	 * @param The countrys neighbours
 	 * @param The country's name
-	 * @param The owners ID number
-	 * @param The owners name
-	 * @param The number of units on the country
-	 * @param The Pane to add the country too
+	 * @param Wether to build the GUI or not
 	*/
-	Country(int id, ArrayList<Integer> newNeighbours, String newName, boolean buildGUI){
+	Country(int id, ArrayList<Integer> newNeighbours, String newName, boolean buildGUI, String newContinent){
 		name = newName;
 		numUnits = 0;
 		ownerName = "OPEN";
@@ -31,6 +30,8 @@ public class Country {
 		countryID = id;
 		neighbours = newNeighbours;
 		hasGUI = buildGUI;
+		continent = newContinent;
+
 		if (buildGUI){
 			countryGUI = new CountryGUI(name, numUnits, ownerName, ownerID, this);
 		}
@@ -141,6 +142,15 @@ public class Country {
 	}
 
 	/**
+	 * Used to get continent
+	 * @return the continent
+	*/
+	public String getContinent(){
+		return continent;
+	}
+
+
+	/**
 	 * Used to check who the owner of the country is
 	 * @param a Player to check if they are the owner
 	 * @return a boolean if the player is the owner or not
@@ -158,7 +168,6 @@ public class Country {
 		int possibleNeighbour = country.getCountryID();
 		return neighbours.contains(possibleNeighbour);
 	}
-
 
 	/**
 	 * Used to set the opactity of a country image
