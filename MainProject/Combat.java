@@ -161,7 +161,9 @@ public class Combat {
 		gui.displayBattle(attacking, defending);
 
 	}
-
+	public Pane getPane() {
+		return gui.getPane();
+	}
 
 
 	// getters and setters
