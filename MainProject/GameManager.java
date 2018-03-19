@@ -313,15 +313,16 @@ public class GameManager{
     currentPlayer = players[turnIndex];
     MainGUI.setPlayerTurnLabel(currentPlayer.getName() + "'s Turn");
 
+    if(turn){
+      calcDistributeUnits();
+    }
+
     // If current player is AI player then allow to run turn
     if(currentPlayer.getPlayerType().equals("AI")){
       AITurn();
       return;
     }
 
-    if(turn){
-      calcDistributeUnits();
-    }
   }
 
   /**
@@ -359,12 +360,13 @@ public class GameManager{
     countriesOwned = currentPlayer.getCountriesOwned();
 
     if(countriesOwned.size() > numNewUnits){
-      numNewUnits = countriesOwned.size();
+      numNewUnits = countriesOwned.size()/3;
     }
+
     currentPlayer.setAvailableUnits(numNewUnits);
 
-    setPlaceUnits();
-    if(usingGUI){
+    if(usingGUI && !currentPlayer.getPlayerType().equals("AI")){
+      setPlaceUnits();
       MainGUI.distributeUnitsTurn(currentPlayer);
     }
   }

@@ -141,7 +141,9 @@ public class InitializeBoard{
     if(allUnitsDistributed()){
         gameManager.clearState();
         initializeBoardPane.getChildren().clear();
+        gameManager.setTurnState();
         MainGUI.nextPane();
+        gameManager.nextTurn();
         return;
     }
     

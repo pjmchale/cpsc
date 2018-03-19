@@ -57,7 +57,7 @@ public class MainGUI extends Application {
     if(nextPane == getMapPane()){
       getMapPane().toFront();
       root.getChildren().add(turnHBox);
-      gameManager.setTurnState();
+      //gameManager.setTurnState();
       playerTurnLabel.setVisible(true);
     }
 
@@ -237,8 +237,8 @@ public class MainGUI extends Application {
    */
   static public void startAttack(Country fromCountry, Country toCountry){
     Combat combat = new Combat(fromCountry, toCountry);
-    CombatGUI combatGUI = new CombatGUI(combat);
-    setPane(combatGUI.getPane(), getMapPane());
+    //CombatGUI combatGUI = new CombatGUI(combat);
+    setPane(combat.getPane(), getMapPane());
     gameManager.clearState();
   }
 
