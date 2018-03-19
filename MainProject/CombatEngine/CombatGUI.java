@@ -1,7 +1,7 @@
 package CombatEngine;
 
 import Animation.*;
-import Map.*;
+import MapPackage.*;
 import gameEngine.*;
 import Player.*;
 import java.lang.Math;
