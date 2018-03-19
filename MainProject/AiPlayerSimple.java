@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import Map.*;
+import GameEngine.*;
+import CombatEngine.*;
+
+package Player;
 
 /**
  * Class representing an AI player
@@ -10,7 +15,7 @@ public class AiPlayerSimple extends Player{
     private LinkedHashMap<Country,Double> turnValues = new LinkedHashMap<Country,Double>();
     private boolean turnOver;
     private int counter = 0;
-
+    private AiMove move;
     /**
      * Basic Constructor for an AiPlayerSimple
      * @param name
@@ -38,8 +43,9 @@ public class AiPlayerSimple extends Player{
         counter = 0;
         System.out.print("Available Units:");
         System.out.println(getAvailableUnits());
+
         //Adds available units to the first country
-        AiMove move = determineMove();
+        move = determineMove();
         move.getFromCountry().addUnits(getAvailableUnits());
         setAvailableUnits(0);
 
@@ -113,7 +119,10 @@ public class AiPlayerSimple extends Player{
         }
         return country.getUnits();
     }
-
+    public void moveUnits(){
+        move.getToCountry().addUnits(move.getNumUnits);
+        move.getFromCOuntry().addUnits(-move.getNumUnits);
+    }
     /**
      * Calculates a relative value for each country on the game board
      * Takes into account who owns it, how many neighbours this owns and player ranking

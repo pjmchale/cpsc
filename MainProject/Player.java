@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import Map.*;
+import CombatEngine.*;
+
+package Player;
 
 /**
  * Class representing a player
