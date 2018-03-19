@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import Map.*;
+import MapStage.*;
 import CombatEngine.*;
 
 package PlayerPackage;

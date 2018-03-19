@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import Map.*;
+import MapStage.*;
 import GameEngine.*;
 import CombatEngine.*;
 
