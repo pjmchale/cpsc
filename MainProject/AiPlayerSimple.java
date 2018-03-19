@@ -74,8 +74,10 @@ public class AiPlayerSimple extends Player{
                     System.out.println(move.getFromCountry()+ "\n");
                     System.out.println("Move units:");
                     System.out.println(move.getNumUnits()+ "\n");
+
                     MainGUI.removeAttackGUIElements();
                     MainGUI.startAttack(move.getFromCountry(), move.getToCountry());
+
                     move.setNumUnits(move.getFromCountry().getUnits() - 1);
                 }
                 move = determineMove();
@@ -87,6 +89,8 @@ public class AiPlayerSimple extends Player{
             fortification.getFromCountry().addUnits(-(fortification.getNumUnits()));
             fortification.getToCountry().addUnits(fortification.getNumUnits());
         }
+        MainGUI.nextPane();
+        MainGUI.nextTurn();
     }
 
     /**
