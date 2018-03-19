@@ -1,6 +1,7 @@
-import Map.*;
-
 package PlayerPackage;
+
+import MapStage.*;
+
 
 public class AiMove{
     private Country fromCountry;

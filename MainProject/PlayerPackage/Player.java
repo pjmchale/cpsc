@@ -1,9 +1,11 @@
+package PlayerPackage;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import MapStage.*;
 import CombatEngine.*;
 
-package PlayerPackage;
+
 
 /**
  * Class representing a player

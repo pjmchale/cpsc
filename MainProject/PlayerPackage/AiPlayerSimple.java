@@ -1,10 +1,11 @@
+package PlayerPackage;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import MapStage.*;
 import GameEngine.*;
 import CombatEngine.*;
 
-package PlayerPackage;
 
 /**
  * Class representing an AI player
