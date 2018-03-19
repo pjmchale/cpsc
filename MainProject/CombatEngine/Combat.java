@@ -1,5 +1,5 @@
 package CombatEngine;
-import MapPackage.*;
+import MapStage.*;
 import gameEngine.*;
 import Player.*;
 import java.lang.Math;
