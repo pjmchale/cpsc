@@ -1,4 +1,4 @@
-package Map;
+package MapStage;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

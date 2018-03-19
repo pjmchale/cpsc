@@ -1,7 +1,7 @@
-package Map;
+package MapStage;
 
 import java.util.*;
-
+import Player.*;
 public class Country {
 
 	private String name = "";
@@ -14,6 +14,8 @@ public class Country {
 	private CountryGUI countryGUI;
 	private boolean hasGUI;
 	private String continent = "";
+	private ArrayList<Country> continentCountries; 
+	private int continentBonusAmount;
 
 	/**
 	 * Constructor to add the country image to the view, set the id, neighbours, name, ownerID, ownerName, amount of units, and pane
@@ -22,7 +24,7 @@ public class Country {
 	 * @param The country's name
 	 * @param Wether to build the GUI or not
 	*/
-	Country(int id, ArrayList<Integer> newNeighbours, String newName, boolean buildGUI, String newContinent){
+	Country(int id, ArrayList<Integer> newNeighbours, String newName, boolean buildGUI, String newContinent, int newContinentBonusAmount){
 		name = newName;
 		numUnits = 0;
 		ownerName = "OPEN";
@@ -31,6 +33,7 @@ public class Country {
 		neighbours = newNeighbours;
 		hasGUI = buildGUI;
 		continent = newContinent;
+		continentBonusAmount = newContinentBonusAmount;
 
 		if (buildGUI){
 			countryGUI = new CountryGUI(name, numUnits, ownerName, ownerID, this);
@@ -91,6 +94,9 @@ public class Country {
 		if (hasGUI){
 			countryGUI.updateOwnerVisual(ownerName, ownerID);
 		}
+		if(checkIfTheyOwnWholeContinenet()){
+			// TELL SOMETHING HERE TO ADD THE BONUS AMOUNT
+		}
 	}
 
 	/**
@@ -149,6 +155,20 @@ public class Country {
 		return continent;
 	}
 
+
+	public void setContinentCountries(ArrayList<Country> newCountries){
+		continentCountries = newCountries;
+	}
+
+	public boolean checkIfTheyOwnWholeContinenet(){
+		boolean output = true;
+
+		for (Country i: continentCountries){
+			output = output&&(owner == i.getOwner());
+		}
+
+		return output;
+	}
 
 	/**
 	 * Used to check who the owner of the country is

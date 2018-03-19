@@ -5,6 +5,12 @@
  * scene.
  */
 
+package GameEngine;
+import Player.*;
+import CombatEngine.*;
+import Map.*;
+import java.util.*;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -145,6 +151,13 @@ public class MainGUI extends Application {
    */
   static public void setCountryClicked(Country country){
     gameManager.setCountryClicked(country);
+  }
+
+  /**
+   * will move to next turn
+   */
+  static public void nextTurn(){
+    gameManager.nextTurn();
   }
 
   

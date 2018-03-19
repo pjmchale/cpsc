@@ -13,12 +13,14 @@ public class Map {
 	private ArrayList<Country> asia = new ArrayList<Country>(Arrays.asList());
 	private boolean buildGUI = true;
 	private String currentContinent = "";
+	private int currentBonusAmount;
 	/**
 	 * Contructor used to build the map
 	*/
 	Map(boolean newBuildGUI){
 		buildGUI = newBuildGUI;
 		currentContinent = "North America";
+		currentBonusAmount = 10;
 		// North America
 		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2,22));
 		buildMap(1, neighbours, "Alaska");
@@ -36,6 +38,7 @@ public class Map {
 		buildMap(5, neighbours, "Mexico");
 		
 		currentContinent = "South America";
+		currentBonusAmount = 10;
 		// South America
 		neighbours = new ArrayList<Integer>(Arrays.asList(5,7,8));
 		buildMap(6, neighbours, "Peru");
@@ -47,6 +50,7 @@ public class Map {
 		buildMap(8, neighbours, "Argentina");
 
 		currentContinent = "Europe";
+		currentBonusAmount = 10;
 		// Europe
 		neighbours = new ArrayList<Integer>(Arrays.asList(3,10));
 		buildMap(9, neighbours, "Iceland");
@@ -61,6 +65,7 @@ public class Map {
 		buildMap(12, neighbours, "Eastern Europe");
 
 		currentContinent = "Africa";
+		currentBonusAmount = 10;
 		// Africa
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,14,16));
 		buildMap(13, neighbours, "North Africa");
@@ -72,6 +77,7 @@ public class Map {
 		buildMap(15, neighbours, "South Africa");	
 
 		currentContinent = "Asia";
+		currentBonusAmount = 10;
 		// Asia
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,12,13,14,17,18,19));
 		buildMap(16, neighbours, "Middle East");
@@ -95,6 +101,7 @@ public class Map {
 		buildMap(22, neighbours, "Kamchatka");
 
 		currentContinent = "Oceania";
+		currentBonusAmount = 10;
 		// Oceania 
 		neighbours = new ArrayList<Integer>(Arrays.asList(19,24,25));
 		buildMap(23, neighbours, "Indonesia");
@@ -107,6 +114,8 @@ public class Map {
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(24,25));
 		buildMap(26, neighbours, "Eastern Australia");	
+
+		assignContinenets();
 	}
 
 	/**
@@ -144,7 +153,7 @@ public class Map {
 	 * @param a String to be the name of the country
 	*/
 	private void buildMap(int id, ArrayList<Integer> neighbours, String name) {
-		Country country = new Country(id, neighbours, name, buildGUI, currentContinent);
+		Country country = new Country(id, neighbours, name, buildGUI, currentContinent, currentBonusAmount);
 		countries.add(country);
 		
 		switch(currentContinent){
@@ -216,17 +225,24 @@ public class Map {
 		return output;
 	}
 
-	public boolean checkIfTheyOwenWholeContinenet(Country country){
-		boolean output = true;
-		Player owner = country.getOwner();
-		String contientName = country.getContinent();
-		
-		for (Country i: getContinentCountries(contientName)){
-			output = output&&(owner == i.getOwner());
+	public void assignContinenets(){
+		for (Country i: countries){
+			i.setContinentCountries(getContinentCountries(i.getContinent()));
 		}
-
-		return output;
 	}
+
+
+	// public boolean checkIfTheyOwnWholeContinenet(Country country){
+	// 	boolean output = true;
+	// 	Player owner = country.getOwner();
+	// 	String contientName = country.getContinent();
+		
+	// 	for (Country i: getContinentCountries(contientName)){
+	// 		output = output&&(owner == i.getOwner());
+	// 	}
+
+	// 	return output;
+	// }
 
 
 	/**

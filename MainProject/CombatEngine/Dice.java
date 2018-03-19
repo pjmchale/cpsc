@@ -1,3 +1,4 @@
+package CombatEngine;
 import java.util.Random;
 /**
  * Simulates a dice. With amount of sides to roll from
@@ -26,6 +27,10 @@ public class Dice{
 	 */
 	public void setSides(int sides){
 		this.sides = sides;
+	}
+	
+	public int getSides() {
+		return sides;
 	}
 	
 	/**

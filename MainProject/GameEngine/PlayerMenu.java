@@ -4,6 +4,9 @@
  * players from the user and creates them
  */
 
+package GameEngine;
+
+import Player.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -117,8 +120,10 @@ public class PlayerMenu{
         }
 
         if(numPlayers >= 2 && numPlayers <= 6){
-          maxAIPlayers = 6-numPlayers;
-          numPlayerLabel.setText("Please Enter Number of AI Players (max " + maxAIPlayers + ")");
+          //maxAIPlayers = 6-numPlayers;
+          maxAIPlayers = 1;
+          //numPlayerLabel.setText("Please Enter Number of AI Players (max " + maxAIPlayers + ")");
+          numPlayerLabel.setText("Please Enter Number of AI Players (max 1)");
           playerMenu.getChildren().remove(confirmPlayersButton);
           playerMenu.getChildren().add(confirmAIPlayersButton);
           numPlayersTextField.setText("");
