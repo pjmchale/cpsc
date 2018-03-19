@@ -4,6 +4,11 @@
  * distribute the initial units
  */
 
+package GameEngine;
+import Player.*;
+import CombatEngine.*;
+import Map.*;
+
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -217,6 +222,9 @@ public class InitializeBoard{
     selectedCountryLabel.setText(currPlayer.getName() + " Please Choose A Country To Take Ownership");
     initializeBoardPane.getChildren().add(countrySelectionPane);
     gameManager.setDistributeUnits(true);
+    if(gameManager.getCurrentPlayer().getPlayerType().equals("AI")){
+      gameManager.AITurn();
+    }
 
   }
 

@@ -4,6 +4,11 @@
  * are the functions for the game high level game logic
  */
 
+package GameEngine;
+
+import Player.*;
+import CombatEngine.*;
+import Map.*;
 import java.util.*;
 
 public class GameManager{ 
@@ -298,7 +303,6 @@ public class GameManager{
 
     // Play regular turn
     currentPlayer.playTurn();
-    nextTurn();
 
   }
 
