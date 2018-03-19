@@ -3,7 +3,7 @@ import java.util.Scanner;
 import Map.*;
 import CombatEngine.*;
 
-package Player;
+package PlayerPackage;
 
 /**
  * Class representing a player

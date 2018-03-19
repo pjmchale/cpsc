@@ -4,7 +4,7 @@ import Map.*;
 import GameEngine.*;
 import CombatEngine.*;
 
-package Player;
+package PlayerPackage;
 
 /**
  * Class representing an AI player
@@ -69,7 +69,7 @@ public class AiPlayerSimple extends Player{
             }
             else{
                 counter = 0;
-                while (move.getNumUnits() > 0 && move.getToCountry().getOwner() != this && counter < 5){
+                while (move.getNumUnits() > 0 && move.getToCountry().getOwner() != this && counter < 10){
 
                     //Test Print
                     counter++;

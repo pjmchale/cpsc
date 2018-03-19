@@ -1,6 +1,6 @@
 import Map.*;
 
-package Player;
+package PlayerPackage;
 
 public class AiMove{
     private Country fromCountry;
