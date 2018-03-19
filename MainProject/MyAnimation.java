@@ -1,3 +1,4 @@
+package Animation;
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
