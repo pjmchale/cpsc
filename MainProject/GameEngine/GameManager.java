@@ -16,7 +16,7 @@ public class GameManager{
   private boolean usingGUI = false;
   private int numPlayers;
   private Player[] players;
-  private Map map;
+  private WorldMap map;
   private Player currentPlayer;
   private Country countryClicked;
   private Country toCountry;
@@ -44,7 +44,7 @@ public class GameManager{
   /**
    * getter for game map
    */
-  public Map getMap(){
+  public WorldMap getMap(){
     return map;
   }
 
@@ -52,7 +52,7 @@ public class GameManager{
    * creates the map for the game
    */
   private void initializeMap(boolean withGUI){
-    map = new Map(withGUI);
+    map = new WorldMap(withGUI);
   }
 
   /**
