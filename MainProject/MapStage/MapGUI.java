@@ -1,5 +1,8 @@
 package MapStage;
 
+
+import PlayerPackage.*;
+import GameEngine.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

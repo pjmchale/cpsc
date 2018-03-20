@@ -1,7 +1,7 @@
 package MapStage;
 
 import java.util.*;
-import Player.*;
+import PlayerPackage.*;
 public class Country {
 
 	private String name = "";

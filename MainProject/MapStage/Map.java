@@ -1,6 +1,7 @@
 package MapStage;
 
 import java.util.*;
+import PlayerPackage.*;
 
 public class Map {
 
