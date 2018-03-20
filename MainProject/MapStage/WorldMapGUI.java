@@ -40,7 +40,7 @@ public class WorldMapGUI {
 	 * Will build the GUI parts of the initial map
 	 * The connections image and the boarders image
 	*/
-	WorldMapGUI() {
+	public WorldMapGUI() {
 
 		// Add the connections
 		String imagePathConnections = "mapAssets/Connections.png";
