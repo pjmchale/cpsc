@@ -43,7 +43,7 @@ public class CountryGUI {
 	 * @param Wether to build the GUI or not
 	*/
 	CountryGUI(String newName, int newNumUnits, String newOwnerName, int newOwnerID, Country country) {
-		MapGUI mapGUI = MainGUI.getMapGUI();
+		WorldMapGUI mapGUI = MainGUI.getMapGUI();
 		root = mapGUI.getPane();
 		name = newName;
 		numUnits = newNumUnits;
