@@ -1,6 +1,6 @@
 package CombatEngine;
 import MapStage.*;
-import gameEngine.*;
+import GameEngine.*;
 import PlayerPackage.*;
 import java.lang.Math;
 import java.util.Arrays;
@@ -41,7 +41,7 @@ public class Combat {
 	private Pane pane;
 	private CombatGUI gui;
 
-	Combat(Country attackingCountry, Country defendingCountry) {
+	public Combat(Country attackingCountry, Country defendingCountry) {
 		dice = new Dice();
 		this.attackingCountry = attackingCountry;
 		this.defendingCountry = defendingCountry;
