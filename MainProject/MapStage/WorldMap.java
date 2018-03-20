@@ -3,7 +3,7 @@ package MapStage;
 import java.util.*;
 import PlayerPackage.*;
 
-public class Map {
+public class WorldMap {
 
 	private ArrayList<Country> countries = new ArrayList<Country>(Arrays.asList());
 	private ArrayList<Country> northAmerica = new ArrayList<Country>(Arrays.asList());
@@ -18,7 +18,7 @@ public class Map {
 	/**
 	 * Contructor used to build the map
 	*/
-	Map(boolean newBuildGUI){
+	WorldMap(boolean newBuildGUI){
 		buildGUI = newBuildGUI;
 		currentContinent = "North America";
 		currentBonusAmount = 10;
