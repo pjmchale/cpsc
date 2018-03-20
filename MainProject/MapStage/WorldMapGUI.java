@@ -24,7 +24,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.control.Label;
 import javafx.scene.paint.*;
 
-public class MapGUI {
+public class WorldMapGUI {
 
 	private Pane root = new Pane();
 
@@ -40,7 +40,7 @@ public class MapGUI {
 	 * Will build the GUI parts of the initial map
 	 * The connections image and the boarders image
 	*/
-	MapGUI() {
+	WorldMapGUI() {
 
 		// Add the connections
 		String imagePathConnections = "mapAssets/Connections.png";
