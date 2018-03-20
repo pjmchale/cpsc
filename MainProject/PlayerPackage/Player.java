@@ -22,7 +22,7 @@ public class Player{
      * Constructors for a player
      * @param name is the name of the player
      */
-    Player(String name){
+    public Player(String name){
         this.name = name;
         id = numPlayer;
         numPlayer++;

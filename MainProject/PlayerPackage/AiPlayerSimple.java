@@ -121,8 +121,8 @@ public class AiPlayerSimple extends Player{
         return country.getUnits();
     }
     public void moveUnits(){
-        move.getToCountry().addUnits(move.getNumUnits);
-        move.getFromCOuntry().addUnits(-move.getNumUnits);
+        move.getToCountry().addUnits(move.getNumUnits());
+        move.getFromCountry().addUnits(-move.getNumUnits());
     }
     /**
      * Calculates a relative value for each country on the game board
