@@ -12,7 +12,7 @@ import CombatEngine.*;
  */
 public class AiPlayerSimple extends Player{
     private ArrayList<Country> conflicts = new ArrayList<Country>();;
-    private Map map;
+    private WorldMap map;
     private LinkedHashMap<Country,Double> turnValues = new LinkedHashMap<Country,Double>();
     private boolean turnOver;
     private int counter = 0;
@@ -22,7 +22,7 @@ public class AiPlayerSimple extends Player{
      * @param name
      * @param map is required for the ai to make non-random decisions
      */
-    public AiPlayerSimple(String name, Map map){
+    public AiPlayerSimple(String name, WorldMap map){
         super(name);
         this.map = map;
     }

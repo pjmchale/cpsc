@@ -6,7 +6,7 @@
 
 package GameEngine;
 
-import Player.*;
+import PlayerPackage.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
