@@ -18,7 +18,7 @@ public class WorldMap {
 	/**
 	 * Contructor used to build the map
 	*/
-	WorldMap(boolean newBuildGUI){
+	public WorldMap(boolean newBuildGUI){
 		buildGUI = newBuildGUI;
 		currentContinent = "North America";
 		currentBonusAmount = 10;
