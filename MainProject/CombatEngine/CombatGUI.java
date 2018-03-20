@@ -1,8 +1,8 @@
 package CombatEngine;
 
-import Animation.*;
+import AnimatedSequences.*;
 import MapStage.*;
-import gameEngine.*;
+import GameEngine.*;
 import PlayerPackage.*;
 import java.lang.Math;
 import java.util.Arrays;
