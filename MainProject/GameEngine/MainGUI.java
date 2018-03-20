@@ -38,7 +38,7 @@ import java.util.*;
 public class MainGUI extends Application { 
   static private boolean autoSetUpGame = false;
   static private GameManager gameManager;
-  static private MapGUI mapGUI;
+  static private WorldMapGUI mapGUI;
 
   static private Pane currentPane;
   static private Pane nextPane;
@@ -108,7 +108,7 @@ public class MainGUI extends Application {
    * Initializes the map gui
    */
   static public void initializeMapGUI(){
-    mapGUI = new MapGUI();
+    mapGUI = new WorldMapGUI();
   }
 
   /**
@@ -143,7 +143,7 @@ public class MainGUI extends Application {
   /**
    * getter for getting map GUI
    */
-  static public MapGUI getMapGUI(){
+  static public WorldMapGUI getMapGUI(){
     return mapGUI;
   }
   /**
