@@ -5,9 +5,9 @@
  */
 
 package GameEngine;
-import Player.*;
+import PlayerPackage.*;
 import CombatEngine.*;
-import Map.*;
+import MapStage.*;
 
 
 import javafx.application.Application;
