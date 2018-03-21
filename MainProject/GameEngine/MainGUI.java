@@ -281,7 +281,7 @@ public class MainGUI extends Application {
     root.setPrefSize(resX,resY);
 
     /* Set the background image for the game */
-    Image backgroundImage = new Image("BlueRadialGradient.jpg");
+    Image backgroundImage = new Image("GameEngine/BlueRadialGradient.jpg");
     ivBackground = new ImageView();
     ivBackground.setImage(backgroundImage);
     ivBackground.setFitWidth(resX);

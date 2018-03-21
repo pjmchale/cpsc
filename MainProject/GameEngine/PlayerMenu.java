@@ -65,7 +65,7 @@ public class PlayerMenu{
 
     /* Enter number of players label */
     Label numPlayerLabel = new Label();
-    numPlayerLabel.setText("Please Enter Number of Human Players (2-6)");
+    numPlayerLabel.setText("Please Enter Number of Human Players (0-6)");
     numPlayerLabel.setFont(new Font("Times New Roman Bold", 18));
     numPlayerLabel.setTextFill(Color.RED);
     numPlayerLabel.layoutXProperty().bind(playerMenu.widthProperty().subtract(numPlayerLabel.widthProperty()).divide(3));
@@ -97,7 +97,6 @@ public class PlayerMenu{
         if(numAIPlayers >= 0 && numAIPlayers <= maxAIPlayers){
           playerMenu.getChildren().clear();
           createPlayers();
-          return;
         }else{
           numPlayersTextField.setStyle("-fx-text-fill: red;");
         }
@@ -119,11 +118,11 @@ public class PlayerMenu{
           return;
         }
 
-        if(numPlayers >= 2 && numPlayers <= 6){
-          //maxAIPlayers = 6-numPlayers;
-          maxAIPlayers = 1;
-          //numPlayerLabel.setText("Please Enter Number of AI Players (max " + maxAIPlayers + ")");
-          numPlayerLabel.setText("Please Enter Number of AI Players (max 1)");
+        /* FIX THIS */
+        //if(numPlayers >= 2 && numPlayers <= 6){
+        if(numPlayers >= 0 && numPlayers <= 6){
+          maxAIPlayers = 6-numPlayers;
+          numPlayerLabel.setText("Please Enter Number of AI Players (max " + maxAIPlayers + ")");
           playerMenu.getChildren().remove(confirmPlayersButton);
           playerMenu.getChildren().add(confirmAIPlayersButton);
           numPlayersTextField.setText("");
@@ -142,6 +141,15 @@ public class PlayerMenu{
 
   /* Create number of players selected by user */
   private void createPlayers(){
+
+    // If no human players
+    if(numPlayers == 0){
+      String[] names = new String[0];
+      MainGUI.getGameManager().initializePlayers(numPlayers, numAIPlayers, names);
+      playerMenu.getChildren().clear();
+      MainGUI.nextPane();
+    }
+
     Label playerNameLabel = new Label();
     playerNameLabel.setText("Player 1 Please Enter Your Name");
     playerNameLabel.setFont(new Font("Times New Roman Bold", 18));
