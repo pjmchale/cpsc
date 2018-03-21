@@ -147,7 +147,7 @@ public class WorldMap {
 	 * @param a String to be the name of the country
 	*/
 	private void buildMap(int id, ArrayList<Integer> neighbours, String name) {
-		Country country = new Country(id, neighbours, name, buildGUI, currentContinent, currentBonusAmount);
+		Country country = new Country(id, neighbours, name, buildGUI);
 		countries.add(country);
 		
 		switch(currentContinent){
@@ -230,7 +230,7 @@ public class WorldMap {
 
 		boolean ownsNorthAmerica = true;
 		for (Country x: northAmerica){
-			ownsNorthAmerica = ownsNorthAmerica&&(x.getOwner() == playerToCheckBonus)
+			ownsNorthAmerica = ownsNorthAmerica&&(x.getOwner() == playerToCheckBonus);
 		}
 		if (ownsNorthAmerica){
 			bonusTotal += 5;
@@ -238,7 +238,7 @@ public class WorldMap {
 
 		boolean ownsSouthAmerica = true;
 		for (Country x: southAmerica){
-			ownsSouthAmerica = ownsSouthAmerica&&(x.getOwner() == playerToCheckBonus)
+			ownsSouthAmerica = ownsSouthAmerica&&(x.getOwner() == playerToCheckBonus);
 		}
 		if (ownsSouthAmerica){
 			bonusTotal += 2;
@@ -246,7 +246,7 @@ public class WorldMap {
 
 		boolean ownsEurope = true;
 		for (Country x: europe){
-			ownsEurope = ownsEurope&&(x.getOwner() == playerToCheckBonus)
+			ownsEurope = ownsEurope&&(x.getOwner() == playerToCheckBonus);
 		}
 		if (ownsEurope){
 			bonusTotal += 5;
@@ -254,7 +254,7 @@ public class WorldMap {
 
 		boolean ownsAfrica = true;
 		for (Country x: africa){
-			ownsAfrica = ownsAfrica&&(x.getOwner() == playerToCheckBonus)
+			ownsAfrica = ownsAfrica&&(x.getOwner() == playerToCheckBonus);
 		}
 		if (ownsAfrica){
 			bonusTotal += 3;
@@ -262,7 +262,7 @@ public class WorldMap {
 
 		boolean ownsAsia = true;
 		for (Country x: asia){
-			ownsAsia = ownsAsia&&(x.getOwner() == playerToCheckBonus)
+			ownsAsia = ownsAsia&&(x.getOwner() == playerToCheckBonus);
 		}
 		if (ownsAsia){
 			bonusTotal += 7;
@@ -270,7 +270,7 @@ public class WorldMap {
 
 		boolean ownsOceania = true;
 		for (Country x: oceania){
-			ownsOceania = ownsOceania&&(x.getOwner() == playerToCheckBonus)
+			ownsOceania = ownsOceania&&(x.getOwner() == playerToCheckBonus);
 		}
 		if (ownsOceania){
 			bonusTotal += 7;

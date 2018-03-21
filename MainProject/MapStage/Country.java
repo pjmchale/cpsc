@@ -13,9 +13,10 @@ public class Country {
 	private int ownerID;
 	private CountryGUI countryGUI;
 	private boolean hasGUI;
-	private String continent = "";
-	private ArrayList<Country> continentCountries; 
-	private int continentBonusAmount;
+	// private String continent = "";
+	// private ArrayList<Country> continentCountries; 
+	// private int continentBonusAmount;
+	// private boolean ownsWholeContinent;
 
 	/**
 	 * Constructor to add the country image to the view, set the id, neighbours, name, ownerID, ownerName, amount of units, and pane
@@ -24,7 +25,7 @@ public class Country {
 	 * @param The country's name
 	 * @param Wether to build the GUI or not
 	*/
-	Country(int id, ArrayList<Integer> newNeighbours, String newName, boolean buildGUI, String newContinent, int newContinentBonusAmount){
+	Country(int id, ArrayList<Integer> newNeighbours, String newName, boolean buildGUI){
 		name = newName;
 		numUnits = 0;
 		ownerName = "OPEN";
@@ -32,8 +33,8 @@ public class Country {
 		countryID = id;
 		neighbours = newNeighbours;
 		hasGUI = buildGUI;
-		continent = newContinent;
-		continentBonusAmount = newContinentBonusAmount;
+		// continent = newContinent;
+		// continentBonusAmount = newContinentBonusAmount;
 
 		if (buildGUI){
 			countryGUI = new CountryGUI(name, numUnits, ownerName, ownerID, this);
@@ -94,9 +95,7 @@ public class Country {
 		if (hasGUI){
 			countryGUI.updateOwnerVisual(ownerName, ownerID);
 		}
-		if(checkIfTheyOwnWholeContinenet()){
-			// TELL SOMETHING HERE TO ADD THE BONUS AMOUNT
-		}
+		// ownsWholeContinent = checkIfTheyOwnWholeContinenet();
 	}
 
 	/**
@@ -151,24 +150,24 @@ public class Country {
 	 * Used to get continent
 	 * @return the continent
 	*/
-	public String getContinent(){
-		return continent;
-	}
+	// public String getContinent(){
+	// 	return continent;
+	// }
 
 
-	public void setContinentCountries(ArrayList<Country> newCountries){
-		continentCountries = newCountries;
-	}
+	// public void setContinentCountries(ArrayList<Country> newCountries){
+	// 	continentCountries = newCountries;
+	// }
 
-	public boolean checkIfTheyOwnWholeContinenet(){
-		boolean output = true;
+	// public boolean checkIfTheyOwnWholeContinenet(){
+	// 	boolean output = true;
 
-		for (Country i: continentCountries){
-			output = output&&(owner == i.getOwner());
-		}
+	// 	for (Country i: continentCountries){
+	// 		output = output&&(owner == i.getOwner());
+	// 	}
 
-		return output;
-	}
+	// 	return output;
+	// }
 
 	/**
 	 * Used to check who the owner of the country is
