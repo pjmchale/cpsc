@@ -145,6 +145,11 @@ public class infoView {
 				R = 128;
 				G = 25;
 				B = 117;
+			case 7:
+				// Ugly Purple 2.0 RGB(128, 25, 117)
+				R = 228;
+				G = 0;
+				B = 157;
 			break;
 			default:
 				// White RGB(255, 255, 255)

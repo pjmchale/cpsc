@@ -27,6 +27,7 @@ import javafx.scene.paint.*;
 public class WorldMapGUI {
 
 	private Pane root = new Pane();
+	private ImageView imageViewTurnIcon;
 
 	/**
 	 * Used to get the pane
@@ -99,7 +100,7 @@ public class WorldMapGUI {
 	    	// Create a name label
 	    	Label name = new Label(i.getName());
 			name.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-			name.setLayoutX(20);
+			name.setLayoutX(30);
 			name.setLayoutY(corY);
 
 	    	// Create a circle icon dot
@@ -116,6 +117,34 @@ public class WorldMapGUI {
 			corY += 30;
 	    }
 
+	    // Add the turn icon in the correct spot
+		imageViewTurnIcon = new ImageView();
+		imageViewTurnIcon.setPreserveRatio(true);
+		imageViewTurnIcon.setSmooth(true);
+		imageViewTurnIcon.setLayoutX(15);
+		imageViewTurnIcon.setLayoutY(351);
+		imageViewTurnIcon.toFront();
+
+		root.getChildren().add(imageViewTurnIcon);
+
+	}
+
+	public void updateTurnIcon(Player currentPlayer){
+		Player[] players = MainGUI.getAllPlayers();
+		int index = -1;
+
+		for (int i = 0; (i < players.length) && (index == -1); i++) {
+	        if (players[i] == currentPlayer) {
+	            index = i;
+	        }
+	    }
+
+	  	// Move the turn icon
+	  	String imagePathTurnIcon = "mapAssets/Turn_Icon.png";
+		Image imageTurnIcon = new Image(imagePathTurnIcon);
+	  	imageViewTurnIcon.setImage(imageTurnIcon);
+	  	imageViewTurnIcon.toFront();
+	    imageViewTurnIcon.setLayoutY(321 + (index*30));
 	}
 
 	/**
