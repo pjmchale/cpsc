@@ -36,7 +36,7 @@ import java.util.*;
 
 
 public class MainGUI extends Application { 
-  static private boolean autoSetUpGame = false;
+  static private boolean autoSetUpGame = true;
   static private GameManager gameManager;
   static private WorldMapGUI mapGUI;
 
@@ -300,16 +300,17 @@ public class MainGUI extends Application {
     /* PLayer turn label */
     playerTurnLabel = new Label();
     playerTurnLabel.setFont(new Font("Times New Roman Bold", 30));
+    playerTurnLabel.setStyle("-fx-font: 30 arial; -fx-base: #ee2211;");
     playerTurnLabel.setTextFill(Color.RED);
     playerTurnLabel.setLayoutX(30);
-    playerTurnLabel.layoutYProperty().bind(root.heightProperty().subtract(30));
+    playerTurnLabel.layoutYProperty().bind(root.heightProperty().subtract(40));
     root.getChildren().add(playerTurnLabel);
     playerTurnLabel.setVisible(false);
 
     /* VBox for user selection during turn */
     turnHBox = new HBox();
     turnHBox.layoutXProperty().bind(root.widthProperty().subtract(turnHBox.widthProperty()).divide(2));
-    turnHBox.setLayoutY(30);
+    turnHBox.setLayoutY(20);
 
     /* Country selection label */
     countrySelectionLabel = new Label("");
