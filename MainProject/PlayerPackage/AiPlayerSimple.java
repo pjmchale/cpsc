@@ -116,12 +116,12 @@ public class AiPlayerSimple extends Player{
         if (getAvailableUnits()>0){
             move.getFromCountry().addUnits(getAvailableUnits());
             setAvailableUnits(0);
-            //MainGUI.removeAttackGUIElements();
+            MainGUI.removeAttackGUIElements();
             MainGUI.startAttack(move.getFromCountry(), move.getToCountry());
         }
 
         else if (move != null){
-            //MainGUI.removeAttackGUIElements();
+            MainGUI.removeAttackGUIElements();
             MainGUI.startAttack(move.getFromCountry(), move.getToCountry());
         }
 
