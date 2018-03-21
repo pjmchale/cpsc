@@ -17,6 +17,7 @@ public class AiPlayerSimple extends Player{
     private boolean turnOver;
     private int counter = 0;
     private AiMove move;
+    private AiMove fortification;
     /**
      * Basic Constructor for an AiPlayerSimple
      * @param name
@@ -112,16 +113,15 @@ public class AiPlayerSimple extends Player{
             System.out.println(ex);
         }
         move = determineMove();
-        AiMove fortification;
         if (getAvailableUnits()>0){
             move.getFromCountry().addUnits(getAvailableUnits());
             setAvailableUnits(0);
-            MainGUI.removeAttackGUIElements();
+            //MainGUI.removeAttackGUIElements();
             MainGUI.startAttack(move.getFromCountry(), move.getToCountry());
         }
 
         else if (move != null){
-            MainGUI.removeAttackGUIElements();
+            //MainGUI.removeAttackGUIElements();
             MainGUI.startAttack(move.getFromCountry(), move.getToCountry());
         }
 
