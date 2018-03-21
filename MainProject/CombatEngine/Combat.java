@@ -43,12 +43,13 @@ public class Combat {
 
 	public Combat(Country attackingCountry, Country defendingCountry) {
 		dice = new Dice();
+		System.out.println("COMMBAAAATTTSDGFSGSDGSDFSDFDS");
 		this.attackingCountry = attackingCountry;
 		this.defendingCountry = defendingCountry;
 		attacker = attackingCountry.getOwner();
 		defender = defendingCountry.getOwner();
 		gui = new CombatGUI(this);
-		// initPane();
+		//initPane();
 
 	}
 

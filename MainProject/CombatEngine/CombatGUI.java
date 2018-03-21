@@ -42,6 +42,7 @@ public class CombatGUI {
 	private Pane pane;
 
 	public CombatGUI(Combat cb) {
+		System.out.println("Combat Graphic");
 		pane = new Pane();
 		dice = cb.getDice();
 		attacker = cb.getAttacker();
@@ -55,12 +56,14 @@ public class CombatGUI {
 	}
 
 	public void displayTransition(Rectangle backDrop) {
+		System.out.println("display transition");
 		Pane transition = new Pane();
 		pane.getChildren().add(transition);
 		MyAnimation transitionAnimation = new MyAnimation(transition, false);
 		transitionAnimation.setFrames(AnimationTransition.getToBattleTransition(transition));
 		transitionAnimation.start();
 		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.5), ae -> {
+			System.out.println("active");
 			pane.getChildren().remove(MainGUI.getMapPane());
 			displaySelection(backDrop);
 			transition.toFront();
@@ -78,6 +81,7 @@ public class CombatGUI {
 	 * intializes the display for the battle
 	 */
 	public void initPane() {
+		System.out.println("init combat gui pane");
 		pane = new Pane();
 		final double WIDTH = 960.0;
 		final double HEIGHT = 600.0;
@@ -85,14 +89,11 @@ public class CombatGUI {
 		final double paneY = (600 - HEIGHT) / 2;
 		Rectangle backDrop = new Rectangle(paneX, paneY, WIDTH, HEIGHT);
 		pane.getChildren().add(MainGUI.getMapPane());
-		//int a[] = {1,2};
-		//int b[] = {2,2};
-		//displayBattle(a,b);
 		displayTransition(backDrop);
-		// displaySelection(backDrop);
 	}
 
 	public Pane getPane() {
+		System.out.println("getting the combat pane");
 		return pane;
 	}
 
@@ -120,6 +121,7 @@ public class CombatGUI {
 	 *            the area these elements will be drawn onto
 	 */
 	public void displaySelection(Rectangle backDrop) {
+		System.out.println("Displaying selection screen");
 		constantDisplayElements(backDrop);
 		CallAction displayResults = new CallAction() {
 			public void use(int amount) {
@@ -137,7 +139,10 @@ public class CombatGUI {
 		};
 
 		CallAction attackerDone = new CallAction() {
+			
 			public void use(int amount) {
+				
+				System.out.println("attacking amount: " + amount +"   "+ attackingCountry.getUnits());
 				if (amount > 0 && amount < attackingCountry.getUnits()) {
 					if (amount >= 3)
 						amount = 3;
@@ -146,20 +151,24 @@ public class CombatGUI {
 					pane.getChildren().clear();
 					constantDisplayElements(backDrop);
 					if (isHuman(defender)) {
+						System.out.println("Human defending action");
 						getUnits(defender.getName() + "(" + (defendingCountry.getUnits()) + ")",
 								" how many units(DEFEND)", backDrop, displayResults);
+					System.out.println("test points");
 					}else {
+						System.out.println("AI defending");
 						defenderAI(displayResults);
 					}
 				}
 			}
 		};
+		System.out.println("checking");
 		if (isHuman(attacker)) {
 			getUnits(attacker.getName() + "(" + (attackingCountry.getUnits() - 1) + ")", " how many units(ATTACK)",
 					backDrop, attackerDone);
 		} else {
+			System.out.println("AI attacking point check");
 			attackerAI(attackerDone);
-
 		}
 
 	}
@@ -167,6 +176,7 @@ public class CombatGUI {
 	public void attackerAI(CallAction ca) {
 		AiPlayerSimple ai = (AiPlayerSimple) attacker;
 		int amount = ai.getAttackingUnits(attackingCountry);
+		System.out.println("Ai decided to attack with: " +amount);
 		ca.use(amount);
 	}
 
@@ -394,6 +404,7 @@ public class CombatGUI {
 	 * @ca the action that will happen once the user presses "CONFIRM"
 	 */
 	public void getUnits(String title, String msg, Rectangle field, CallAction ca) {
+		System.out.println("asking for units");
 		final double WIDTH = 300.0;
 		final double HEIGHT = 100.0;
 		double x = field.getX() + (field.getWidth() - WIDTH) / 2;
