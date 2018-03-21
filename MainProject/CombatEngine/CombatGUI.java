@@ -272,8 +272,15 @@ public class CombatGUI {
 		pane.getChildren().add(nextBtn);
 	}
 	public void displayVictoryTransition(CallAction ca) {
-		getUnits("Move " + attackingCountry.getName() + "(" + (attackingCountry.getUnits() - 1) + ")",
+		if(isHuman(attacker)) {
+			getUnits("Move " + attackingCountry.getName() + "(" + (attackingCountry.getUnits() - 1) + ")",
 				"To " + defendingCountry.getName(), new Rectangle(0, 0, 960, 600), ca);
+		}else {
+			System.out.println("AI moving units to new country");
+			AiPlayerSimple ai = (AiPlayerSimple) attacker;
+			ai.moveUnits();
+			ai.playTurn();
+		}
 		
 	}
 
@@ -314,7 +321,12 @@ public class CombatGUI {
 				@Override
 				public void handle(ActionEvent event) {
 					pane.getChildren().clear();
-					MainGUI.nextPane();
+					if(isHuman(attacker)){
+						MainGUI.nextPane();
+					}else {
+						AiPlayerSimple ai = (AiPlayerSimple) attacker;
+						ai.playTurn();
+					}
 				}
 			});
 		}
