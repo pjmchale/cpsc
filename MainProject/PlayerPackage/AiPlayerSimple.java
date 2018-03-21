@@ -103,6 +103,7 @@ public class AiPlayerSimple extends Player{
     }**/
 
     public void playTurn(){
+        Thread.sleep(500);
         move = determineMove();
         AiMove fortification;
         if (getAvailableUnits()>0){
@@ -116,7 +117,7 @@ public class AiPlayerSimple extends Player{
             MainGUI.removeAttackGUIElements();
             MainGUI.startAttack(move.getFromCountry(), move.getToCountry());
         }
-        
+
         else if(determineFortification() != null){
             fortification = determineFortification();
             fortification.getFromCountry().addUnits(-(fortification.getNumUnits()));
