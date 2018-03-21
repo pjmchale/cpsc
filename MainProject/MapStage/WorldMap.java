@@ -14,14 +14,12 @@ public class WorldMap {
 	private ArrayList<Country> asia = new ArrayList<Country>(Arrays.asList());
 	private boolean buildGUI = true;
 	private String currentContinent = "";
-	private int currentBonusAmount;
 	/**
 	 * Contructor used to build the map
 	*/
 	public WorldMap(boolean newBuildGUI){
 		buildGUI = newBuildGUI;
 		currentContinent = "North America";
-		currentBonusAmount = 10;
 		// North America
 		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2,22));
 		buildMap(1, neighbours, "Alaska");
@@ -39,7 +37,6 @@ public class WorldMap {
 		buildMap(5, neighbours, "Mexico");
 		
 		currentContinent = "South America";
-		currentBonusAmount = 10;
 		// South America
 		neighbours = new ArrayList<Integer>(Arrays.asList(5,7,8));
 		buildMap(6, neighbours, "Peru");
@@ -51,7 +48,6 @@ public class WorldMap {
 		buildMap(8, neighbours, "Argentina");
 
 		currentContinent = "Europe";
-		currentBonusAmount = 10;
 		// Europe
 		neighbours = new ArrayList<Integer>(Arrays.asList(3,10));
 		buildMap(9, neighbours, "Iceland");
@@ -66,7 +62,6 @@ public class WorldMap {
 		buildMap(12, neighbours, "Eastern Europe");
 
 		currentContinent = "Africa";
-		currentBonusAmount = 10;
 		// Africa
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,14,16));
 		buildMap(13, neighbours, "North Africa");
@@ -78,7 +73,6 @@ public class WorldMap {
 		buildMap(15, neighbours, "South Africa");	
 
 		currentContinent = "Asia";
-		currentBonusAmount = 10;
 		// Asia
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,12,13,14,17,18,19));
 		buildMap(16, neighbours, "Middle East");
@@ -102,7 +96,6 @@ public class WorldMap {
 		buildMap(22, neighbours, "Kamchatka");
 
 		currentContinent = "Oceania";
-		currentBonusAmount = 10;
 		// Oceania 
 		neighbours = new ArrayList<Integer>(Arrays.asList(19,24,25));
 		buildMap(23, neighbours, "Indonesia");
@@ -116,7 +109,7 @@ public class WorldMap {
 		neighbours = new ArrayList<Integer>(Arrays.asList(24,25));
 		buildMap(26, neighbours, "Eastern Australia");	
 
-		assignContinenets();
+		// assignContinenets();
 	}
 
 	/**
@@ -197,41 +190,94 @@ public class WorldMap {
 		return output;
 	}
 
-	public ArrayList<Country> getContinentCountries(String continent){
-		ArrayList<Country> output;
+	// public ArrayList<Country> getContinentCountries(String continent){
+	// 	ArrayList<Country> output;
 
-		switch(continent){
-			case "North America":
-				output = northAmerica;
-			break;
-			case "South America": 
-				output = southAmerica;
-			break;
-			case "Europe": 
-				output = europe;
-			break;
-			case "Africa": 
-				output = africa;
-			break;
-			case "Asia": 
-				output = asia;
-			break;
-			case "Oceania": 
-				output = oceania;
-			break;
-			default:
-				output = new ArrayList<Country>();
+	// 	switch(continent){
+	// 		case "North America":
+	// 			output = northAmerica;
+	// 		break;
+	// 		case "South America": 
+	// 			output = southAmerica;
+	// 		break;
+	// 		case "Europe": 
+	// 			output = europe;
+	// 		break;
+	// 		case "Africa": 
+	// 			output = africa;
+	// 		break;
+	// 		case "Asia": 
+	// 			output = asia;
+	// 		break;
+	// 		case "Oceania": 
+	// 			output = oceania;
+	// 		break;
+	// 		default:
+	// 			output = new ArrayList<Country>();
+	// 	}
+
+	// 	return output;
+	// }
+
+	// public void assignContinenets(){
+	// 	for (Country i: countries){
+	// 		i.setContinentCountries(getContinentCountries(i.getContinent()));
+	// 	}
+	// }
+
+	public int getContinentBonus(Player playerToCheckBonus){
+		int bonusTotal = 0;
+
+		boolean ownsNorthAmerica = true;
+		for (Country x: northAmerica){
+			ownsNorthAmerica = ownsNorthAmerica&&(x.getOwner() == playerToCheckBonus)
+		}
+		if (ownsNorthAmerica){
+			bonusTotal += 5;
 		}
 
-		return output;
-	}
-
-	public void assignContinenets(){
-		for (Country i: countries){
-			i.setContinentCountries(getContinentCountries(i.getContinent()));
+		boolean ownsSouthAmerica = true;
+		for (Country x: southAmerica){
+			ownsSouthAmerica = ownsSouthAmerica&&(x.getOwner() == playerToCheckBonus)
 		}
-	}
+		if (ownsSouthAmerica){
+			bonusTotal += 2;
+		}
 
+		boolean ownsEurope = true;
+		for (Country x: europe){
+			ownsEurope = ownsEurope&&(x.getOwner() == playerToCheckBonus)
+		}
+		if (ownsEurope){
+			bonusTotal += 5;
+		}
+
+		boolean ownsAfrica = true;
+		for (Country x: africa){
+			ownsAfrica = ownsAfrica&&(x.getOwner() == playerToCheckBonus)
+		}
+		if (ownsAfrica){
+			bonusTotal += 3;
+		}
+
+		boolean ownsAsia = true;
+		for (Country x: asia){
+			ownsAsia = ownsAsia&&(x.getOwner() == playerToCheckBonus)
+		}
+		if (ownsAsia){
+			bonusTotal += 7;
+		}
+
+		boolean ownsOceania = true;
+		for (Country x: oceania){
+			ownsOceania = ownsOceania&&(x.getOwner() == playerToCheckBonus)
+		}
+		if (ownsOceania){
+			bonusTotal += 7;
+		}
+
+		return bonusTotal;
+	}
 
 	// public boolean checkIfTheyOwnWholeContinenet(Country country){
 	// 	boolean output = true;
