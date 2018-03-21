@@ -332,6 +332,7 @@ public class MainGUI extends Application {
 
     /* attack selection button */
     Button attackButton = new Button("Attack");
+    attackButton.setStyle("-fx-font: 20 arial; -fx-base: #ee2211;");
     attackButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -346,6 +347,7 @@ public class MainGUI extends Application {
 
     /* fortify selection button */
     Button fortifyButton = new Button("Fortify");
+    fortifyButton.setStyle("-fx-font: 20 arial; -fx-base: #ee2211;");
     fortifyButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -361,6 +363,7 @@ public class MainGUI extends Application {
 
     /* end turn selection button */
     Button endTurnButton = new Button("End Turn");
+    endTurnButton.setStyle("-fx-font: 20 arial; -fx-base: #ee2211;");
     endTurnButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
@@ -448,6 +451,7 @@ public class MainGUI extends Application {
     /* start game button */
     Button startGame = new Button("Click Here To Begin Game");
     //startGame.getStyleClass().add("start_button");
+    startGame.setStyle("-fx-font: 30 arial; -fx-base: #ee2211;");
     startGame.setFont(new Font("Times New Roman Bold", 20));
     startGame.layoutXProperty().bind(menuPane.widthProperty().subtract(startGame.widthProperty()).divide(2));
     startGame.setLayoutY(centerY);

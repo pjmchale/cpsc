@@ -101,6 +101,7 @@ public class InitializeBoard{
     /* Randomize turn order button */
     clicked = false;
     Button randomizeTurnButton = new Button("Click to Randomize Turn Order....");
+    randomizeTurnButton.setStyle("-fx-font: 15 arial; -fx-base: #ee2211;");
     //randomizeTurnButton.setTextFill(Color.RED);
     randomizeTurnButton.setFont(new Font("Times New Roman Bold", 18));
     randomizeTurnButton.layoutXProperty().bind(initializeBoardPane.widthProperty().subtract(randomizeTurnButton.widthProperty()).divide(2));

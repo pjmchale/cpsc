@@ -81,6 +81,7 @@ public class PlayerMenu{
 
     /* confirm AI players button */
     Button confirmAIPlayersButton = new Button(" Continue ");
+    confirmAIPlayersButton.setStyle("-fx-font: 15 arial; -fx-base: #ee2211;");
     confirmAIPlayersButton.layoutXProperty().bind(playerMenu.widthProperty().subtract(confirmAIPlayersButton.widthProperty()).divide(2));
     confirmAIPlayersButton.setLayoutY(centerY + 50);
     confirmAIPlayersButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -105,6 +106,7 @@ public class PlayerMenu{
 
     /* confirm human players button */
     Button confirmPlayersButton = new Button(" Continue ");
+    confirmPlayersButton.setStyle("-fx-font: 15 arial; -fx-base: #ee2211;");
     confirmPlayersButton.layoutXProperty().bind(playerMenu.widthProperty().subtract(confirmPlayersButton.widthProperty()).divide(2));
     confirmPlayersButton.setLayoutY(centerY + 50);
     confirmPlayersButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -169,6 +171,7 @@ public class PlayerMenu{
     currPlayer = 0;
     String[] playerNames = new String[numPlayers];
     Button createPlayerButton = new Button(" Create Player ");
+    createPlayerButton.setStyle("-fx-font: 15 arial; -fx-base: #ee2211;");
     createPlayerButton.layoutXProperty().bind(playerMenu.widthProperty().subtract(createPlayerButton.widthProperty()).divide(2));
     createPlayerButton.setLayoutY(centerY + 50);
     createPlayerButton.setOnAction(new EventHandler<ActionEvent>() {
