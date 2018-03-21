@@ -37,6 +37,8 @@ public class AiPlayerSimple extends Player{
      * Since this is the simple version of the ai, it only looks at the most valuable move it can and does it.
      * This method will simulate the whole turn until it can no longer do an action
      */
+
+    /**
     public void playTurn(){
         boolean turnOver = false;
         int unitsLost;
@@ -98,6 +100,32 @@ public class AiPlayerSimple extends Player{
         }
         MainGUI.nextPane();
         MainGUI.nextTurn();
+    }**/
+
+    public void playTurn(){
+        move = determineMove();
+        if (getAvailableUnits()>0){
+            move.getFromCountry().addUnits(getAvailableUnits());
+            setAvailableUnits(0);
+            MainGUI.removeAttackGUIElements();
+            MainGUI.startAttack(move.getFromCountry(), move.getToCountry());
+        }
+
+        else if (move != null){
+            MainGUI.removeAttackGUIElements();
+            MainGUI.startAttack(move.getFromCountry(), move.getToCountry());
+        }
+        AiMove fortification = determineFortification();
+        else if(fortification != null){
+            fortification.getFromCountry().addUnits(-(fortification.getNumUnits()));
+            fortification.getToCountry().addUnits(fortification.getNumUnits());
+            MainGUI.nextPane();
+            MainGUI.nextTurn();
+        }
+        else {
+            MainGUI.nextPane();
+            MainGUI.nextTurn();
+        }
     }
 
     /**
