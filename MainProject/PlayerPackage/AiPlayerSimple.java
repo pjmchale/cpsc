@@ -105,10 +105,10 @@ public class AiPlayerSimple extends Player{
      * @return the amount of units sent to attack
      */
     public int getAttackingUnits(Country country){
-        if (country.getUnits() >= 3){
+        if (country.getUnits() > 3){
             return 3;
         }
-        return country.getUnits();
+        return country.getUnits() - 1;
     }
     /**
      * @param country is the country that it's defending from
