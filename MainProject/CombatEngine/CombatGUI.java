@@ -324,7 +324,7 @@ public class CombatGUI {
 					if(isHuman(attacker)){
 						MainGUI.nextPane();
 					}else {
-						AiPlayerSimple ai = (AiPlayerSimple) attacker;
+						AiPlayerSimple ai = (AiPlayerSimple) attacker; 
 						ai.playTurn();
 					}
 				}
