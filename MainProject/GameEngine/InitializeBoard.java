@@ -153,6 +153,10 @@ public class InitializeBoard{
         return;
     }
     
+    /* if AI allow them to place unit or take country */
+    if(gameManager.getCurrentPlayer().getPlayerType().equals("AI")){
+      return;
+    }
     
     if(gameManager.getCurrentPlayer() == currPlayer){
         return;

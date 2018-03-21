@@ -292,11 +292,10 @@ public class GameManager{
       // else place a unit on country owned
       if(!allCountriesOwned()){
         currentPlayer.claimCountry2();
-        nextTurn();
-        return;
       }else{
         currentPlayer.placeUnit();
       }
+      MainGUI.continueCountrySelection();
       nextTurn();
       return;
     }
