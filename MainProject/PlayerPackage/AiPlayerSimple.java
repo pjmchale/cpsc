@@ -105,7 +105,7 @@ public class AiPlayerSimple extends Player{
     public void playTurn(){
         try
         {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         }
         catch(InterruptedException ex)
         {
