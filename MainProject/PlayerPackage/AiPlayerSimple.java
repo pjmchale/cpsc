@@ -103,7 +103,14 @@ public class AiPlayerSimple extends Player{
     }**/
 
     public void playTurn(){
-        Thread.sleep(500);
+        try
+        {
+            Thread.sleep(500);
+        }
+        catch(InterruptedException ex)
+        {
+            System.out.println(ex);
+        }
         move = determineMove();
         AiMove fortification;
         if (getAvailableUnits()>0){
