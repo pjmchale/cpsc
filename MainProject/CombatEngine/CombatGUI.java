@@ -168,16 +168,19 @@ public class CombatGUI {
 					backDrop, attackerDone);
 		} else {
 			System.out.println("AI attacking point check");
-			attackerAI(attackerDone);
+			attackerAI(backDrop,displayResults);
 		}
 
 	}
 
-	public void attackerAI(CallAction ca) {
+	public void attackerAI(Rectangle backDrop, CallAction ca) {
 		AiPlayerSimple ai = (AiPlayerSimple) attacker;
 		int amount = ai.getAttackingUnits(attackingCountry);
+		numAttackers = amount;
+		combat.setNumAttackers(numAttackers);
 		System.out.println("Ai decided to attack with: " +amount);
-		ca.use(amount);
+		getUnits(defender.getName() + "(" + (defendingCountry.getUnits()) + ")",
+				" how many units(DEFEND)", backDrop, ca);
 	}
 
 	public void defenderAI(CallAction ca) {
@@ -427,6 +430,8 @@ public class CombatGUI {
 		ImageView panelView = new ImageView(panelImage);
 		panelView.setX(x - 30);
 		panelView.setY(y - 10);
+		Image bg = new Image("arts_assests/Combat_Background.png");
+		ImageView iv = new ImageView(bg);
 		Label message = centeredText(msg, backDrop);
 		message.setLayoutY(message.getLayoutY() + 30);
 		message.setTextFill(Color.rgb(5, 5, 5));
@@ -441,7 +446,7 @@ public class CombatGUI {
 		submitUnitsBtn.setOnAction(new inputNumberHandler(input, ca));
 		submitUnitsBtn.setLayoutX(x + WIDTH - 80);
 		submitUnitsBtn.setLayoutY(y + 68);
-
+		pane.getChildren().add(iv);
 		pane.getChildren().addAll(panelView, message, name);
 		pane.getChildren().add(input);
 		pane.getChildren().add(submitUnitsBtn);
