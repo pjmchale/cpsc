@@ -13,6 +13,9 @@ public class Country {
 	private int ownerID;
 	private CountryGUI countryGUI;
 	private boolean hasGUI;
+	private int centerX;
+	private int centerY;
+
 	// private String continent = "";
 	// private ArrayList<Country> continentCountries; 
 	// private int continentBonusAmount;
@@ -25,7 +28,7 @@ public class Country {
 	 * @param The country's name
 	 * @param Wether to build the GUI or not
 	*/
-	Country(int id, ArrayList<Integer> newNeighbours, String newName, boolean buildGUI){
+	Country(int id, ArrayList<Integer> newNeighbours, String newName, boolean buildGUI, int newCenterX, int newCenterY){
 		name = newName;
 		numUnits = 0;
 		ownerName = "OPEN";
@@ -33,6 +36,9 @@ public class Country {
 		countryID = id;
 		neighbours = newNeighbours;
 		hasGUI = buildGUI;
+		centerX = newCenterX;
+		centerY = newCenterY;
+
 		// continent = newContinent;
 		// continentBonusAmount = newContinentBonusAmount;
 
@@ -144,6 +150,14 @@ public class Country {
 	*/
 	public ArrayList<Integer> getNeighbours(){
 		return neighbours;
+	}
+
+	public int getCenterY(){
+		return centerY;
+	}
+
+	public int getCenterX(){
+		return centerX;
 	}
 
 	/**

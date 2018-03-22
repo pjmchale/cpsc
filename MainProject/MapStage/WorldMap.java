@@ -22,92 +22,92 @@ public class WorldMap {
 		currentContinent = "North America";
 		// North America
 		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2,22));
-		buildMap(1, neighbours, "Alaska");
+		buildMap(1, neighbours, "Alaska", 70, 170);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(1,3,4));
-		buildMap(2, neighbours, "Canada");
+		buildMap(2, neighbours, "Canada", 170, 200);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(2,9));
-		buildMap(3, neighbours, "Green Land");
+		buildMap(3, neighbours, "Green Land", 350, 125);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(2,5));
-		buildMap(4, neighbours, "USA");
+		buildMap(4, neighbours, "USA", 190, 250);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(4,6));
-		buildMap(5, neighbours, "Mexico");
+		buildMap(5, neighbours, "Mexico", 202, 312);
 		
 		currentContinent = "South America";
 		// South America
 		neighbours = new ArrayList<Integer>(Arrays.asList(5,7,8));
-		buildMap(6, neighbours, "Peru");
+		buildMap(6, neighbours, "Peru", 260, 360);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(6,8,13));
-		buildMap(7, neighbours, "Brazil");
+		buildMap(7, neighbours, "Brazil", 325, 390);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(6,7));
-		buildMap(8, neighbours, "Argentina");
+		buildMap(8, neighbours, "Argentina", 283, 454);
 
 		currentContinent = "Europe";
 		// Europe
 		neighbours = new ArrayList<Integer>(Arrays.asList(3,10));
-		buildMap(9, neighbours, "Iceland");
+		buildMap(9, neighbours, "Iceland", 452, 159);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(9,11,12));
-		buildMap(10, neighbours, "Scandinavia");
+		buildMap(10, neighbours, "Scandinavia", 496, 168);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(10,12,13,16));
-		buildMap(11, neighbours, "Western Europe");
+		buildMap(11, neighbours, "Western Europe", 496, 228);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(10,11,16,17));
-		buildMap(12, neighbours, "Eastern Europe");
+		buildMap(12, neighbours, "Eastern Europe", 565, 200);
 
 		currentContinent = "Africa";
 		// Africa
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,14,16));
-		buildMap(13, neighbours, "North Africa");
+		buildMap(13, neighbours, "North Africa", 460, 350);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(13,15,16));
-		buildMap(14, neighbours, "Central Africa");
+		buildMap(14, neighbours, "Central Africa", 525, 355);
 		
 		neighbours = new ArrayList<Integer>(Arrays.asList(14));
-		buildMap(15, neighbours, "South Africa");	
+		buildMap(15, neighbours, "South Africa", 510, 425);	
 
 		currentContinent = "Asia";
 		// Asia
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,12,13,14,17,18,19));
-		buildMap(16, neighbours, "Middle East");
+		buildMap(16, neighbours, "Middle East", 600, 265);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(12,16,18,19));
-		buildMap(17, neighbours, "Urul");
+		buildMap(17, neighbours, "Urul", 620, 180);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(17,19,20,21));
-		buildMap(18, neighbours, "Siberia");
+		buildMap(18, neighbours, "Siberia", 687, 170);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(16,17,18,20));
-		buildMap(19, neighbours, "China");
+		buildMap(19, neighbours, "China", 705, 275);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(18,19,21,22));
-		buildMap(20, neighbours, "Mongolia");
+		buildMap(20, neighbours, "Mongolia", 704, 220);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(18,20,22));
-		buildMap(21, neighbours, "Yakutsk");
+		buildMap(21, neighbours, "Yakutsk", 765, 161);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(1,20,21));
-		buildMap(22, neighbours, "Kamchatka");
+		buildMap(22, neighbours, "Kamchatka", 830, 170);
 
 		currentContinent = "Oceania";
 		// Oceania 
 		neighbours = new ArrayList<Integer>(Arrays.asList(19,24,25));
-		buildMap(23, neighbours, "Indonesia");
+		buildMap(23, neighbours, "Indonesia", 725, 370);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(23,25,26));
-		buildMap(24, neighbours, "New Guinea");	
+		buildMap(24, neighbours, "New Guinea", 788, 368);	
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(23,24,26));
-		buildMap(25, neighbours, "Western Australia");
+		buildMap(25, neighbours, "Western Australia", 768, 424);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(24,25));
-		buildMap(26, neighbours, "Eastern Australia");	
+		buildMap(26, neighbours, "Eastern Australia", 815, 430);	
 
 		// assignContinenets();
 	}
@@ -146,8 +146,8 @@ public class WorldMap {
 	 * @param an ArrayList of type Interger, with the id's of neighbouring countries
 	 * @param a String to be the name of the country
 	*/
-	private void buildMap(int id, ArrayList<Integer> neighbours, String name) {
-		Country country = new Country(id, neighbours, name, buildGUI);
+	private void buildMap(int id, ArrayList<Integer> neighbours, String name, int centerX, int centerY) {
+		Country country = new Country(id, neighbours, name, buildGUI, centerX, centerY);
 		countries.add(country);
 		
 		switch(currentContinent){
