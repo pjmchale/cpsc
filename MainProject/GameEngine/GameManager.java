@@ -354,7 +354,7 @@ public class GameManager{
    * calculates and distributes new units at beginning of turn
    */
   public void calcDistributeUnits(){
-    int numNewUnits = 3;
+    int numNewUnits;
     int numUnits;
     int userChoice;
     ArrayList<Country> countriesOwned;
@@ -362,9 +362,10 @@ public class GameManager{
 
     countriesOwned = currentPlayer.getCountriesOwned();
 
-    if(countriesOwned.size() > numNewUnits){
-      numNewUnits = countriesOwned.size()/3;
-    }
+    // New units (minimum of 3) + continent bonus
+    numNewUnits = countriesOwned.size()/3;
+    if(numNewUnits < 3) numNewUnits = 3;
+    numNewUnits += getMap().getContinentBonus(currentPlayer);
 
     currentPlayer.setAvailableUnits(numNewUnits);
 
