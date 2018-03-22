@@ -47,7 +47,6 @@ public class MainGUI extends Application {
 
   static private InitializeBoard initializeBoard;
   static private Label countrySelectionLabel;
-  static private Label playerTurnLabel;
   static private Label gainedUnitsLabel;
   static private Button cancelButton;
   static private Button confirmButton;
@@ -63,8 +62,6 @@ public class MainGUI extends Application {
     if(nextPane == getMapPane()){
       getMapPane().toFront();
       root.getChildren().add(turnHBox);
-      //gameManager.setTurnState();
-      playerTurnLabel.setVisible(true);
     }
 
     gameManager.checkIfGameOver();
@@ -166,13 +163,6 @@ public class MainGUI extends Application {
    */
   static public void setCountrySelectionLabel(String inputString){
     countrySelectionLabel.setText(inputString);
-  }
-
-  /** 
-   * sets the player current turn label
-   */
-  static public void setPlayerTurnLabel(String inputString){
-    playerTurnLabel.setText(inputString);
   }
 
   /**
@@ -297,17 +287,7 @@ public class MainGUI extends Application {
     menuPane.setLayoutY(0);
     setPane(menuPane);
 
-    /* PLayer turn label */
-    playerTurnLabel = new Label();
-    playerTurnLabel.setFont(new Font("Times New Roman Bold", 30));
-    playerTurnLabel.setStyle("-fx-font: 30 arial; -fx-base: #ee2211;");
-    playerTurnLabel.setTextFill(Color.RED);
-    playerTurnLabel.setLayoutX(30);
-    playerTurnLabel.layoutYProperty().bind(root.heightProperty().subtract(40));
-    root.getChildren().add(playerTurnLabel);
-    playerTurnLabel.setVisible(false);
-
-    /* VBox for user selection during turn */
+    /* HBox for user selection during turn */
     turnHBox = new HBox();
     turnHBox.layoutXProperty().bind(root.widthProperty().subtract(turnHBox.widthProperty()).divide(2));
     turnHBox.setLayoutY(20);
