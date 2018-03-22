@@ -372,6 +372,7 @@ public class GameManager{
 
     currentPlayer.setAvailableUnits(numNewUnits);
 
+    MainGUI.removePlaceUnitsGUIElements();
     if(usingGUI && !currentPlayer.getPlayerType().equals("AI")){
       setPlaceUnits();
       MainGUI.distributeUnitsTurn(currentPlayer);
