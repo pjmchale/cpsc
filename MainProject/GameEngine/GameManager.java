@@ -314,7 +314,7 @@ public class GameManager{
     turnIndex++;
     turnIndex %= numPlayers;
     currentPlayer = players[turnIndex];
-    MainGUI.setPlayerTurnLabel(currentPlayer.getName() + "'s Turn");
+    MainGUI.getMapGUI().updateTurnIcon(currentPlayer);
 
     if(turn){
       calcDistributeUnits();
@@ -347,6 +347,9 @@ public class GameManager{
     currentPlayer = players[turnIndex];
     firstTurn = currentPlayer;
     firstTurnIndex = turnIndex;
+    if(usingGUI){
+      MainGUI.getMapGUI().updateTurnIcon(currentPlayer);
+    }
 
   }
 
