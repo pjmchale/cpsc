@@ -39,6 +39,7 @@ public class CombatGUI {
 	private Country defendingCountry;
 	private int numAttackers;
 	private int numDefenders;
+	private boolean displayOnMap = false;
 	private Pane pane;
 
 	public CombatGUI(Combat cb) {
@@ -52,7 +53,51 @@ public class CombatGUI {
 		numAttackers = cb.getNumAttackers();
 		numDefenders = cb.getNumDefenders();
 		combat = cb;
-		initPane();
+		if(isHuman(attacker) || isHuman(defender)) {
+			initPane();
+		}else {
+			initAiBattle();
+		}
+	}
+	public boolean getDisplayOnMap() {
+		return displayOnMap;
+	}
+	public void initAiBattle() {
+		displayOnMap = true;
+		AiPlayerSimple aiAtk = (AiPlayerSimple) attacker;
+		AiPlayerSimple aiDef = (AiPlayerSimple) defender;
+		numAttackers = aiAtk.getAttackingUnits(attackingCountry);
+		numDefenders = aiDef.getDefendingUnits(defendingCountry);
+		combat.setNumAttackers(numAttackers);
+		combat.setNumDefenders(numDefenders);
+		pane.getChildren().add(MainGUI.getMapPane());
+	}
+	
+	public void displayMapChanges(int atkLose, int defLose) {
+		System.out.println("Ai vs Ai begins");
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2500), ae -> {
+			System.out.println("AI finish combat");
+			if(defendingCountry.getUnits() <= 0) {
+				AiPlayerSimple aiAtk = (AiPlayerSimple) attacker;
+				aiAtk.moveUnits();
+			}
+			//pane.getChildren().clear();
+			attacker.playTurn();
+		}));
+		displayToMap(atkLose,attackingCountry);
+		displayToMap(defLose,defendingCountry);
+		timeline.play();
+	}
+	public void displayToMap(int amount, Country c) {
+		if(amount != 0) {
+			double x = c.getCenterX();
+			double y = c.getCenterY();
+			AnimatedText at = new AnimatedText("-"+amount ,pane,x,y, 2);
+			at.setDeltaY(-4);
+			at.setFadeOut();
+			at.start();
+		
+		}
 	}
 
 	public void displayTransition(Rectangle backDrop) {
@@ -94,6 +139,9 @@ public class CombatGUI {
 
 	public Pane getPane() {
 		System.out.println("getting the combat pane");
+		if(!isHuman(attacker) && !isHuman(defender)) {
+			combat.startBattle();
+		}
 		return pane;
 	}
 

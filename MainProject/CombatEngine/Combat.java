@@ -43,7 +43,6 @@ public class Combat {
 
 	public Combat(Country attackingCountry, Country defendingCountry) {
 		dice = new Dice();
-		System.out.println("COMMBAAAATTTSDGFSGSDGSDFSDFDS");
 		this.attackingCountry = attackingCountry;
 		this.defendingCountry = defendingCountry;
 		attacker = attackingCountry.getOwner();
@@ -91,9 +90,9 @@ public class Combat {
 	 */
 	public void countryLose(Country country, Player attacker) {
 		Player player = country.getOwner();
-		System.out.println("-[===> ---------------------- <===]-");
-		System.out.println(country.getName() + "[" + player.getName() + "] lost a unit");
-		System.out.println("-[===> ---------------------- <===]-");
+//		System.out.println("-[===> ---------------------- <===]-");
+//		System.out.println(country.getName() + "[" + player.getName() + "] lost a unit");
+//		System.out.println("-[===> ---------------------- <===]-");
 
 		if (country.getUnits() > 0)
 			country.addUnits(-1);
@@ -147,22 +146,32 @@ public class Combat {
 	 * starts the battle
 	 */
 	public void startBattle() {
+		int defLose = 0;
+		int atkLose = 0;
 		int[] atkDices = rollDice(numAttackers);
 		int[] defDices = rollDice(numDefenders);
 		int defending[] = sortFromHighest(defDices);
 		int attacking[] = sortFromHighest(atkDices);
 		int minimumDice = Math.min(defending.length, attacking.length);
 		for (int i = 0; i < minimumDice; i++) {
-			System.out.println("-[===> ---------------------- <===]-");
-			System.out.println(attacker.getName() + " roles: " + attacking[i]);
-			System.out.println(defender.getName() + " roles: " + defending[i]);
+//			System.out.println("-[===> ---------------------- <===]-");
+//			System.out.println(attacker.getName() + " roles: " + attacking[i]);
+//			System.out.println(defender.getName() + " roles: " + defending[i]);
 			if (attackerWin(attacking[i], defending[i])) {
 				countryLose(defendingCountry, attacker);
+				defLose++;
 			} else {
 				countryLose(attackingCountry, defender);
+				atkLose++;
 			}
 		}
-		gui.displayBattle(attacking, defending);
+		
+		if(gui.getDisplayOnMap()) {
+			gui.displayMapChanges(atkLose,defLose);
+		}else {
+			gui.displayBattle(attacking, defending);
+		}
+
 
 	}
 	public Pane getPane() {
