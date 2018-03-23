@@ -14,6 +14,7 @@ public class WorldMap {
 	private ArrayList<Country> asia = new ArrayList<Country>(Arrays.asList());
 	private boolean buildGUI = true;
 	private String currentContinent = "";
+	
 	/**
 	 * Contructor used to build the map
 	*/
@@ -109,7 +110,6 @@ public class WorldMap {
 		neighbours = new ArrayList<Integer>(Arrays.asList(24,25));
 		buildMap(26, neighbours, "Eastern Australia", 815, 430);	
 
-		// assignContinenets();
 	}
 
 	/**
@@ -190,41 +190,11 @@ public class WorldMap {
 		return output;
 	}
 
-	// public ArrayList<Country> getContinentCountries(String continent){
-	// 	ArrayList<Country> output;
-
-	// 	switch(continent){
-	// 		case "North America":
-	// 			output = northAmerica;
-	// 		break;
-	// 		case "South America": 
-	// 			output = southAmerica;
-	// 		break;
-	// 		case "Europe": 
-	// 			output = europe;
-	// 		break;
-	// 		case "Africa": 
-	// 			output = africa;
-	// 		break;
-	// 		case "Asia": 
-	// 			output = asia;
-	// 		break;
-	// 		case "Oceania": 
-	// 			output = oceania;
-	// 		break;
-	// 		default:
-	// 			output = new ArrayList<Country>();
-	// 	}
-
-	// 	return output;
-	// }
-
-	// public void assignContinenets(){
-	// 	for (Country i: countries){
-	// 		i.setContinentCountries(getContinentCountries(i.getContinent()));
-	// 	}
-	// }
-
+	/**
+	 * Used get a continent bonus amounts
+	 * @param a Player to check if they own an entier continent
+	 * @return an int being the bonus amount
+	*/
 	public int getContinentBonus(Player playerToCheckBonus){
 		int bonusTotal = 0;
 
@@ -278,19 +248,6 @@ public class WorldMap {
 
 		return bonusTotal;
 	}
-
-	// public boolean checkIfTheyOwnWholeContinenet(Country country){
-	// 	boolean output = true;
-	// 	Player owner = country.getOwner();
-	// 	String contientName = country.getContinent();
-		
-	// 	for (Country i: getContinentCountries(contientName)){
-	// 		output = output&&(owner == i.getOwner());
-	// 	}
-
-	// 	return output;
-	// }
-
 
 	/**
 	 * Used to highlight only a country's neighbours
