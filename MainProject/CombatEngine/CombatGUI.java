@@ -54,7 +54,7 @@ public class CombatGUI {
 		numDefenders = cb.getNumDefenders();
 		combat = cb;
 		if(isHuman(attacker) || isHuman(defender)) {
-			initPane();
+				initPane();
 		}else {
 			initAiBattle();
 		}
@@ -74,14 +74,14 @@ public class CombatGUI {
 	}
 	
 	public void displayMapChanges(int atkLose, int defLose) {
-		System.out.println("Ai vs Ai begins");
-		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2500), ae -> {
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), ae -> {
 			System.out.println("AI finish combat");
 			if(defendingCountry.getUnits() <= 0) {
 				AiPlayerSimple aiAtk = (AiPlayerSimple) attacker;
+				System.out.println(aiAtk.getName() + " is moving to new country");
 				aiAtk.moveUnits();
 			}
-			//pane.getChildren().clear();
+			pane.getChildren().clear();
 			attacker.playTurn();
 		}));
 		displayToMap(atkLose,attackingCountry);
@@ -92,7 +92,7 @@ public class CombatGUI {
 		if(amount != 0) {
 			double x = c.getCenterX();
 			double y = c.getCenterY();
-			AnimatedText at = new AnimatedText("-"+amount ,pane,x,y, 2);
+			AnimatedText at = new AnimatedText("-"+amount ,pane,x,y, 1);
 			at.setDeltaY(-4);
 			at.setFadeOut();
 			at.start();
