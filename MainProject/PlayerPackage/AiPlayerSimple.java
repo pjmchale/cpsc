@@ -285,7 +285,7 @@ public class AiPlayerSimple extends Player{
      */
     public void placeUnit(){
         //Test Print
-        System.out.println("Available Units: \n" + getAvailableUnits() + "\n");
+        //System.out.println("Available Units: \n" + getAvailableUnits() + "\n");
 
         determineConflicts();
         ArrayList<Country> neighbours;
@@ -338,7 +338,7 @@ public class AiPlayerSimple extends Player{
     public AiMove determineMove(){
         determineConflicts();
         calculateTurnValues();
-        System.out.println(turnValues);
+        //System.out.println(turnValues);
         ArrayList<Country> neighbours = new ArrayList<Country>();
         double highestValue = 0.0;
         Country toCountry = null;
