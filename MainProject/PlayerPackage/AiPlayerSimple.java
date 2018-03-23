@@ -114,7 +114,7 @@ public class AiPlayerSimple extends Player{
         }
         move = determineMove();
         if (getAvailableUnits()>0){
-            System.out.printf("Attacking %s from %s", move.getToCountry().getName(),move.getFromCountry().getName())
+            System.out.printf("Attacking %s from %s", move.getToCountry().getName(),move.getFromCountry().getName());
             move.getFromCountry().addUnits(getAvailableUnits());
             setAvailableUnits(0);
             MainGUI.removeAttackGUIElements();
@@ -122,6 +122,7 @@ public class AiPlayerSimple extends Player{
         }
 
         else if (move != null){
+            System.out.printf("Attacking %s from %s", move.getToCountry().getName(),move.getFromCountry().getName());
             MainGUI.removeAttackGUIElements();
             MainGUI.startAttack(move.getFromCountry(), move.getToCountry());
         }
