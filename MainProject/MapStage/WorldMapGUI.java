@@ -28,6 +28,7 @@ public class WorldMapGUI {
 
 	private Pane root = new Pane();
 	private ImageView imageViewTurnIcon;
+	private ArrayList<Text> nameLabels = new ArrayList<Text>();
 
 	/**
 	 * Used to get the pane
@@ -98,10 +99,10 @@ public class WorldMapGUI {
 
 	    for (Player i: players) {
 	    	// Create a name label
-	    	Label name = new Label(i.getName());
+	    	Text name = new Text(i.getName());
 			name.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 			name.setLayoutX(30);
-			name.setLayoutY(corY);
+			name.setLayoutY(corY+10);
 
 	    	// Create a circle icon dot
 	    	Circle colorIcon = new Circle();
@@ -113,6 +114,8 @@ public class WorldMapGUI {
 			// Add these to the view
 			root.getChildren().add(name);
 			root.getChildren().add(colorIcon);
+
+			nameLabels.add(name);
 
 			corY += 30;
 	    }
@@ -126,18 +129,25 @@ public class WorldMapGUI {
 		imageViewTurnIcon.toFront();
 
 		root.getChildren().add(imageViewTurnIcon);
-
 	}
 
-	public void updateTurnIcon(Player currentPlayer){
-		Player[] players = MainGUI.getAllPlayers();
-		int index = -1;
+	/**
+	 * Will show that a player is removed on the legend
+	 * @param The player to remove
+	*/
+	public void removePlayerFromLegend(Player playerToRemove) {
+		int index = getPlayerIndex(playerToRemove);
 
-		for (int i = 0; (i < players.length) && (index == -1); i++) {
-	        if (players[i] == currentPlayer) {
-	            index = i;
-	        }
-	    }
+		nameLabels.get(index).setStyle("-fx-strikethrough: true");
+		nameLabels.get(index).setFill(Color.RED);
+	}
+
+	/**
+	 * Will move the turn icon 
+	 * @param The current player's turn
+	*/
+	public void updateTurnIcon(Player currentPlayer) {
+		int index = getPlayerIndex(currentPlayer);
 
 	  	// Move the turn icon
 	  	String imagePathTurnIcon = "mapAssets/Turn_Icon.png";
@@ -146,6 +156,19 @@ public class WorldMapGUI {
 	  	imageViewTurnIcon.toFront();
 	    imageViewTurnIcon.setLayoutY(321 + (index*30));
 	}
+
+	public int getPlayerIndex(Player playerOfIndex) {
+		Player[] players = MainGUI.getAllPlayers();
+		int index = -1;
+
+		for (int i = 0; (i < players.length) && (index == -1); i++) {
+	        if (players[i] == playerOfIndex) {
+	            index = i;
+	        }
+	    }
+	    return index;
+	}
+
 
 	/**
 	 * Used to get the countries
