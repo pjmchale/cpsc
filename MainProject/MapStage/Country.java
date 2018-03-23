@@ -16,17 +16,14 @@ public class Country {
 	private int centerX;
 	private int centerY;
 
-	// private String continent = "";
-	// private ArrayList<Country> continentCountries; 
-	// private int continentBonusAmount;
-	// private boolean ownsWholeContinent;
-
 	/**
 	 * Constructor to add the country image to the view, set the id, neighbours, name, ownerID, ownerName, amount of units, and pane
 	 * @param The country ID
 	 * @param The countrys neighbours
 	 * @param The country's name
 	 * @param Wether to build the GUI or not
+	 * @param The center X
+	 * @param The center Y
 	*/
 	Country(int id, ArrayList<Integer> newNeighbours, String newName, boolean buildGUI, int newCenterX, int newCenterY){
 		name = newName;
@@ -38,9 +35,6 @@ public class Country {
 		hasGUI = buildGUI;
 		centerX = newCenterX;
 		centerY = newCenterY;
-
-		// continent = newContinent;
-		// continentBonusAmount = newContinentBonusAmount;
 
 		if (buildGUI){
 			countryGUI = new CountryGUI(name, numUnits, ownerName, ownerID, this);
@@ -101,7 +95,6 @@ public class Country {
 		if (hasGUI){
 			countryGUI.updateOwnerVisual(ownerName, ownerID);
 		}
-		// ownsWholeContinent = checkIfTheyOwnWholeContinenet();
 	}
 
 	/**
@@ -152,36 +145,21 @@ public class Country {
 		return neighbours;
 	}
 
+	/**
+	 * Used to get centerY
+	 * @return the centerY
+	*/
 	public int getCenterY(){
 		return centerY;
 	}
 
+	/**
+	 * Used to get centerX
+	 * @return the centerX
+	*/
 	public int getCenterX(){
 		return centerX;
 	}
-
-	/**
-	 * Used to get continent
-	 * @return the continent
-	*/
-	// public String getContinent(){
-	// 	return continent;
-	// }
-
-
-	// public void setContinentCountries(ArrayList<Country> newCountries){
-	// 	continentCountries = newCountries;
-	// }
-
-	// public boolean checkIfTheyOwnWholeContinenet(){
-	// 	boolean output = true;
-
-	// 	for (Country i: continentCountries){
-	// 		output = output&&(owner == i.getOwner());
-	// 	}
-
-	// 	return output;
-	// }
 
 	/**
 	 * Used to check who the owner of the country is
