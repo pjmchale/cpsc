@@ -14,109 +14,102 @@ public class WorldMap {
 	private ArrayList<Country> asia = new ArrayList<Country>(Arrays.asList());
 	private boolean buildGUI = true;
 	private String currentContinent = "";
-	private int currentBonusAmount;
 	/**
 	 * Contructor used to build the map
 	*/
 	public WorldMap(boolean newBuildGUI){
 		buildGUI = newBuildGUI;
 		currentContinent = "North America";
-		currentBonusAmount = 10;
 		// North America
 		ArrayList<Integer> neighbours = new ArrayList<Integer>(Arrays.asList(2,22));
-		buildMap(1, neighbours, "Alaska");
+		buildMap(1, neighbours, "Alaska", 70, 170);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(1,3,4));
-		buildMap(2, neighbours, "Canada");
+		buildMap(2, neighbours, "Canada", 170, 200);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(2,9));
-		buildMap(3, neighbours, "Green Land");
+		buildMap(3, neighbours, "Green Land", 350, 125);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(2,5));
-		buildMap(4, neighbours, "USA");
+		buildMap(4, neighbours, "USA", 190, 250);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(4,6));
-		buildMap(5, neighbours, "Mexico");
+		buildMap(5, neighbours, "Mexico", 202, 312);
 		
 		currentContinent = "South America";
-		currentBonusAmount = 10;
 		// South America
 		neighbours = new ArrayList<Integer>(Arrays.asList(5,7,8));
-		buildMap(6, neighbours, "Peru");
+		buildMap(6, neighbours, "Peru", 260, 360);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(6,8,13));
-		buildMap(7, neighbours, "Brazil");
+		buildMap(7, neighbours, "Brazil", 325, 390);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(6,7));
-		buildMap(8, neighbours, "Argentina");
+		buildMap(8, neighbours, "Argentina", 283, 454);
 
 		currentContinent = "Europe";
-		currentBonusAmount = 10;
 		// Europe
 		neighbours = new ArrayList<Integer>(Arrays.asList(3,10));
-		buildMap(9, neighbours, "Iceland");
+		buildMap(9, neighbours, "Iceland", 452, 159);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(9,11,12));
-		buildMap(10, neighbours, "Scandinavia");
+		buildMap(10, neighbours, "Scandinavia", 496, 168);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(10,12,13,16));
-		buildMap(11, neighbours, "Western Europe");
+		buildMap(11, neighbours, "Western Europe", 496, 228);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(10,11,16,17));
-		buildMap(12, neighbours, "Eastern Europe");
+		buildMap(12, neighbours, "Eastern Europe", 565, 200);
 
 		currentContinent = "Africa";
-		currentBonusAmount = 10;
 		// Africa
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,14,16));
-		buildMap(13, neighbours, "North Africa");
+		buildMap(13, neighbours, "North Africa", 460, 350);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(13,15,16));
-		buildMap(14, neighbours, "Central Africa");
+		buildMap(14, neighbours, "Central Africa", 525, 355);
 		
 		neighbours = new ArrayList<Integer>(Arrays.asList(14));
-		buildMap(15, neighbours, "South Africa");	
+		buildMap(15, neighbours, "South Africa", 510, 425);	
 
 		currentContinent = "Asia";
-		currentBonusAmount = 10;
 		// Asia
 		neighbours = new ArrayList<Integer>(Arrays.asList(11,12,13,14,17,18,19));
-		buildMap(16, neighbours, "Middle East");
+		buildMap(16, neighbours, "Middle East", 600, 265);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(12,16,18,19));
-		buildMap(17, neighbours, "Urul");
+		buildMap(17, neighbours, "Urul", 620, 180);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(17,19,20,21));
-		buildMap(18, neighbours, "Siberia");
+		buildMap(18, neighbours, "Siberia", 687, 170);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(16,17,18,20));
-		buildMap(19, neighbours, "China");
+		buildMap(19, neighbours, "China", 705, 275);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(18,19,21,22));
-		buildMap(20, neighbours, "Mongolia");
+		buildMap(20, neighbours, "Mongolia", 704, 220);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(18,20,22));
-		buildMap(21, neighbours, "Yakutsk");
+		buildMap(21, neighbours, "Yakutsk", 765, 161);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(1,20,21));
-		buildMap(22, neighbours, "Kamchatka");
+		buildMap(22, neighbours, "Kamchatka", 830, 170);
 
 		currentContinent = "Oceania";
-		currentBonusAmount = 10;
 		// Oceania 
 		neighbours = new ArrayList<Integer>(Arrays.asList(19,24,25));
-		buildMap(23, neighbours, "Indonesia");
+		buildMap(23, neighbours, "Indonesia", 725, 370);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(23,25,26));
-		buildMap(24, neighbours, "New Guinea");	
+		buildMap(24, neighbours, "New Guinea", 788, 368);	
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(23,24,26));
-		buildMap(25, neighbours, "Western Australia");
+		buildMap(25, neighbours, "Western Australia", 768, 424);
 
 		neighbours = new ArrayList<Integer>(Arrays.asList(24,25));
-		buildMap(26, neighbours, "Eastern Australia");	
+		buildMap(26, neighbours, "Eastern Australia", 815, 430);	
 
-		assignContinenets();
+		// assignContinenets();
 	}
 
 	/**
@@ -153,8 +146,8 @@ public class WorldMap {
 	 * @param an ArrayList of type Interger, with the id's of neighbouring countries
 	 * @param a String to be the name of the country
 	*/
-	private void buildMap(int id, ArrayList<Integer> neighbours, String name) {
-		Country country = new Country(id, neighbours, name, buildGUI, currentContinent, currentBonusAmount);
+	private void buildMap(int id, ArrayList<Integer> neighbours, String name, int centerX, int centerY) {
+		Country country = new Country(id, neighbours, name, buildGUI, centerX, centerY);
 		countries.add(country);
 		
 		switch(currentContinent){
@@ -197,41 +190,94 @@ public class WorldMap {
 		return output;
 	}
 
-	public ArrayList<Country> getContinentCountries(String continent){
-		ArrayList<Country> output;
+	// public ArrayList<Country> getContinentCountries(String continent){
+	// 	ArrayList<Country> output;
 
-		switch(continent){
-			case "North America":
-				output = northAmerica;
-			break;
-			case "South America": 
-				output = southAmerica;
-			break;
-			case "Europe": 
-				output = europe;
-			break;
-			case "Africa": 
-				output = africa;
-			break;
-			case "Asia": 
-				output = asia;
-			break;
-			case "Oceania": 
-				output = oceania;
-			break;
-			default:
-				output = new ArrayList<Country>();
+	// 	switch(continent){
+	// 		case "North America":
+	// 			output = northAmerica;
+	// 		break;
+	// 		case "South America": 
+	// 			output = southAmerica;
+	// 		break;
+	// 		case "Europe": 
+	// 			output = europe;
+	// 		break;
+	// 		case "Africa": 
+	// 			output = africa;
+	// 		break;
+	// 		case "Asia": 
+	// 			output = asia;
+	// 		break;
+	// 		case "Oceania": 
+	// 			output = oceania;
+	// 		break;
+	// 		default:
+	// 			output = new ArrayList<Country>();
+	// 	}
+
+	// 	return output;
+	// }
+
+	// public void assignContinenets(){
+	// 	for (Country i: countries){
+	// 		i.setContinentCountries(getContinentCountries(i.getContinent()));
+	// 	}
+	// }
+
+	public int getContinentBonus(Player playerToCheckBonus){
+		int bonusTotal = 0;
+
+		boolean ownsNorthAmerica = true;
+		for (Country x: northAmerica){
+			ownsNorthAmerica = ownsNorthAmerica&&(x.getOwner() == playerToCheckBonus);
+		}
+		if (ownsNorthAmerica){
+			bonusTotal += 5;
 		}
 
-		return output;
-	}
-
-	public void assignContinenets(){
-		for (Country i: countries){
-			i.setContinentCountries(getContinentCountries(i.getContinent()));
+		boolean ownsSouthAmerica = true;
+		for (Country x: southAmerica){
+			ownsSouthAmerica = ownsSouthAmerica&&(x.getOwner() == playerToCheckBonus);
 		}
-	}
+		if (ownsSouthAmerica){
+			bonusTotal += 2;
+		}
 
+		boolean ownsEurope = true;
+		for (Country x: europe){
+			ownsEurope = ownsEurope&&(x.getOwner() == playerToCheckBonus);
+		}
+		if (ownsEurope){
+			bonusTotal += 5;
+		}
+
+		boolean ownsAfrica = true;
+		for (Country x: africa){
+			ownsAfrica = ownsAfrica&&(x.getOwner() == playerToCheckBonus);
+		}
+		if (ownsAfrica){
+			bonusTotal += 3;
+		}
+
+		boolean ownsAsia = true;
+		for (Country x: asia){
+			ownsAsia = ownsAsia&&(x.getOwner() == playerToCheckBonus);
+		}
+		if (ownsAsia){
+			bonusTotal += 7;
+		}
+
+		boolean ownsOceania = true;
+		for (Country x: oceania){
+			ownsOceania = ownsOceania&&(x.getOwner() == playerToCheckBonus);
+		}
+		if (ownsOceania){
+			bonusTotal += 7;
+		}
+
+		return bonusTotal;
+	}
 
 	// public boolean checkIfTheyOwnWholeContinenet(Country country){
 	// 	boolean output = true;

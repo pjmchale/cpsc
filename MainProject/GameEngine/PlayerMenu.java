@@ -95,7 +95,7 @@ public class PlayerMenu{
           return;
         }
 
-        if(numAIPlayers >= 0 && numAIPlayers <= maxAIPlayers){
+        if(numAIPlayers >= 0 && numAIPlayers <= maxAIPlayers && (numPlayers + numAIPlayers) >= 2){
           playerMenu.getChildren().clear();
           createPlayers();
         }else{
@@ -120,15 +120,13 @@ public class PlayerMenu{
           return;
         }
 
-        /* FIX THIS */
-        //if(numPlayers >= 2 && numPlayers <= 6){
-        if(numPlayers >= 0 && numPlayers <= 6){
+        if(numPlayers >= 0 && numPlayers < 6){
           maxAIPlayers = 6-numPlayers;
           numPlayerLabel.setText("Please Enter Number of AI Players (max " + maxAIPlayers + ")");
           playerMenu.getChildren().remove(confirmPlayersButton);
           playerMenu.getChildren().add(confirmAIPlayersButton);
           numPlayersTextField.setText("");
-        } else if (numPlayers == 4){
+        } else if (numPlayers == 6){
           numAIPlayers = 0;
         }else{
           numPlayersTextField.setStyle("-fx-text-fill: red;");

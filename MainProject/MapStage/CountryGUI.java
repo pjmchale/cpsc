@@ -152,6 +152,13 @@ public class CountryGUI {
 				sat = 0.8;
 				bri = -0.5;
 			break;
+			case 7:
+				// Magenta
+				con = 0;
+				hue = 0.3;
+				sat = -0.8;
+				bri = -0.5;
+			break;
 		}
 		
 		ColorAdjust colorAdjust = new ColorAdjust();

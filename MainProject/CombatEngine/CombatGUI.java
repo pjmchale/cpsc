@@ -39,6 +39,7 @@ public class CombatGUI {
 	private Country defendingCountry;
 	private int numAttackers;
 	private int numDefenders;
+	private boolean displayOnMap = false;
 	private Pane pane;
 
 	public CombatGUI(Combat cb) {
@@ -52,7 +53,51 @@ public class CombatGUI {
 		numAttackers = cb.getNumAttackers();
 		numDefenders = cb.getNumDefenders();
 		combat = cb;
-		initPane();
+		if(isHuman(attacker) || isHuman(defender)) {
+			initPane();
+		}else {
+			initAiBattle();
+		}
+	}
+	public boolean getDisplayOnMap() {
+		return displayOnMap;
+	}
+	public void initAiBattle() {
+		displayOnMap = true;
+		AiPlayerSimple aiAtk = (AiPlayerSimple) attacker;
+		AiPlayerSimple aiDef = (AiPlayerSimple) defender;
+		numAttackers = aiAtk.getAttackingUnits(attackingCountry);
+		numDefenders = aiDef.getDefendingUnits(defendingCountry);
+		combat.setNumAttackers(numAttackers);
+		combat.setNumDefenders(numDefenders);
+		pane.getChildren().add(MainGUI.getMapPane());
+	}
+	
+	public void displayMapChanges(int atkLose, int defLose) {
+		System.out.println("Ai vs Ai begins");
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2500), ae -> {
+			System.out.println("AI finish combat");
+			if(defendingCountry.getUnits() <= 0) {
+				AiPlayerSimple aiAtk = (AiPlayerSimple) attacker;
+				aiAtk.moveUnits();
+			}
+			//pane.getChildren().clear();
+			attacker.playTurn();
+		}));
+		displayToMap(atkLose,attackingCountry);
+		displayToMap(defLose,defendingCountry);
+		timeline.play();
+	}
+	public void displayToMap(int amount, Country c) {
+		if(amount != 0) {
+			double x = c.getCenterX();
+			double y = c.getCenterY();
+			AnimatedText at = new AnimatedText("-"+amount ,pane,x,y, 2);
+			at.setDeltaY(-4);
+			at.setFadeOut();
+			at.start();
+		
+		}
 	}
 
 	public void displayTransition(Rectangle backDrop) {
@@ -94,6 +139,9 @@ public class CombatGUI {
 
 	public Pane getPane() {
 		System.out.println("getting the combat pane");
+		if(!isHuman(attacker) && !isHuman(defender)) {
+			combat.startBattle();
+		}
 		return pane;
 	}
 
@@ -168,16 +216,19 @@ public class CombatGUI {
 					backDrop, attackerDone);
 		} else {
 			System.out.println("AI attacking point check");
-			attackerAI(attackerDone);
+			attackerAI(backDrop,displayResults);
 		}
 
 	}
 
-	public void attackerAI(CallAction ca) {
+	public void attackerAI(Rectangle backDrop, CallAction ca) {
 		AiPlayerSimple ai = (AiPlayerSimple) attacker;
 		int amount = ai.getAttackingUnits(attackingCountry);
+		numAttackers = amount;
+		combat.setNumAttackers(numAttackers);
 		System.out.println("Ai decided to attack with: " +amount);
-		ca.use(amount);
+		getUnits(defender.getName() + "(" + (defendingCountry.getUnits()) + ")",
+				" how many units(DEFEND)", backDrop, ca);
 	}
 
 	public void defenderAI(CallAction ca) {
@@ -324,7 +375,7 @@ public class CombatGUI {
 					if(isHuman(attacker)){
 						MainGUI.nextPane();
 					}else {
-						AiPlayerSimple ai = (AiPlayerSimple) attacker;
+						AiPlayerSimple ai = (AiPlayerSimple) attacker; 
 						ai.playTurn();
 					}
 				}
@@ -427,6 +478,8 @@ public class CombatGUI {
 		ImageView panelView = new ImageView(panelImage);
 		panelView.setX(x - 30);
 		panelView.setY(y - 10);
+		Image bg = new Image("arts_assests/Combat_Background.png");
+		ImageView iv = new ImageView(bg);
 		Label message = centeredText(msg, backDrop);
 		message.setLayoutY(message.getLayoutY() + 30);
 		message.setTextFill(Color.rgb(5, 5, 5));
@@ -441,7 +494,7 @@ public class CombatGUI {
 		submitUnitsBtn.setOnAction(new inputNumberHandler(input, ca));
 		submitUnitsBtn.setLayoutX(x + WIDTH - 80);
 		submitUnitsBtn.setLayoutY(y + 68);
-
+		pane.getChildren().add(iv);
 		pane.getChildren().addAll(panelView, message, name);
 		pane.getChildren().add(input);
 		pane.getChildren().add(submitUnitsBtn);
