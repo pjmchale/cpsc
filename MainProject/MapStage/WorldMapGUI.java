@@ -1,6 +1,5 @@
 package MapStage;
 
-
 import PlayerPackage.*;
 import GameEngine.*;
 import javafx.application.Application;
@@ -24,11 +23,17 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.control.Label;
 import javafx.scene.paint.*;
 
+/**
+ * Used to build the GUI part of the map
+ * Will create and hold the legend and boarders
+*/
 public class WorldMapGUI {
 
 	private Pane root = new Pane();
 	private ImageView imageViewTurnIcon;
 	private ArrayList<Text> nameLabels = new ArrayList<Text>();
+	private  ArrayList<Circle> nameDots = new ArrayList<Circle>();
+	private Rectangle background;
 
 	/**
 	 * Used to get the pane
@@ -76,11 +81,42 @@ public class WorldMapGUI {
 	 * Only called once all player are created
 	*/
 	public void showLegend() {
+
+		updateLegend();
+
+		// Add the turn icon in the correct spot
+		imageViewTurnIcon = new ImageView();
+		imageViewTurnIcon.setPreserveRatio(true);
+		imageViewTurnIcon.setSmooth(true);
+		imageViewTurnIcon.setLayoutX(15);
+		imageViewTurnIcon.setLayoutY(351);
+		imageViewTurnIcon.toFront();
+
+		root.getChildren().add(imageViewTurnIcon);
+	}
+
+
+	/**
+	 * Will update the legend on the map
+	*/
+	public void updateLegend(){
+		// Remove the current legend
+		root.getChildren().remove(background);
+
+		for (Circle i: nameDots){
+			root.getChildren().remove(i);
+		}
+
+		for (Text i: nameLabels){
+			root.getChildren().remove(i);
+		}
+
+
 		// Get the players and create a rectange background
 		Player[] players = MainGUI.getAllPlayers();
 
 		double backgroundHeight = players.length*30 + 10;
-		Rectangle background = new Rectangle(10, 310, 140, backgroundHeight);
+		background = new Rectangle(10, 310, 140, backgroundHeight);
 		background.setFill(Color.rgb(255, 255, 255, 0.9));
 		background.setArcHeight(10);
 	    background.setArcWidth(10);
@@ -116,32 +152,27 @@ public class WorldMapGUI {
 			root.getChildren().add(colorIcon);
 
 			nameLabels.add(name);
+			nameDots.add(colorIcon);
 
 			corY += 30;
 	    }
 
-	    // Add the turn icon in the correct spot
-		imageViewTurnIcon = new ImageView();
-		imageViewTurnIcon.setPreserveRatio(true);
-		imageViewTurnIcon.setSmooth(true);
-		imageViewTurnIcon.setLayoutX(15);
-		imageViewTurnIcon.setLayoutY(351);
-		imageViewTurnIcon.toFront();
-
-		root.getChildren().add(imageViewTurnIcon);
 	}
 
-	/**
-	 * Will show that a player is removed on the legend
-	 * Will make the name red and strikethrough it
-	 * @param The player to remove
-	*/
-	public void removePlayerFromLegend(Player playerToRemove) {
-		int index = getPlayerIndex(playerToRemove);
+	// /**
+	//  * Will show that a player is removed on the legend
+	//  * Will make the name red and strikethrough it
+	//  * @param The player to remove
+	// */
+	// public void removePlayerFromLegend(Player playerToRemove) {
+	// 	int index = getPlayerIndex(playerToRemove);
 
-		nameLabels.get(index).setStyle("-fx-strikethrough: true");
-		nameLabels.get(index).setFill(Color.RED);
-	}
+	// 	nameLabels.get(index).setStyle("-fx-strikethrough: true");
+	// 	nameLabels.get(index).setFill(Color.RED);
+	// 	nameLabels.get(index).setFont(Font.font("Arial", FontWeight.LIGHT, 14));
+
+	// 	nameDots.get(index).setOpacity(0.4);
+	// }
 
 	/**
 	 * Will move the turn icon 
