@@ -45,7 +45,7 @@ public class WorldMapGUI {
 	public WorldMapGUI() {
 
 		// Add the connections
-		String imagePathConnections = "mapAssets/Connections.png";
+		String imagePathConnections = "map_assets/Connections.png";
 		Image imageConnections = new Image(imagePathConnections);
 		ImageView imageViewConnections = new ImageView();
 		imageViewConnections.setImage(imageConnections);
@@ -58,7 +58,7 @@ public class WorldMapGUI {
 		root.getChildren().add(imageViewConnections);
 
 		// Add the boarders
-		String imagePathBoarders = "mapAssets/Boarders.png";
+		String imagePathBoarders = "map_assets/Boarders.png";
 		Image imageBoarders = new Image(imagePathBoarders);
 		ImageView imageViewBoarders = new ImageView();
 		imageViewBoarders.setImage(imageBoarders);
@@ -151,7 +151,7 @@ public class WorldMapGUI {
 		int index = getPlayerIndex(currentPlayer);
 
 	  	// Move the turn icon
-	  	String imagePathTurnIcon = "mapAssets/Turn_Icon.png";
+	  	String imagePathTurnIcon = "map_assets/Turn_Icon.png";
 		Image imageTurnIcon = new Image(imagePathTurnIcon);
 	  	imageViewTurnIcon.setImage(imageTurnIcon);
 	  	imageViewTurnIcon.toFront();
