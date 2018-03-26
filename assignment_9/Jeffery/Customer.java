@@ -62,7 +62,6 @@ final public class Customer{
    * @return customerID
    */
   public int getID(){
-	  System.out.println(customerID);
     return customerID;
   }
 

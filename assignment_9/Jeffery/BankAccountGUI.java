@@ -18,8 +18,10 @@ public class BankAccountGUI extends Application {
 	Scene mainDisplay;
 	final int HEIGHT = 300;
 	final int WIDTH = 300;
+	private String accountType = "UNKOWN";
 	Customer customer;
-	SavingsAccount bankAccount;
+	private SavingsAccount bankAccount;
+	private ChequingAccount chequeAccount;
 	Scene createAccountDisplay;
 	private String fileName = "Account.txt";
 	private File file = new File(fileName);
@@ -42,8 +44,11 @@ public class BankAccountGUI extends Application {
 
 	@Override
 	public void stop() {
-		updateFile(customer, bankAccount);
-		System.out.println("PROGRAM STOPPING");
+		if(bankAccount != null) {
+			updateFile(customer, bankAccount);
+		}else {
+			updateFile(customer, chequeAccount);
+		}
 	}
 
 	public void updateFile(Customer c, BankAccount ba) {
@@ -52,6 +57,8 @@ public class BankAccountGUI extends Application {
 			DataOutputStream dos = new DataOutputStream(fos);
 			FileWriter fileWriter = new FileWriter(fileName);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			bufferedWriter.write(accountType);
+			bufferedWriter.newLine();
 			bufferedWriter.write(c.getName());
 			bufferedWriter.newLine();
 			bufferedWriter.write(c.getID()+"");
@@ -64,13 +71,14 @@ public class BankAccountGUI extends Application {
 	}
 
 	public void checkForFile(Stage primaryStage) {
-		if (file.exists()) {
+		if (file.exists() && file.length() > 0) {
 			String name = "ERROR";
 			int ID = 0;
 			double amount = 0.0;
 			try {
 				FileReader fileReader = new FileReader(fileName);
 				BufferedReader bufferedReader = new BufferedReader(fileReader);
+				accountType = bufferedReader.readLine();
 				name = bufferedReader.readLine();
 				ID = Integer.parseInt(bufferedReader.readLine());
 				amount = Double.parseDouble(bufferedReader.readLine());
@@ -82,10 +90,16 @@ public class BankAccountGUI extends Application {
 			}
 
 			customer = new Customer(name, ID);
-			bankAccount = new SavingsAccount(customer, amount);
-			mainDisplay = displayMainMenu(customer, bankAccount, primaryStage);
+			if(accountType.equals("SAVING")) {
+				bankAccount = new SavingsAccount(customer, amount);
+				mainDisplay = displayMainMenu(customer, bankAccount, primaryStage);
+			}else if(accountType.equals("CHEQUING")){
+				chequeAccount = new ChequingAccount(amount);
+				mainDisplay = displayMainMenu(customer, chequeAccount, primaryStage);
+				
+			}
 		} else {
-			mainDisplay = displayCreateAccount(primaryStage);
+			mainDisplay = savingOrChequng(primaryStage);
 		}
 	}
 
@@ -95,6 +109,40 @@ public class BankAccountGUI extends Application {
 	 * @param stage
 	 *            the stage this will be displayed on
 	 */
+	public Scene savingOrChequng(Stage stage) {
+		GridPane root = new GridPane();
+		root.setHgap(10);
+		root.setVgap(10);
+		
+		Button createSavingBtn = new Button("Create Saving Account");
+		createSavingBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				accountType = "SAVING";
+				System.out.println("creating a savings account");
+				mainDisplay = displayCreateAccount(stage);
+				stage.setScene(mainDisplay);
+				stage.show();
+			}
+		});
+		root.add(createSavingBtn, 1, 2);
+
+		Button createChequingBtn = new Button("Create Chequing Account");
+		createChequingBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				accountType = "CHEQUING";
+				System.out.println("creating a chequing account");
+				mainDisplay = displayCreateAccount(stage);
+				stage.setScene(mainDisplay);
+				stage.show();
+			}
+		});
+		root.add(createChequingBtn, 1, 4);
+		
+		Scene scene = new Scene(root, WIDTH, HEIGHT);
+		return scene;
+	}
 	public Scene displayCreateAccount(Stage stage) {
 		GridPane root = new GridPane();
 		root.setHgap(10);
@@ -137,9 +185,16 @@ public class BankAccountGUI extends Application {
 				}
 				// sets up the new display for the new customer and bank account
 				customer = new Customer(customerName);
-				bankAccount = new SavingsAccount(customer, startBalance);
-				mainDisplay = displayMainMenu(customer, bankAccount, stage);
-				updateFile(customer, bankAccount);
+				if(accountType.equals("CHEQUING")) {
+					chequeAccount = new ChequingAccount(startBalance);
+					mainDisplay = displayMainMenu(customer, chequeAccount, stage);
+					updateFile(customer, chequeAccount);
+				}else if(accountType.equals("SAVING")){
+					bankAccount = new SavingsAccount(customer, startBalance);
+					mainDisplay = displayMainMenu(customer, bankAccount, stage);
+					updateFile(customer, bankAccount);
+					
+				}
 				stage.setScene(mainDisplay);
 				stage.show();
 			}
