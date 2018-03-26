@@ -44,13 +44,17 @@ public class BankAccountGUI extends Application {
 
 	@Override
 	public void stop() {
-		if(bankAccount != null) {
+		if (bankAccount != null) {
 			updateFile(customer, bankAccount);
-		}else {
+		} else {
 			updateFile(customer, chequeAccount);
 		}
 	}
-
+/**
+ * updates the current file with a customer, and bankaccount
+ * @param c the customer needed to update the file
+ * @param ba the bankaccount needed to update the file
+ */
 	public void updateFile(Customer c, BankAccount ba) {
 		try {
 			FileOutputStream fos = new FileOutputStream(fileName);
@@ -61,22 +65,29 @@ public class BankAccountGUI extends Application {
 			bufferedWriter.newLine();
 			bufferedWriter.write(c.getName());
 			bufferedWriter.newLine();
-			bufferedWriter.write(c.getID()+"");
+			bufferedWriter.write(c.getID() + "");
 			bufferedWriter.newLine();
-			bufferedWriter.write(ba.getBalance()+"");
+			bufferedWriter.write(ba.getBalance() + "");
 			bufferedWriter.close();
 		} catch (IOException ex) {
 			System.out.println("Error writing to file '" + fileName + "'");
 		}
-		
+
 	}
 
+	/**
+	 * check if a file account already exists
+	 * 
+	 * @param primaryStage
+	 *            the stage needed to display
+	 */
 	public void checkForFile(Stage primaryStage) {
 		if (file.exists() && file.length() > 0) {
 			String name = "ERROR";
 			int ID = 0;
 			double amount = 0.0;
 			try {
+				//reads from the file
 				FileReader fileReader = new FileReader(fileName);
 				BufferedReader bufferedReader = new BufferedReader(fileReader);
 				accountType = bufferedReader.readLine();
@@ -91,13 +102,13 @@ public class BankAccountGUI extends Application {
 			}
 
 			customer = new Customer(name, ID);
-			if(accountType.equals("SAVING")) {
+			if (accountType.equals("SAVING")) {
 				bankAccount = new SavingsAccount(customer, amount);
 				mainDisplay = displayMainMenu(customer, bankAccount, primaryStage);
-			}else if(accountType.equals("CHEQUING")){
-				chequeAccount = new ChequingAccount(customer,amount,5);
+			} else if (accountType.equals("CHEQUING")) {
+				chequeAccount = new ChequingAccount(customer, amount, 5);
 				mainDisplay = displayMainMenu(customer, chequeAccount, primaryStage);
-				
+
 			}
 		} else {
 			mainDisplay = savingOrChequing(primaryStage);
@@ -105,16 +116,17 @@ public class BankAccountGUI extends Application {
 	}
 
 	/**
-	 * creates the display for the Create a new account display
+	 * creates the display to choose either a chequing or savings account
 	 * 
 	 * @param stage
 	 *            the stage this will be displayed on
 	 */
 	public Scene savingOrChequing(Stage stage) {
+		stage.setTitle("NEW ACCOUNT");
 		GridPane root = new GridPane();
 		root.setHgap(10);
 		root.setVgap(10);
-		
+
 		Button createSavingBtn = new Button("Create Saving Account");
 		createSavingBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -140,10 +152,17 @@ public class BankAccountGUI extends Application {
 			}
 		});
 		root.add(createChequingBtn, 1, 4);
-		
+
 		Scene scene = new Scene(root, WIDTH, HEIGHT);
 		return scene;
 	}
+
+	/**
+	 * creates the display for the Create a new account display
+	 * 
+	 * @param stage
+	 *            the stage this will be displayed on
+	 */
 	public Scene displayCreateAccount(Stage stage) {
 		GridPane root = new GridPane();
 		root.setHgap(10);
@@ -186,15 +205,15 @@ public class BankAccountGUI extends Application {
 				}
 				// sets up the new display for the new customer and bank account
 				customer = new Customer(customerName);
-				if(accountType.equals("CHEQUING")) {
-					chequeAccount = new ChequingAccount(customer,startBalance,5);
+				if (accountType.equals("CHEQUING")) {
+					chequeAccount = new ChequingAccount(customer, startBalance, 5);
 					mainDisplay = displayMainMenu(customer, chequeAccount, stage);
 					updateFile(customer, chequeAccount);
-				}else if(accountType.equals("SAVING")){
+				} else if (accountType.equals("SAVING")) {
 					bankAccount = new SavingsAccount(customer, startBalance);
 					mainDisplay = displayMainMenu(customer, bankAccount, stage);
 					updateFile(customer, bankAccount);
-					
+
 				}
 				stage.setScene(mainDisplay);
 				stage.show();
@@ -221,7 +240,6 @@ public class BankAccountGUI extends Application {
 		root.setHgap(10);
 		root.setVgap(10);
 
-		
 		/* Customer Name label */
 		Label nameLabel = new Label(customer.getName());
 		nameLabel.setFont(Font.font("Courier New", 15));

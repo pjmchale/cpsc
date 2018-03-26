@@ -72,7 +72,10 @@ public abstract class BankAccount{
           System.out.println("Not enough money in account");
         }
     }
-    
+    /**
+     * if possible to withdraw an ammount
+     * @param amount the amount checking to withdraw
+     */
     public boolean canWithdraw(double amount) {
     	return (amount - balance) <= 0.0;
     }
