@@ -10,8 +10,9 @@ import PlayerPackage.*;
 import CombatEngine.*;
 import MapStage.*;
 import java.util.*;
+import java.io.*;
 
-public class GameManager{ 
+public class GameManager {
 
   private boolean usingGUI = false;
   private int numPlayers;
@@ -29,16 +30,19 @@ public class GameManager{
   private boolean fortify = false;
   private boolean placeUnits = false;
   private boolean turn = false;
+  private String saveLocation;
 
   /* Consstructor initializes the map*/
   GameManager(){
     initializeMap(usingGUI);
+    initDefaultSaveLocation();
   }
 
   /* Constructor initilaize map with gui */
   GameManager(boolean withGUI){
     usingGUI = withGUI;
     initializeMap(usingGUI);
+    initDefaultSaveLocation();
   }
 
   /**
@@ -53,6 +57,27 @@ public class GameManager{
    */
   private void initializeMap(boolean withGUI){
     map = new WorldMap(withGUI);
+  }
+
+  /**
+   * Initialzies the default save location
+   */
+  private void initDefaultSaveLocation(){
+    saveLocation = System.getProperty("user.dir") + "/Save/GameSave.risk";
+  }
+
+  /**
+   * Set save location
+   */
+  public void setSaveLocation(String inSaveLocation){
+    saveLocation = inSaveLocation;
+  }
+
+  /**
+   * Get save location
+   */
+  public String getSaveLocation(){
+    return saveLocation;
   }
 
   /**
@@ -468,6 +493,63 @@ public class GameManager{
   }
 
   /**
+   * Saves the state of the game to disk
+   */
+  public void saveGame(){
+    try {
+      File f = new File(saveLocation);
+      if(f.exists()) f.delete();
+
+      FileOutputStream fileStream = new FileOutputStream(saveLocation);
+      ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
+
+      SaveState saveState = new SaveState(this);
+      objectStream.writeObject(saveState);
+
+      objectStream.close();
+      fileStream.close();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.out.println(e);
+    }
+  }
+  
+  /**
+   * Load the game for a gamesave file
+   */
+  public boolean loadGame(File saveFile){
+    try{
+      FileInputStream fileStream;
+      ObjectInputStream objectStream;
+      fileStream = new FileInputStream(saveFile.getAbsolutePath());
+      objectStream = new ObjectInputStream(fileStream);
+
+      SaveState saveState = (SaveState) objectStream.readObject();
+
+      loadGameFromSaveState(saveState);
+
+      objectStream.close();
+      fileStream.close();
+    }catch(Exception e){
+      e.printStackTrace();
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Loads the game from the loaded save state
+   */
+  private void loadGameFromSaveState(SaveState saveState){
+
+    ArrayList<PlayerSave> allSavedPlayers = saveState.getAllSavedPlayers();
+
+
+  }
+
+
+  /**
    * automatically sets up the game.
    * Creates players and sets all countries owned
    * to one player except one country
@@ -501,6 +583,7 @@ public class GameManager{
     // begin regular turn play
     nextTurn();
     setTurnState();
+    saveGame();
 
   }
 

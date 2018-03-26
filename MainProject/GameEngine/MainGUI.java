@@ -10,10 +10,13 @@ import PlayerPackage.*;
 import CombatEngine.*;
 import MapStage.*;
 import java.util.*;
+import java.io.File;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.scene.Group;
 import javafx.scene.text.Font;
 import javafx.scene.layout.GridPane;
@@ -31,12 +34,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
-import java.util.*;
 
 
 
 public class MainGUI extends Application { 
-  static private boolean autoSetUpGame = false;
+  static private boolean autoSetUpGame = true;
   static private GameManager gameManager;
   static private WorldMapGUI mapGUI;
 
@@ -197,7 +199,7 @@ public class MainGUI extends Application {
   }
 
   /**
-   *  Called when game is over and dsiplays winner 
+   *  Called when game is over and displays winner 
    * @return gameOver true if player owns every territory otherwise false
    */
   static public void gameOver(Player winningPlayer){
@@ -420,6 +422,69 @@ public class MainGUI extends Application {
     title.layoutXProperty().bind(menuPane.widthProperty().subtract(title.widthProperty()).divide(2));
     title.setLayoutY(50);
     menuPane.getChildren().add(title);
+
+    /* Save location text */
+    String currSaveLocation = gameManager.getSaveLocation();
+    if(currSaveLocation.length() > 35){
+      currSaveLocation = "..." + currSaveLocation.substring(currSaveLocation.length()-35);
+    }
+    Label saveLocationLabel = new Label("Current Save Location: " + currSaveLocation); 
+    saveLocationLabel.setFont(new Font("Times New Roman Bold", 15));
+    saveLocationLabel.setTextFill(Color.BLACK);
+    //saveLocationLabel.setLayoutX(centerX - saveLocationLabel.widthProperty());
+    //saveLocationLabel.layoutXProperty().bind(menuPane.widthProperty().subtract(saveLocationLabel.widthProperty()).divide(2));
+    saveLocationLabel.setLayoutX(65);
+    saveLocationLabel.setLayoutY(10);
+    menuPane.getChildren().add(saveLocationLabel);
+
+    /* Change save location button */
+    Button changeSaveLocationButton = new Button ("Change");
+    changeSaveLocationButton.setStyle("-fx-font: 10 arial; -fx-base: #ee2211;");
+    //changeSaveLocationButton.layoutXProperty().bind(saveLocationLabel.widthProperty().add(saveLocationLabel.widthProperty()).divide(2).add(changeSaveLocationButton.widthProperty().divide(3))); 
+    changeSaveLocationButton.setLayoutX(10);
+    changeSaveLocationButton.setLayoutY(10);
+    changeSaveLocationButton.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+          DirectoryChooser dirChooser = new DirectoryChooser();
+          dirChooser.setTitle("Please Choose Save Location");
+          File location = dirChooser.showDialog(primaryStage);
+          if(location == null){
+            return;
+          }else{
+            gameManager.setSaveLocation(location.toString() + "GameSave.risk");
+          }
+          String currSaveLocation = gameManager.getSaveLocation();
+          if(currSaveLocation.length() > 35){
+            currSaveLocation = "..." + currSaveLocation.substring(currSaveLocation.length()-35);
+          }
+          saveLocationLabel.setText(currSaveLocation);
+        }
+    });
+    menuPane.getChildren().add(changeSaveLocationButton);
+
+    /* Load saved game button */
+    Button loadSavedGameButton = new Button ("Load Saved Game");
+    loadSavedGameButton.setStyle("-fx-font: 10 arial; -fx-base: #ee2211;");
+    //loadSavedGameButton.layoutXProperty().bind(saveLocationLabel.widthProperty().add(saveLocationLabel.widthProperty()).divide(2).add(loadSavedGameButton.widthProperty().divide(3))); 
+    loadSavedGameButton.setLayoutX(10);
+    loadSavedGameButton.setLayoutY(30);
+    loadSavedGameButton.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+          FileChooser fileChooser = new FileChooser();
+          fileChooser.setTitle("Please Select Saved Game To Load");
+          File file = fileChooser.showOpenDialog(primaryStage);
+          if(file == null){
+            return;
+          }else{
+            if(!gameManager.loadGame(file)){
+              return;
+            }
+          }
+        }
+    });
+    menuPane.getChildren().add(loadSavedGameButton);
 
     /* prints all fonts to stdout */
     /*
