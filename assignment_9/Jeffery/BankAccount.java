@@ -66,11 +66,15 @@ public abstract class BankAccount{
         if (amount < 0) {
             System.out.println("Cannot withdraw a negative amount");
         }
-        else if ((amount - balance) <= 0.0){
+        else if (canWithdraw(amount)){
             balance -= amount;
         } else{
           System.out.println("Not enough money in account");
         }
+    }
+    
+    public boolean canWithdraw(double amount) {
+    	return (amount - balance) <= 0.0;
     }
 
     /**

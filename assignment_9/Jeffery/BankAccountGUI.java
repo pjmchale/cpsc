@@ -35,8 +35,8 @@ public class BankAccountGUI extends Application {
 		// Customer customer = new Customer("John Smith");
 		// SavingsAccount bankAccount = new SavingsAccount(customer, 100.0);
 		// mainDisplay = displayMainMenu(customer, bankAccount, primaryStage);
-		checkForFile(primaryStage);
 		primaryStage.setTitle("Bank Account");
+		checkForFile(primaryStage);
 		primaryStage.setScene(mainDisplay);
 		primaryStage.show();
 
@@ -68,6 +68,7 @@ public class BankAccountGUI extends Application {
 		} catch (IOException ex) {
 			System.out.println("Error writing to file '" + fileName + "'");
 		}
+		
 	}
 
 	public void checkForFile(Stage primaryStage) {
@@ -94,12 +95,12 @@ public class BankAccountGUI extends Application {
 				bankAccount = new SavingsAccount(customer, amount);
 				mainDisplay = displayMainMenu(customer, bankAccount, primaryStage);
 			}else if(accountType.equals("CHEQUING")){
-				chequeAccount = new ChequingAccount(amount);
+				chequeAccount = new ChequingAccount(customer,amount,5);
 				mainDisplay = displayMainMenu(customer, chequeAccount, primaryStage);
 				
 			}
 		} else {
-			mainDisplay = savingOrChequng(primaryStage);
+			mainDisplay = savingOrChequing(primaryStage);
 		}
 	}
 
@@ -109,7 +110,7 @@ public class BankAccountGUI extends Application {
 	 * @param stage
 	 *            the stage this will be displayed on
 	 */
-	public Scene savingOrChequng(Stage stage) {
+	public Scene savingOrChequing(Stage stage) {
 		GridPane root = new GridPane();
 		root.setHgap(10);
 		root.setVgap(10);
@@ -186,7 +187,7 @@ public class BankAccountGUI extends Application {
 				// sets up the new display for the new customer and bank account
 				customer = new Customer(customerName);
 				if(accountType.equals("CHEQUING")) {
-					chequeAccount = new ChequingAccount(startBalance);
+					chequeAccount = new ChequingAccount(customer,startBalance,5);
 					mainDisplay = displayMainMenu(customer, chequeAccount, stage);
 					updateFile(customer, chequeAccount);
 				}else if(accountType.equals("SAVING")){
@@ -215,12 +216,12 @@ public class BankAccountGUI extends Application {
 	 *            the stage this scene will be displayed onto
 	 */
 	public Scene displayMainMenu(Customer customer, BankAccount bankAccount, Stage stage) {
-
 		/* Create the grid to store the visual elements */
 		GridPane root = new GridPane();
 		root.setHgap(10);
 		root.setVgap(10);
 
+		
 		/* Customer Name label */
 		Label nameLabel = new Label(customer.getName());
 		nameLabel.setFont(Font.font("Courier New", 15));
@@ -250,12 +251,13 @@ public class BankAccountGUI extends Application {
 		createAccount.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				createAccountDisplay = displayCreateAccount(stage);
+				createAccountDisplay = savingOrChequing(stage);
 				stage.setScene(createAccountDisplay);
 				stage.show();
 			}
 		});
 		root.add(createAccount, 1, 5);
+		stage.setTitle(accountType + " ACCOUNT");
 		Scene scene = new Scene(root, WIDTH, HEIGHT);
 		return scene;
 	}

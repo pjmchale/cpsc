@@ -60,15 +60,28 @@ public class HandleButtonClick implements EventHandler<ActionEvent> {
 		double changeAmount;
 		try {
 			changeAmount = Double.parseDouble(actionAmountTextField.getText());
+			actionAmountTextField.setStyle("-fx-text-fill: black;");
+		if(changeAmount < 0) {
+			actionAmountTextField.setText("Negative input");
+			actionAmountTextField.setStyle("-fx-text-fill: red;");
+		}else if(changeAmount == 0){
+			actionAmountTextField.setText("(0) invalid");
+			actionAmountTextField.setStyle("-fx-text-fill: red;");			
+		}else if(account.canWithdraw(changeAmount) == false){
+			actionAmountTextField.setText("insufficient funds");
+			actionAmountTextField.setStyle("-fx-text-fill: red;");						
+		}else {			
+			if (actionType == "withdraw") {
+				account.withdraw(changeAmount);
+			} else if (actionType == "deposit") {
+				account.deposit(changeAmount);
+			}
+		}
 		} catch (NumberFormatException e) {
 			changeAmount = 0;
-		}
-		if (actionType == "withdraw") {
-			account.withdraw(changeAmount);
-		} else if (actionType == "deposit") {
-			account.deposit(changeAmount);
+			actionAmountTextField.setText("String input");
+			actionAmountTextField.setStyle("-fx-text-fill: red;");
 		}
 		actionBalanceLabel.setText("Balance: " + account.getBalance());
-
 	}
 }

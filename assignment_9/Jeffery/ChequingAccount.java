@@ -66,7 +66,7 @@ public class ChequingAccount extends BankAccount{
     if (amount < 0) {
       System.out.println("Cannot withdraw a negative amount");
     }
-    else if ((amount - getBalance()) <= overdraftAmount){
+    else if (canWithdraw(amount)){
       setBalance(getBalance() - amount);
       if(getBalance() < 0){
         setBalance(getBalance() - overdraftFee);
@@ -74,6 +74,9 @@ public class ChequingAccount extends BankAccount{
     } else{
       System.out.println("Not enough money in account");
     }
+  }
+  public boolean canWithdraw(double amount) {
+	  return (amount - getBalance()) <= overdraftAmount;
   }
 	
 	@Override
