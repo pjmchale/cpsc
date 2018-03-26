@@ -50,7 +50,7 @@ public class CountryGUI {
 		ownerID = newOwnerID;
 		countryLogic = country;
 
-		String path = "mapAssets/"+name+".png";
+		String path = "map_assets/"+name+".png";
 		Image img = new Image(path);
 		imageView = new ImageView();
 		imageView.setImage(img);

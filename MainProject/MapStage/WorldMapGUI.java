@@ -45,7 +45,7 @@ public class WorldMapGUI {
 	public WorldMapGUI() {
 
 		// Add the connections
-		String imagePathConnections = "mapAssets/Connections.png";
+		String imagePathConnections = "map_assets/Connections.png";
 		Image imageConnections = new Image(imagePathConnections);
 		ImageView imageViewConnections = new ImageView();
 		imageViewConnections.setImage(imageConnections);
@@ -58,7 +58,7 @@ public class WorldMapGUI {
 		root.getChildren().add(imageViewConnections);
 
 		// Add the boarders
-		String imagePathBoarders = "mapAssets/Boarders.png";
+		String imagePathBoarders = "map_assets/Boarders.png";
 		Image imageBoarders = new Image(imagePathBoarders);
 		ImageView imageViewBoarders = new ImageView();
 		imageViewBoarders.setImage(imageBoarders);
@@ -133,6 +133,7 @@ public class WorldMapGUI {
 
 	/**
 	 * Will show that a player is removed on the legend
+	 * Will make the name red and strikethrough it
 	 * @param The player to remove
 	*/
 	public void removePlayerFromLegend(Player playerToRemove) {
@@ -150,13 +151,18 @@ public class WorldMapGUI {
 		int index = getPlayerIndex(currentPlayer);
 
 	  	// Move the turn icon
-	  	String imagePathTurnIcon = "mapAssets/Turn_Icon.png";
+	  	String imagePathTurnIcon = "map_assets/Turn_Icon.png";
 		Image imageTurnIcon = new Image(imagePathTurnIcon);
 	  	imageViewTurnIcon.setImage(imageTurnIcon);
 	  	imageViewTurnIcon.toFront();
-	    imageViewTurnIcon.setLayoutY(321 + (index*30));
+	    imageViewTurnIcon.setLayoutY(317 + (index*30));
 	}
 
+	/**
+	 * Will get the index of a player in the legend
+	 * @param The player to get the index of
+	 * @return The index of the player
+	*/
 	public int getPlayerIndex(Player playerOfIndex) {
 		Player[] players = MainGUI.getAllPlayers();
 		int index = -1;
