@@ -40,6 +40,7 @@ class PlayerSave implements Serializable{
     private String name;
     private int[] countriesOwned;
     private int[] numUnitsPerCountry;
+    boolean isAI;
 
     public String getName(){
       return name;
@@ -53,8 +54,17 @@ class PlayerSave implements Serializable{
       return numUnitsPerCountry;
     }
 
+    public boolean isAI(){
+      return isAI;
+    }
+
     PlayerSave(Player player){
       name = player.getName();
+      if(player.getPlayerType().equals("AI")){
+        isAI = true;
+      }else{
+        isAI = false;
+      }
 
       ArrayList<Country> countries = player.getCountriesOwned();
       countriesOwned = new int[countries.size()];

@@ -38,7 +38,7 @@ import javafx.event.ActionEvent;
 
 
 public class MainGUI extends Application { 
-  static private boolean autoSetUpGame = false;
+  static private boolean autoSetUpGame = true;
   static private GameManager gameManager;
   static private WorldMapGUI mapGUI;
 
@@ -479,6 +479,10 @@ public class MainGUI extends Application {
             return;
           }else{
             if(!gameManager.loadGame(file)){
+              return;
+            }else{
+              nextPane = getMapPane();
+              nextPane();
               return;
             }
           }

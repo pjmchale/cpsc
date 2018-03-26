@@ -342,6 +342,7 @@ public class GameManager {
     MainGUI.getMapGUI().updateTurnIcon(currentPlayer);
 
     if(turn){
+      saveGame();
       calcDistributeUnits();
     }
 
@@ -542,10 +543,49 @@ public class GameManager {
    * Loads the game from the loaded save state
    */
   private void loadGameFromSaveState(SaveState saveState){
+    String[] playerNames;
+    int numHumanPlayers = 0;
+    int numAIPlayers = 0;
+    int numPlayers;
+    int currentPlayerIndex;
+    int[] countriesOwnedID;
+    int[] numUnitsPerCountry;
+    ArrayList<Country> allCountries;
 
+    // Initialize saved players and turn
+    numPlayers = saveState.getNumSavedPlayers();
+    playerNames = new String[numPlayers];
     ArrayList<PlayerSave> allSavedPlayers = saveState.getAllSavedPlayers();
+    for(int i=0; i < numPlayers; i++){
+      playerNames[i] = allSavedPlayers.get(i).getName();
+      if(allSavedPlayers.get(i).isAI()){
+        numAIPlayers += 1;
+      }else{
+        numHumanPlayers += 1;
+      }
+    }
+    initializePlayers(numHumanPlayers, numAIPlayers, playerNames);
 
+    currentPlayerIndex = saveState.getCurrentPlayerIndex();
+    currentPlayer = players[currentPlayerIndex];
 
+    // Set country owners
+    allCountries = map.getCountries();
+    for(int i=0; i < numPlayers; i++){
+      countriesOwnedID = allSavedPlayers.get(i).getCountriesOwned();
+      numUnitsPerCountry = allSavedPlayers.get(i).getNumUnitsPerCountry();
+      for(int k=0; k < countriesOwnedID.length;k++){
+        for(int j=0; j < allCountries.size(); j++){
+          if(allCountries.get(j).getCountryID() == countriesOwnedID[k]){
+            allCountries.get(j).setOwner(players[i]);
+            allCountries.get(j).setUnits(numUnitsPerCountry[k]);
+            break;
+          }
+        }
+      }
+    }
+
+    setTurnState();
   }
 
 
@@ -583,7 +623,7 @@ public class GameManager {
     // begin regular turn play
     nextTurn();
     setTurnState();
-    saveGame();
+    //saveGame();
 
   }
 
