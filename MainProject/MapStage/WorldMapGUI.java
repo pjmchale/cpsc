@@ -29,6 +29,7 @@ public class WorldMapGUI {
 	private Pane root = new Pane();
 	private ImageView imageViewTurnIcon;
 	private ArrayList<Text> nameLabels = new ArrayList<Text>();
+	private  ArrayList<Circle> nameDots = new ArrayList<Circle>();
 
 	/**
 	 * Used to get the pane
@@ -116,6 +117,7 @@ public class WorldMapGUI {
 			root.getChildren().add(colorIcon);
 
 			nameLabels.add(name);
+			nameDots.add(colorIcon);
 
 			corY += 30;
 	    }
@@ -129,6 +131,7 @@ public class WorldMapGUI {
 		imageViewTurnIcon.toFront();
 
 		root.getChildren().add(imageViewTurnIcon);
+
 	}
 
 	/**
@@ -141,6 +144,9 @@ public class WorldMapGUI {
 
 		nameLabels.get(index).setStyle("-fx-strikethrough: true");
 		nameLabels.get(index).setFill(Color.RED);
+		nameLabels.get(index).setFont(Font.font("Arial", FontWeight.LIGHT, 14));
+
+		nameDots.get(index).setOpacity(0.4);
 	}
 
 	/**
