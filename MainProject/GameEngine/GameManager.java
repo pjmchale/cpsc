@@ -67,9 +67,12 @@ public class GameManager {
   }
 
   /**
-   * Set save location
+   * Set save location ensuring saved as .risk file
    */
   public void setSaveLocation(String inSaveLocation){
+    if(!inSaveLocation.substring(inSaveLocation.length()-5).equals(".risk")){
+      inSaveLocation += ".risk";
+    }
     saveLocation = inSaveLocation;
   }
 
@@ -500,6 +503,8 @@ public class GameManager {
     try {
       File f = new File(saveLocation);
       if(f.exists()) f.delete();
+      f.getParentFile().mkdirs();
+      f.createNewFile();
 
       FileOutputStream fileStream = new FileOutputStream(saveLocation);
       ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);

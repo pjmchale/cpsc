@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javax.swing.JFileChooser;
 import javafx.scene.Group;
 import javafx.scene.text.Font;
 import javafx.scene.layout.GridPane;
@@ -431,8 +432,6 @@ public class MainGUI extends Application {
     Label saveLocationLabel = new Label("Current Save Location: " + currSaveLocation); 
     saveLocationLabel.setFont(new Font("Times New Roman Bold", 15));
     saveLocationLabel.setTextFill(Color.BLACK);
-    //saveLocationLabel.setLayoutX(centerX - saveLocationLabel.widthProperty());
-    //saveLocationLabel.layoutXProperty().bind(menuPane.widthProperty().subtract(saveLocationLabel.widthProperty()).divide(2));
     saveLocationLabel.setLayoutX(65);
     saveLocationLabel.setLayoutY(10);
     menuPane.getChildren().add(saveLocationLabel);
@@ -440,19 +439,21 @@ public class MainGUI extends Application {
     /* Change save location button */
     Button changeSaveLocationButton = new Button ("Change");
     changeSaveLocationButton.setStyle("-fx-font: 10 arial; -fx-base: #ee2211;");
-    //changeSaveLocationButton.layoutXProperty().bind(saveLocationLabel.widthProperty().add(saveLocationLabel.widthProperty()).divide(2).add(changeSaveLocationButton.widthProperty().divide(3))); 
     changeSaveLocationButton.setLayoutX(10);
     changeSaveLocationButton.setLayoutY(10);
     changeSaveLocationButton.setOnAction(new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-          DirectoryChooser dirChooser = new DirectoryChooser();
-          dirChooser.setTitle("Please Choose Save Location");
-          File location = dirChooser.showDialog(primaryStage);
+          FileChooser fileChooser = new FileChooser();
+          fileChooser.setTitle("Select File To Save Game");
+          //Set extension filter
+          FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("RISK files (*.risk)", "*.risk");
+          fileChooser.getExtensionFilters().add(extFilter);
+          File location = fileChooser.showSaveDialog(primaryStage);
           if(location == null){
             return;
           }else{
-            gameManager.setSaveLocation(location.toString() + "GameSave.risk");
+            gameManager.setSaveLocation(location.getAbsolutePath());
           }
           String currSaveLocation = gameManager.getSaveLocation();
           if(currSaveLocation.length() > 35){
@@ -466,7 +467,6 @@ public class MainGUI extends Application {
     /* Load saved game button */
     Button loadSavedGameButton = new Button ("Load Saved Game");
     loadSavedGameButton.setStyle("-fx-font: 10 arial; -fx-base: #ee2211;");
-    //loadSavedGameButton.layoutXProperty().bind(saveLocationLabel.widthProperty().add(saveLocationLabel.widthProperty()).divide(2).add(loadSavedGameButton.widthProperty().divide(3))); 
     loadSavedGameButton.setLayoutX(10);
     loadSavedGameButton.setLayoutY(30);
     loadSavedGameButton.setOnAction(new EventHandler<ActionEvent>() {
