@@ -33,6 +33,7 @@ public class WorldMapGUI {
 	private ImageView imageViewTurnIcon;
 	private ArrayList<Text> nameLabels = new ArrayList<Text>();
 	private  ArrayList<Circle> nameDots = new ArrayList<Circle>();
+	private Rectangle background;
 
 	/**
 	 * Used to get the pane
@@ -80,17 +81,42 @@ public class WorldMapGUI {
 	 * Only called once all player are created
 	*/
 	public void showLegend() {
+
 		updateLegend();
+
+		// Add the turn icon in the correct spot
+		imageViewTurnIcon = new ImageView();
+		imageViewTurnIcon.setPreserveRatio(true);
+		imageViewTurnIcon.setSmooth(true);
+		imageViewTurnIcon.setLayoutX(15);
+		imageViewTurnIcon.setLayoutY(351);
+		imageViewTurnIcon.toFront();
+
+		root.getChildren().add(imageViewTurnIcon);
 	}
 
 
+	/**
+	 * Will update the legend on the map
+	*/
 	public void updateLegend(){
+		// Remove the current legend
+		root.getChildren().remove(background);
+
+		for (Circle i: nameDots){
+			root.getChildren().remove(i);
+		}
+
+		for (Text i: nameLabels){
+			root.getChildren().remove(i);
+		}
+
 
 		// Get the players and create a rectange background
 		Player[] players = MainGUI.getAllPlayers();
 
 		double backgroundHeight = players.length*30 + 10;
-		Rectangle background = new Rectangle(10, 310, 140, backgroundHeight);
+		background = new Rectangle(10, 310, 140, backgroundHeight);
 		background.setFill(Color.rgb(255, 255, 255, 0.9));
 		background.setArcHeight(10);
 	    background.setArcWidth(10);
@@ -130,16 +156,6 @@ public class WorldMapGUI {
 
 			corY += 30;
 	    }
-
-	    // Add the turn icon in the correct spot
-		imageViewTurnIcon = new ImageView();
-		imageViewTurnIcon.setPreserveRatio(true);
-		imageViewTurnIcon.setSmooth(true);
-		imageViewTurnIcon.setLayoutX(15);
-		imageViewTurnIcon.setLayoutY(351);
-		imageViewTurnIcon.toFront();
-
-		root.getChildren().add(imageViewTurnIcon);
 
 	}
 
