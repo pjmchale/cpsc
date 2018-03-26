@@ -347,7 +347,6 @@ public class CombatGUI {
 				if (amount > 0 && amount < attackingCountry.getUnits()) {
 					System.out.println("using");
 					defender.loseCountry(defendingCountry);
-					attacker.gainCountry(defendingCountry);
 					defendingCountry.setOwner(attacker);
 					attacker.moveUnits(attackingCountry, defendingCountry, amount);
 					pane.getChildren().clear();
