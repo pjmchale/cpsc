@@ -1,6 +1,5 @@
 package MapStage;
 
-
 import PlayerPackage.*;
 import GameEngine.*;
 import javafx.application.Application;
@@ -24,6 +23,10 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.control.Label;
 import javafx.scene.paint.*;
 
+/**
+ * Used to build the GUI part of the map
+ * Will create and hold the legend and boarders
+*/
 public class WorldMapGUI {
 
 	private Pane root = new Pane();
@@ -77,6 +80,12 @@ public class WorldMapGUI {
 	 * Only called once all player are created
 	*/
 	public void showLegend() {
+		updateLegend();
+	}
+
+
+	public void updateLegend(){
+
 		// Get the players and create a rectange background
 		Player[] players = MainGUI.getAllPlayers();
 
@@ -134,20 +143,20 @@ public class WorldMapGUI {
 
 	}
 
-	/**
-	 * Will show that a player is removed on the legend
-	 * Will make the name red and strikethrough it
-	 * @param The player to remove
-	*/
-	public void removePlayerFromLegend(Player playerToRemove) {
-		int index = getPlayerIndex(playerToRemove);
+	// /**
+	//  * Will show that a player is removed on the legend
+	//  * Will make the name red and strikethrough it
+	//  * @param The player to remove
+	// */
+	// public void removePlayerFromLegend(Player playerToRemove) {
+	// 	int index = getPlayerIndex(playerToRemove);
 
-		nameLabels.get(index).setStyle("-fx-strikethrough: true");
-		nameLabels.get(index).setFill(Color.RED);
-		nameLabels.get(index).setFont(Font.font("Arial", FontWeight.LIGHT, 14));
+	// 	nameLabels.get(index).setStyle("-fx-strikethrough: true");
+	// 	nameLabels.get(index).setFill(Color.RED);
+	// 	nameLabels.get(index).setFont(Font.font("Arial", FontWeight.LIGHT, 14));
 
-		nameDots.get(index).setOpacity(0.4);
-	}
+	// 	nameDots.get(index).setOpacity(0.4);
+	// }
 
 	/**
 	 * Will move the turn icon 
