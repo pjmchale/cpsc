@@ -38,7 +38,7 @@ import javafx.event.ActionEvent;
 
 
 public class MainGUI extends Application { 
-  static private boolean autoSetUpGame = true;
+  static private boolean autoSetUpGame = false;
   static private GameManager gameManager;
   static private WorldMapGUI mapGUI;
 
