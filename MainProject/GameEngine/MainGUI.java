@@ -62,12 +62,15 @@ public class MainGUI extends Application {
    */
   static public void nextPane(){
     setPane(nextPane);
+
+    // If next pane is default map pane add the turn option HBox
     if(nextPane == getMapPane()){
       getMapPane().toFront();
       root.getChildren().add(turnHBox);
     }
 
-    gameManager.checkIfGameOver();
+    // Check if game over/player eliminated
+    gameManager.checkGameState();
 
     nextPane = getMapPane();
   }
@@ -223,6 +226,13 @@ public class MainGUI extends Application {
   }
 
   /**
+   * Updates the legend (usually when player eliminated)
+   */
+  static public void updateLegend(){
+    mapGUI.updateLegend();
+  }
+
+  /**
    * Distributes new units at beginning of turn
    * amount determined by GameManager
    */
@@ -289,6 +299,14 @@ public class MainGUI extends Application {
     menuPane.setLayoutX(0);
     menuPane.setLayoutY(0);
     setPane(menuPane);
+
+    /* set title text */
+    Label title = new Label("RISK");
+    title.setStyle("-fx-font: 175 timesnewroman; -fx-base: #ee2211;");
+    title.setTextFill(Color.RED);
+    title.layoutXProperty().bind(menuPane.widthProperty().subtract(title.widthProperty()).divide(2));
+    title.setLayoutY(50);
+    menuPane.getChildren().add(title);
 
     /* HBox for user selection during turn */
     turnHBox = new HBox();
@@ -415,15 +433,7 @@ public class MainGUI extends Application {
     menuPane.setLayoutX(0);
     menuPane.setLayoutY(0);
 
-    /* set title text */
-    Label title = new Label("RISK");
-    title.setFont(new Font("Times New Roman Bold", 175));
-    title.setTextFill(Color.RED);
-    //title.setLayoutX(centerX - title.widthProperty());
-    title.layoutXProperty().bind(menuPane.widthProperty().subtract(title.widthProperty()).divide(2));
-    title.setLayoutY(50);
-    menuPane.getChildren().add(title);
-
+    
     /* Save location text */
     String currSaveLocation = gameManager.getSaveLocation();
     if(currSaveLocation.length() > 35){
@@ -474,6 +484,8 @@ public class MainGUI extends Application {
         public void handle(ActionEvent event) {
           FileChooser fileChooser = new FileChooser();
           fileChooser.setTitle("Please Select Saved Game To Load");
+          FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("RISK files (*.risk)", "*.risk");
+          fileChooser.getExtensionFilters().add(extFilter);
           File file = fileChooser.showOpenDialog(primaryStage);
           if(file == null){
             return;
@@ -490,19 +502,9 @@ public class MainGUI extends Application {
     });
     menuPane.getChildren().add(loadSavedGameButton);
 
-    /* prints all fonts to stdout */
-    /*
-    List<String> allFonts = f.getFontNames();
-    for(int i=0;i<allFonts.size();i++){
-      System.out.println(allFonts.get(i));
-    }
-    */
-
     /* start game button */
     Button startGame = new Button("Click Here To Begin Game");
-    //startGame.getStyleClass().add("start_button");
     startGame.setStyle("-fx-font: 30 arial; -fx-base: #ee2211;");
-    startGame.setFont(new Font("Times New Roman Bold", 20));
     startGame.layoutXProperty().bind(menuPane.widthProperty().subtract(startGame.widthProperty()).divide(2));
     startGame.setLayoutY(centerY);
     startGame.setOnAction(new EventHandler<ActionEvent>() {

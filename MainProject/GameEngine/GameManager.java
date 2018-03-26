@@ -267,6 +267,17 @@ public class GameManager {
     distributeUnits = state;
   } 
 
+
+  /**
+   * checks the game state during regular turn
+   */
+  public void checkGameState(){
+    if(turn){
+      checkIfGameOver();
+      checkIfPlayerEliminated();
+    }
+  }
+
   /**
    * Checks if player has won the game i.e. owns every territory on the map
    * if there is a winner it tells MainGUI to end the game
@@ -274,11 +285,22 @@ public class GameManager {
   public void checkIfGameOver(){
     ArrayList<Country> allCountries = map.getCountries();
     for(int i=0; i < players.length ; i++){
+      //System.out.println(players[i].getName() + " " + players[i].getCountriesOwned().size() + "/" + allCountries.size());
       if(players[i].getCountriesOwned().size() >= allCountries.size()){
         MainGUI.gameOver(players[i]);
       }
     }
   }
+
+  public void checkIfPlayerEliminated(){
+    for(int i=0;i < numPlayers; i++){
+      if(players[i].getCountriesOwned().size() == 0){
+        players[i] = null;
+        MainGUI.updateLegend();
+      }
+    }
+  }
+
 
   /**
    * Creates all players for the game
@@ -342,6 +364,12 @@ public class GameManager {
     turnIndex++;
     turnIndex %= numPlayers;
     currentPlayer = players[turnIndex];
+
+    // if player was eliminated they were set to null
+    if(currentPlayer == null){
+      nextTurn();
+      return;
+    }
     MainGUI.getMapGUI().updateTurnIcon(currentPlayer);
 
     if(turn){
@@ -523,6 +551,8 @@ public class GameManager {
   
   /**
    * Load the game for a gamesave file
+   * @param saveFile file object containing path to load saved game
+   * @return true if game loaded succesfully, false otherwise
    */
   public boolean loadGame(File saveFile){
     try{
@@ -546,6 +576,8 @@ public class GameManager {
 
   /**
    * Loads the game from the loaded save state
+   * Initializes players and assigns country owners and units
+   * @param saveState object containgin all saved game info
    */
   private void loadGameFromSaveState(SaveState saveState){
     String[] playerNames;
@@ -601,19 +633,20 @@ public class GameManager {
    */
   public void autoSetup(){
     ArrayList<Country> countries;
-    String[] names = new String[2];
+    String[] names = new String[3];
 
     // Create players
     names[0] = "Alice";
     names[1] = "Bob";
-    initializePlayers(2, 0, names);
+    names[2] = "Charlie";
+    initializePlayers(3, 0, names);
 
     // start turn
     initializeTurn();
 
     // set owners of all except one country to player 
     countries = getMap().getCountries();
-    for(int i=0; i < countries.size()-1; i++){
+    for(int i=0; i < countries.size()-2; i++){
       countries.get(i).setOwner(currentPlayer);
       currentPlayer.setAvailableUnits(5);
       currentPlayer.placeUnits(countries.get(i), 5);
@@ -621,9 +654,14 @@ public class GameManager {
 
     // go to next players turn and set them to own last country
     nextTurn();
+    countries.get(countries.size()-2).setOwner(currentPlayer);
+    currentPlayer.setAvailableUnits(1);
+    currentPlayer.placeUnits(countries.get(countries.size()-2), 1);
+    nextTurn();
     countries.get(countries.size()-1).setOwner(currentPlayer);
     currentPlayer.setAvailableUnits(1);
     currentPlayer.placeUnits(countries.get(countries.size()-1), 1);
+
 
     // begin regular turn play
     nextTurn();
