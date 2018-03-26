@@ -133,6 +133,7 @@ public class WorldMapGUI {
 
 	/**
 	 * Will show that a player is removed on the legend
+	 * Will make the name red and strikethrough it
 	 * @param The player to remove
 	*/
 	public void removePlayerFromLegend(Player playerToRemove) {
@@ -154,9 +155,14 @@ public class WorldMapGUI {
 		Image imageTurnIcon = new Image(imagePathTurnIcon);
 	  	imageViewTurnIcon.setImage(imageTurnIcon);
 	  	imageViewTurnIcon.toFront();
-	    imageViewTurnIcon.setLayoutY(321 + (index*30));
+	    imageViewTurnIcon.setLayoutY(317 + (index*30));
 	}
 
+	/**
+	 * Will get the index of a player in the legend
+	 * @param The player to get the index of
+	 * @return The index of the player
+	*/
 	public int getPlayerIndex(Player playerOfIndex) {
 		Player[] players = MainGUI.getAllPlayers();
 		int index = -1;
