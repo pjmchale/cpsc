@@ -292,6 +292,10 @@ public class GameManager {
     }
   }
 
+  /**
+   * Checks if player has been eliminated
+   * i.e. they no longer own any countries and removes them form the game
+   */
   public void checkIfPlayerEliminated(){
     for(int i=0;i < numPlayers; i++){
       if(players[i].getCountriesOwned().size() == 0){
