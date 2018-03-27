@@ -115,7 +115,7 @@ public class WorldMapGUI {
 		// Get the players and create a rectange background
 		Player[] players = MainGUI.getAllPlayers();
 
-		double backgroundHeight = players.length*30 + 10;
+		double backgroundHeight = getPlayersLength(players)*30 + 10;
 		background = new Rectangle(10, 310, 140, backgroundHeight);
 		background.setFill(Color.rgb(255, 255, 255, 0.9));
 		background.setArcHeight(10);
@@ -134,29 +134,40 @@ public class WorldMapGUI {
 	    int corY = 320;
 
 	    for (Player i: players) {
-	    	// Create a name label
-	    	Text name = new Text(i.getName());
-			name.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-			name.setLayoutX(30);
-			name.setLayoutY(corY+10);
+	    	if (i != null){
+		    	// Create a name label
+		    	String nameOfPlayer = i.getName();
+		    	Text name = new Text(nameOfPlayer);
+				name.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+				name.setLayoutX(30);
+				name.setLayoutY(corY+10);
 
-	    	// Create a circle icon dot
-	    	Circle colorIcon = new Circle();
-			colorIcon.setCenterX(125);
-			colorIcon.setCenterY(corY+5);
-			colorIcon.setRadius(10);
-			colorIcon = iconBackgroundColor(i.getId(), colorIcon);
+		    	// Create a circle icon dot
+		    	Circle colorIcon = new Circle();
+				colorIcon.setCenterX(125);
+				colorIcon.setCenterY(corY+5);
+				colorIcon.setRadius(10);
+				colorIcon = iconBackgroundColor(i.getId(), colorIcon);
 
-			// Add these to the view
-			root.getChildren().add(name);
-			root.getChildren().add(colorIcon);
+				// Add these to the view
+				root.getChildren().add(name);
+				root.getChildren().add(colorIcon);
 
-			nameLabels.add(name);
-			nameDots.add(colorIcon);
+				nameLabels.add(name);
+				nameDots.add(colorIcon);
 
-			corY += 30;
+				corY += 30;
+			}
 	    }
 
+	}
+
+	public int getPlayersLength(Player[] players) {
+		int count = 0;
+		for(Player i: players){
+			if (i != null) count++;
+		}
+		return count;
 	}
 
 	// /**
