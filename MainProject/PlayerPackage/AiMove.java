@@ -2,7 +2,9 @@ package PlayerPackage;
 
 import MapStage.*;
 
-
+/**
+ * Class representing a move made by an AI
+ */
 public class AiMove{
     private Country fromCountry;
     private Country toCountry;

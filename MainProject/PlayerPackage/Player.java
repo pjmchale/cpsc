@@ -118,7 +118,6 @@ public class Player{
                 Combat battle;
                 battle = new Combat(attackingCountry, defendingCountry);
                 battle.simulateBattle();
-                //return true;
             }
             else {
                 System.out.println("Something went wrong 113");
@@ -127,7 +126,6 @@ public class Player{
         else {
             System.out.println("Something went wrong 117");
         }
-        //return false;
     }
 
 
@@ -138,7 +136,6 @@ public class Player{
      * @param toCountry represents the country the units are moving to
      */
     public void moveUnits(Country fromCountry, Country toCountry){
-        //
         if (fromCountry.isNeighbour(toCountry)){
             int units;
             do{
