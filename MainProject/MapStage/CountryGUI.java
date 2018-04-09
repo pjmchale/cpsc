@@ -103,7 +103,7 @@ public class CountryGUI {
 	 * @param the imageView to modify
 	 * @return the modified imageView
 	*/
-	public ImageView colorView(int playerNumber, ImageView iV){
+	public ImageView colorView(int playerNumber, ImageView imageViewToChange){
 		double con = 0;
 		double hue = 0;
 		double sat = 0;
@@ -152,12 +152,12 @@ public class CountryGUI {
 				sat = 0.8;
 				bri = -0.5;
 			break;
-			case 7:
-				// Magenta
+			default:
+				// White
 				con = 0;
-				hue = 0.3;
-				sat = -0.8;
-				bri = -0.5;
+				hue = 0.0;
+				sat = 0.0;
+				bri = 0.0;
 			break;
 		}
 		
@@ -167,9 +167,9 @@ public class CountryGUI {
 		colorAdjust.setBrightness(bri);
 		colorAdjust.setSaturation(sat);
 
-		iV.setEffect(colorAdjust);
+		imageViewToChange.setEffect(colorAdjust);
 
-		return iV;
+		return imageViewToChange;
 	}
 
 
@@ -211,7 +211,3 @@ public class CountryGUI {
 	}
 
 }
-
-
-
-

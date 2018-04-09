@@ -162,28 +162,18 @@ public class WorldMapGUI {
 
 	}
 
-	public int getPlayersLength(Player[] players) {
+	/**
+	 * Will get the number of players
+	 * @param The Players[] list from MainGUI
+	 * @return An int which is the amount of players
+	*/
+	private int getPlayersLength(Player[] players) {
 		int count = 0;
 		for(Player i: players){
 			if (i != null) count++;
 		}
 		return count;
 	}
-
-	// /**
-	//  * Will show that a player is removed on the legend
-	//  * Will make the name red and strikethrough it
-	//  * @param The player to remove
-	// */
-	// public void removePlayerFromLegend(Player playerToRemove) {
-	// 	int index = getPlayerIndex(playerToRemove);
-
-	// 	nameLabels.get(index).setStyle("-fx-strikethrough: true");
-	// 	nameLabels.get(index).setFill(Color.RED);
-	// 	nameLabels.get(index).setFont(Font.font("Arial", FontWeight.LIGHT, 14));
-
-	// 	nameDots.get(index).setOpacity(0.4);
-	// }
 
 	/**
 	 * Will move the turn icon 
@@ -198,6 +188,7 @@ public class WorldMapGUI {
 	  	imageViewTurnIcon.setImage(imageTurnIcon);
 	  	imageViewTurnIcon.toFront();
 	    imageViewTurnIcon.setLayoutY(317 + (index*30));
+
 	}
 
 	/**
@@ -205,14 +196,17 @@ public class WorldMapGUI {
 	 * @param The player to get the index of
 	 * @return The index of the player
 	*/
-	public int getPlayerIndex(Player playerOfIndex) {
+	private int getPlayerIndex(Player playerOfIndex) {
 		Player[] players = MainGUI.getAllPlayers();
 		int index = -1;
 
 		for (int i = 0; (i < players.length) && (index == -1); i++) {
-	        if (players[i] == playerOfIndex) {
-	            index = i;
-	        }
+			if (players[i] != null){
+		        if (players[i] == playerOfIndex) {
+		            index = i;
+		        }
+			}
+
 	    }
 	    return index;
 	}
@@ -224,7 +218,7 @@ public class WorldMapGUI {
 	 * @param The circle to change the color of
 	 * @return The modified circle
 	*/
-	public Circle iconBackgroundColor(int playerNumber, Circle circle) {
+	private Circle iconBackgroundColor(int playerNumber, Circle circle) {
 		int R = 0;
 		int G = 0;
 		int B = 0;
