@@ -40,6 +40,7 @@ public class infoView {
 	infoView(double corX, double corY, String ownerName, int units, String countryName, int ownerId, Pane mainRoot) {
 		root = mainRoot;
 
+		// Add the labels a titles with info
 		title = new Label(countryName);
 		title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		title.setLayoutX(corX);
@@ -58,14 +59,8 @@ public class infoView {
 		amountOfUnitsLabel.setLayoutX(amountOfUnitsLabelcorX);
 		amountOfUnitsLabel.setLayoutY(amountOfUnitsLabelcorY);
 
-		// THE PLAN IS TO MAKE THE WIDTH DYNAMIC SO THAT IT IS ONLY AS BIG AS IT NEEDS TO BE.
-		// FOR NOW IT IS SET TO 140
-		// int titleWidth = 100;
-		// int ownerWidth = 30;
-		// int amountOfUnitsLabelWidth = 30;
-
+		// Add the background
 		int backgroundWidth = 140;
-		// Math.max(Math.max(titleWidth,ownerWidth),amountOfUnitsLabelWidth) + 40;
 		int backgroundHeight = 60;
 		double backgroundPosX = corX-10;
 		double backgroundPosY = corY-5;
@@ -83,6 +78,7 @@ public class infoView {
 	    backgroundShadow.setRadius(10);
 	    background.setEffect(backgroundShadow);
 
+	    // Add the color icon which corrisponds to a player
 	    colorIcon = new Circle();
 	    double cirlcePosX = corX+60;
 	    double cirlcePosY = corY+30;
@@ -104,7 +100,7 @@ public class infoView {
 	 * @param The circle to change the color of
 	 * @return The modified circle
 	*/
-	public Circle iconBackgroundColor(int playerNumber, Circle circle) {
+	private Circle iconBackgroundColor(int playerNumber, Circle circle) {
 		int R = 0;
 		int G = 0;
 		int B = 0;
@@ -146,12 +142,6 @@ public class infoView {
 				G = 24;
 				B = 112;
 			break;
-			// case 7:
-			// 	// Ugly Purple 2.0 RGB(128, 25, 117)
-			// 	R = 228; 
-			// 	G = 0;
-			// 	B = 157;
-			// break;
 			default:
 				// White RGB(255, 255, 255)
 				R = 255;

@@ -29,6 +29,14 @@ public class AiPlayerSimple extends Player{
         super(name);
         this.map = map;
     }
+    private boolean checkIfWon(){
+        for (Country country : map.getCountries()){
+            if (country.getOwner() != this){
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * @return a string signifying that this player is AI
@@ -48,6 +56,10 @@ public class AiPlayerSimple extends Player{
         catch(InterruptedException ex)
         {
             System.out.println(ex);
+        }
+        if (checkIfWon()) {
+            MainGUI.nextPane();
+            return;
         }
         move = determineMove();
         //This happens only at the start of the turn, when the Ai can fortify.
