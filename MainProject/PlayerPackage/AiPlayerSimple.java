@@ -9,6 +9,7 @@ import CombatEngine.*;
 
 /**
  * Class representing an AI player
+ * extends Player
  */
 public class AiPlayerSimple extends Player{
     private ArrayList<Country> conflicts = new ArrayList<Country>();;
@@ -18,6 +19,7 @@ public class AiPlayerSimple extends Player{
     private int counter = 0;
     private AiMove move;
     private AiMove fortification;
+
     /**
      * Basic Constructor for an AiPlayerSimple
      * @param name
@@ -36,73 +38,8 @@ public class AiPlayerSimple extends Player{
     /**
      * Main method that plays the turn
      * Since this is the simple version of the ai, it only looks at the most valuable move it can and does it.
-     * This method will simulate the whole turn until it can no longer do an action
+     * This method will simulate a single move, is called until no move can be made anymore
      */
-
-    /**
-    public void playTurn(){
-        boolean turnOver = false;
-        int unitsLost;
-        Combat combat;
-        counter = 0;
-        System.out.print("Available Units:");
-        System.out.println(getAvailableUnits());
-
-        //Adds available units to the first country
-        move = determineMove();
-        move.getFromCountry().addUnits(getAvailableUnits());
-        setAvailableUnits(0);
-
-        //Test Print
-        System.out.println("Stuck 1.1 \n");
-        System.out.println("To Country:");
-        System.out.println(move.getToCountry() + "\n");
-        System.out.println("From Country:");
-        System.out.println(move.getFromCountry()+ "\n");
-        System.out.println("Move units:");
-        System.out.println(move.getNumUnits()+ "\n");
-
-        //Plays the turn until it can no longer do a valid move
-
-        while (turnOver == false && counter < 5){
-            counter++;
-            System.out.println("Stuck 2.2 \n");
-            if (move == null){
-                System.out.println("Turn Over");
-                turnOver = true;
-            }
-            else{
-                counter = 0;
-                while (move.getNumUnits() > 0 && move.getToCountry().getOwner() != this && counter < 10){
-
-                    //Test Print
-                    counter++;
-                    System.out.println("Stuck 3.3 \n");
-                    System.out.println("To Country:");
-                    System.out.println(move.getToCountry() + "\n");
-                    System.out.println("From Country:");
-                    System.out.println(move.getFromCountry()+ "\n");
-                    System.out.println("Move units:");
-                    System.out.println(move.getNumUnits()+ "\n");
-
-                    MainGUI.removeAttackGUIElements();
-                    MainGUI.startAttack(move.getFromCountry(), move.getToCountry());
-
-                    move.setNumUnits(move.getFromCountry().getUnits() - 1);
-                }
-                move = determineMove();
-            }
-        }
-        //Fortifies if it can
-        AiMove fortification = determineFortification();
-        if (fortification != null){
-            fortification.getFromCountry().addUnits(-(fortification.getNumUnits()));
-            fortification.getToCountry().addUnits(fortification.getNumUnits());
-        }
-        MainGUI.nextPane();
-        MainGUI.nextTurn();
-    }**/
-
     public void playTurn(){
         try
         {
@@ -113,6 +50,7 @@ public class AiPlayerSimple extends Player{
             System.out.println(ex);
         }
         move = determineMove();
+        //This happens only at the start of the turn, when the Ai can fortify.
         if (getAvailableUnits()>0){
             System.out.printf("Attacking %s from %s", move.getToCountry().getName(),move.getFromCountry().getName());
             move.getFromCountry().addUnits(getAvailableUnits());
@@ -126,7 +64,7 @@ public class AiPlayerSimple extends Player{
             MainGUI.removeAttackGUIElements();
             MainGUI.startAttack(move.getFromCountry(), move.getToCountry());
         }
-
+        //Fortifications at end
         else if(determineFortification() != null){
             fortification = determineFortification();
             fortification.getFromCountry().addUnits(-(fortification.getNumUnits()));
@@ -161,6 +99,7 @@ public class AiPlayerSimple extends Player{
         return country.getUnits();
     }
     public void moveUnits(){
+        System.out.println(move);
         move.getToCountry().setOwner(this);
         move.getToCountry().addUnits(move.getNumUnits());
         move.getFromCountry().addUnits(-move.getNumUnits());
@@ -188,6 +127,9 @@ public class AiPlayerSimple extends Player{
         for (Country country : countries){
             owner = country.getOwner();
             if (owner == this){
+                value = 0;
+            }
+            else if (owner == null){
                 value = 0;
             }
             else {
@@ -232,6 +174,8 @@ public class AiPlayerSimple extends Player{
             turnValues.put(country,highest);
             unsortedValues.remove(country);
         }
+        //Test Print
+        //System.out.println(turnValues);
     }
 
     /**
@@ -248,24 +192,9 @@ public class AiPlayerSimple extends Player{
                 }
             }
         }
+        //Test Print
         //System.out.println(conflicts);
     }
-
-    /**
-     * Method used in the claiming of countries (before the actual game begins)
-     * Currently uses the second method since TurnValues is not the correct way to calculate the value for a country
-    public void claimCountry(){
-        calculateTurnValues();
-        for (Country key: turnValues.keySet()) {
-            if (key.getOwner() == null) {
-                key.setOwner(this);
-                this.placeUnits(key,1);
-                return;
-            }
-        }
-    }
-     **/
-
 
     /**
      * Method used in the claiming of countries (before the actual game begins)
@@ -306,7 +235,7 @@ public class AiPlayerSimple extends Player{
         }
         //Backup if somehow there is no neighbouring unowned country with more or even amount of units
         for (Country conflict: conflicts){
-            System.out.println("Something's weird y'all");
+            System.out.println("Something's weird y'all, AiPlayer - 234");
             this.placeUnits(conflict, 1);
             return;
         }
