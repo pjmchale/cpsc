@@ -22,6 +22,15 @@ public class AnimatedText extends AnimationTimer{
 	private Pane root;
 	private Pane animationLayer;
 	private Label message;
+	
+	/**
+	 * initalize the class
+	 * @param msg the message to animate
+	 * @param p the pane the animation will be drawn on
+	 * @param x the x value of the animation
+	 * @param y the y value of the animation
+	 * @param seconds how long the animation will play
+	 */
 	public AnimatedText(String msg,Pane p , double x, double y, double seconds) {
 		curX = x;
 		curY = y;
@@ -35,27 +44,51 @@ public class AnimatedText extends AnimationTimer{
 		message.setLayoutY(curY);
 		p.getChildren().add(message);
 	}
+	/**
+	 * sets a fade out effect on the animation
+	 */
 	public void setFadeOut() {
 		deltaAlpha = (double)1/(totalFrames-8);
 	}
+	/**
+	 * set how fast the animation will change on the x-axis
+	 * @param amount how many pixels to move per frame
+	 */
 	public void setDeltaX(double amount) {
 		deltaX = amount;
 	}
+	/**
+	 * set how fast the animation will change on the y-axis
+	 * @param amount how many pixels to move per frame
+	 */
 	public void setDeltaY(double amount) {
 		deltaY = amount;
 	}
+	/**
+	 * set a boolean to determine if the animation will loop or not
+	 * @param boo if it can loop
+	 */
 	public void setCanLoop(boolean boo) {
 		loop = boo;
 	}
+	/**
+	 * moves the message on the x-axis relative to the deltaX
+	 */
 	public void moveX() {
 		curX += deltaX;
 		message.setLayoutX(curX);
 	}
+	/**
+	 * moves the message on the y-axis relative to the deltaY
+	 */
 	public void moveY() {
 		curY += deltaY;
 		message.setLayoutY(curY);
 		
 	}
+	/**
+	 * slowly decrease the alpha of the text relative to the deltaAlpha
+	 */
 	public void fade() {
 		curAlpha -= deltaAlpha;
 		if(curAlpha <= 0) curAlpha = 0;
