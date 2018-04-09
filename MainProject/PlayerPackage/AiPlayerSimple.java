@@ -99,6 +99,7 @@ public class AiPlayerSimple extends Player{
         return country.getUnits();
     }
     public void moveUnits(){
+        System.out.println(move);
         move.getToCountry().setOwner(this);
         move.getToCountry().addUnits(move.getNumUnits());
         move.getFromCountry().addUnits(-move.getNumUnits());
