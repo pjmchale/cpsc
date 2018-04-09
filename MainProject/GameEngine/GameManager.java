@@ -296,11 +296,16 @@ public class GameManager {
    */
   public void checkIfGameOver(){
     ArrayList<Country> allCountries = map.getCountries();
+    boolean gameWon;
     for(int i=0; i < players.length ; i++){
       //System.out.println(players[i].getName() + " " + players[i].getCountriesOwned().size() + "/" + allCountries.size());
-      if(players[i].getCountriesOwned().size() >= allCountries.size()){
-        MainGUI.gameOver(players[i]);
+      gameWon = true;
+      for(int k=0;k < allCountries.size();k++){
+        if(allCountries.get(k).getOwner() != players[i]){
+          gameWon = false;
+        }
       }
+      if(gameWon) MainGUI.gameOver(players[i]);
     }
   }
 
