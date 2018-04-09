@@ -21,16 +21,17 @@ public class MyAnimation extends AnimationTimer {
 	private ImageView frameImage;
 	private long prevTime;
 	private boolean loop;
-	/**
-	 * initialize the class
-	 * @param pane the pane this animation will be drawn on
-	 * @param isLoop determines if the animation will loop
-	 */
+
 	public MyAnimation(MyAnimation ma) {
 		this(ma.getPane(),ma.getLoop());
 		frames = ma.getFrames();
 		
 	}
+	/**
+	 * initialize the class
+	 * @param pane the pane this animation will be drawn on
+	 * @param isLoop determines if the animation will loop
+	 */
 	public MyAnimation(Pane pane, boolean isLoop){
 		this.pane = pane;
 		this.frames = new ArrayList<Image>();
@@ -39,6 +40,10 @@ public class MyAnimation extends AnimationTimer {
 		middleX = 960/2;
 		middleY = 600/2;
 	}
+	/**
+	 * intialize the class if not given a pane
+	 * @param isLoop determines if the animation will loop
+	 */
 	public MyAnimation(boolean isLoop) {
 		this.frames = new ArrayList<Image>();
 		frameImage = new ImageView();	
@@ -74,6 +79,10 @@ public class MyAnimation extends AnimationTimer {
 		pane.getChildren().add(frameImage);
 		totalFrames = frames.size();
 	}
+	/**
+	 * sets the frames of an animation with an arraylist of images
+	 * @param frames the arraylist containing all the frames
+	 */
 	public void setFrames(ArrayList<Image>frames) {
 		this.frames = frames;
 		frameImage.setImage(frames.get(0));
