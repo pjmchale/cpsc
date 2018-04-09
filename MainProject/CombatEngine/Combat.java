@@ -74,7 +74,7 @@ public class Combat {
 	 * @param numDice
 	 *            how much dice to roll
 	 */
-	public int[] rollDice(int numDice) {
+	private int[] rollDice(int numDice) {
 		int dices[] = dice.rollDices(numDice);
 		return dices;
 
@@ -114,7 +114,7 @@ public class Combat {
 	 * @param arr
 	 *            the unsorted array
 	 */
-	public int[] sortFromHighest(int[] arr) {
+	private int[] sortFromHighest(int[] arr) {
 		Arrays.sort(arr);
 		int arrLength = arr.length;
 		int[] desendingArray = new int[arrLength];

@@ -88,7 +88,7 @@ public class CombatGUI {
 		displayToMap(defLose,defendingCountry);
 		timeline.play();
 	}
-	public void displayToMap(int amount, Country c) {
+	private void displayToMap(int amount, Country c) {
 		if(amount != 0) {
 			double x = c.getCenterX();
 			double y = c.getCenterY();
@@ -100,7 +100,7 @@ public class CombatGUI {
 		}
 	}
 
-	public void displayTransition(Rectangle backDrop) {
+	private void displayTransition(Rectangle backDrop) {
 		System.out.println("display transition");
 		Pane transition = new Pane();
 		pane.getChildren().add(transition);
@@ -125,7 +125,7 @@ public class CombatGUI {
 	/**
 	 * intializes the display for the battle
 	 */
-	public void initPane() {
+	private void initPane() {
 		System.out.println("init combat gui pane");
 		pane = new Pane();
 		final double WIDTH = 960.0;
@@ -151,7 +151,7 @@ public class CombatGUI {
 	 * @param field
 	 *            the field this will be drawn onto
 	 */
-	public void constantDisplayElements(Rectangle field) {
+	private void constantDisplayElements(Rectangle field) {
 		String message = attacker.getName() + " is attacking " + defender.getName();
 		final int fontSize = 30;
 		Label title = centeredText(message, field, fontSize);
@@ -168,7 +168,7 @@ public class CombatGUI {
 	 * @param backDrop
 	 *            the area these elements will be drawn onto
 	 */
-	public void displaySelection(Rectangle backDrop) {
+	private void displaySelection(Rectangle backDrop) {
 		System.out.println("Displaying selection screen");
 		constantDisplayElements(backDrop);
 		CallAction displayResults = new CallAction() {
@@ -221,7 +221,7 @@ public class CombatGUI {
 
 	}
 
-	public void attackerAI(Rectangle backDrop, CallAction ca) {
+	private void attackerAI(Rectangle backDrop, CallAction ca) {
 		AiPlayerSimple ai = (AiPlayerSimple) attacker;
 		int amount = ai.getAttackingUnits(attackingCountry);
 		numAttackers = amount;
@@ -231,13 +231,13 @@ public class CombatGUI {
 				" how many units(DEFEND)", backDrop, ca);
 	}
 
-	public void defenderAI(CallAction ca) {
+	private void defenderAI(CallAction ca) {
 		AiPlayerSimple ai = (AiPlayerSimple) defender;
 		int amount = ai.getDefendingUnits(defendingCountry);
 		ca.use(amount);
 	}
 
-	public boolean isHuman(Player p) {
+	private boolean isHuman(Player p) {
 		return p.getPlayerType().equalsIgnoreCase("HUMAN");
 	}
 
@@ -253,7 +253,7 @@ public class CombatGUI {
 	 * @param color
 	 *            the font color of the number
 	 */
-	public void displayNumber(Rectangle rect, int row, int number, Color color) {
+	private void displayNumber(Rectangle rect, int row, int number, Color color) {
 		double rectX = rect.getX();
 		double rectY = rect.getY();
 		double height = rect.getHeight();
@@ -322,7 +322,7 @@ public class CombatGUI {
 		setNextBtnEvents(nextBtn);
 		pane.getChildren().add(nextBtn);
 	}
-	public void displayVictoryTransition(CallAction ca) {
+	private void displayVictoryTransition(CallAction ca) {
 		if(isHuman(attacker)) {
 			getUnits("Move " + attackingCountry.getName() + "(" + (attackingCountry.getUnits() - 1) + ")",
 				"To " + defendingCountry.getName(), new Rectangle(0, 0, 960, 600), ca);
@@ -341,7 +341,7 @@ public class CombatGUI {
 	 * @param nextBtn
 	 *            the button to set these new action events to
 	 */
-	public void setNextBtnEvents(Button nextBtn) {
+	private void setNextBtnEvents(Button nextBtn) {
 		CallAction moveUnitAction = new CallAction() {
 			public void use(int amount) {
 				if (amount > 0 && amount < attackingCountry.getUnits()) {
@@ -409,7 +409,7 @@ public class CombatGUI {
 	 * @param color
 	 *            the font color
 	 */
-	public void displayResultBox(double x, double y, boolean leftSide, String name, Color color) {
+	private void displayResultBox(double x, double y, boolean leftSide, String name, Color color) {
 		Image panelImage;
 		Rectangle box = new Rectangle(250, 400);
 		box.setX(x + 15);
@@ -441,7 +441,7 @@ public class CombatGUI {
 	 * @param rect
 	 *            the area the dividers will be drawn relative to
 	 */
-	public void setDividers(int amount, Rectangle rect) {
+	private void setDividers(int amount, Rectangle rect) {
 		double rectX = rect.getX();
 		double rectY = rect.getY();
 		double spacing = rect.getHeight() / amount;
@@ -465,7 +465,7 @@ public class CombatGUI {
 	 *            the area these elements will be drawn relative to
 	 * @ca the action that will happen once the user presses "CONFIRM"
 	 */
-	public void getUnits(String title, String msg, Rectangle field, CallAction ca) {
+	private void getUnits(String title, String msg, Rectangle field, CallAction ca) {
 		System.out.println("asking for units");
 		final double WIDTH = 300.0;
 		final double HEIGHT = 100.0;
@@ -509,7 +509,7 @@ public class CombatGUI {
 	 *            the area this message will be drawn relative to
 	 * 
 	 */
-	public Label centeredText(String msg, Rectangle field) {
+	private Label centeredText(String msg, Rectangle field) {
 		Label message = new Label(msg);
 		int totalChar = msg.length();
 		final int fontSize = 20;
@@ -530,7 +530,7 @@ public class CombatGUI {
 	 *            the font size
 	 * 
 	 */
-	public Label centeredText(String msg, Rectangle field, int size) {
+	private Label centeredText(String msg, Rectangle field, int size) {
 		Label message = new Label(msg);
 		int totalChar = msg.length();
 		int fontSize = size;
