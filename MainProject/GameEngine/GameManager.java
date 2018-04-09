@@ -1,7 +1,7 @@
 /**
- * This is the function for running the risk game
- * it maintains the state of the game and contains
- * are the functions for the game high level game logic
+ * This is the main logic class for running the risk game
+ * It maintains the state of the game and contains
+ * all the functions for the game high level game logic
  */
 
 package GameEngine;
@@ -14,17 +14,26 @@ import java.io.*;
 
 public class GameManager {
 
+  /* Instance Variables */
   private boolean usingGUI = false;
+
+  /* Player variables */
   private int numPlayers;
   private Player[] players;
-  private WorldMap map;
   private Player currentPlayer;
+  private WorldMap map;
+
+  /* Country variables for map clicks*/
   private Country countryClicked;
   private Country toCountry;
   private Country fromCountry;
+
+  /* Turn variables */
   private int turnIndex;
   private Player firstTurn;
   private int firstTurnIndex;
+
+  /* Game state variables */
   private boolean distributeUnits = false;
   private boolean attacking = false;
   private boolean fortify = false;
@@ -45,18 +54,20 @@ public class GameManager {
     initDefaultSaveLocation();
   }
 
-  /**
-   * getter for game map
-   */
-  public WorldMap getMap(){
-    return map;
-  }
 
   /**
    * creates the map for the game
    */
   private void initializeMap(boolean withGUI){
     map = new WorldMap(withGUI);
+  }
+
+  /**
+   * getter for game map
+   * No privacy leaks concern (we want other classes to be able to modify the map)
+   */
+  public WorldMap getMap(){
+    return map;
   }
 
   /**
@@ -85,6 +96,7 @@ public class GameManager {
 
   /**
    * getter for current player
+   * No privacy leaks concern (we want to be able to modify)
    */
   public Player getCurrentPlayer(){
     return currentPlayer;
