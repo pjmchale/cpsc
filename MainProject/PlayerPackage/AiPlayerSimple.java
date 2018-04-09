@@ -128,6 +128,9 @@ public class AiPlayerSimple extends Player{
             if (owner == this){
                 value = 0;
             }
+            else if (owner == null){
+                value = 0;
+            }
             else {
                 value = baseValue;
                 numNeighboursUnowned = 0;
