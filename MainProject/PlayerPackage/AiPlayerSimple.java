@@ -57,10 +57,13 @@ public class AiPlayerSimple extends Player{
         {
             System.out.println(ex);
         }
-        if (checkIfWon()) {return;}
+        if (checkIfWon()) {
+            MainGUI.nextPane();
+            return;
+        }
         move = determineMove();
         //This happens only at the start of the turn, when the Ai can fortify.
-        else if (getAvailableUnits()>0){
+        if (getAvailableUnits()>0){
             System.out.printf("Attacking %s from %s", move.getToCountry().getName(),move.getFromCountry().getName());
             move.getFromCountry().addUnits(getAvailableUnits());
             setAvailableUnits(0);
