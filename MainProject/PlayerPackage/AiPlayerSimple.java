@@ -99,6 +99,7 @@ public class AiPlayerSimple extends Player{
         return country.getUnits();
     }
     public void moveUnits(){
+        System.out.println(move);
         move.getToCountry().setOwner(this);
         move.getToCountry().addUnits(move.getNumUnits());
         move.getFromCountry().addUnits(-move.getNumUnits());
@@ -126,6 +127,9 @@ public class AiPlayerSimple extends Player{
         for (Country country : countries){
             owner = country.getOwner();
             if (owner == this){
+                value = 0;
+            }
+            else if (owner == null){
                 value = 0;
             }
             else {
