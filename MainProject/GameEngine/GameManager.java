@@ -14,26 +14,26 @@ import java.io.*;
 
 public class GameManager {
 
-  /* Instance Variables */
+  // Instance Variables
   private boolean usingGUI = false;
 
-  /* Player variables */
+  // Player variables 
   private int numPlayers;
   private Player[] players;
   private Player currentPlayer;
   private WorldMap map;
 
-  /* Country variables for map clicks*/
+  // Country variables for map clicks 
   private Country countryClicked;
   private Country toCountry;
   private Country fromCountry;
 
-  /* Turn variables */
+  // Turn variables 
   private int turnIndex;
   private Player firstTurn;
   private int firstTurnIndex;
 
-  /* Game state variables */
+  // Game state variables
   private boolean distributeUnits = false;
   private boolean attacking = false;
   private boolean fortify = false;
@@ -41,13 +41,17 @@ public class GameManager {
   private boolean turn = false;
   private String saveLocation;
 
-  /* Consstructor initializes the map*/
+  /**
+   * Constructor initializes the map
+   */
   GameManager(){
     initializeMap(usingGUI);
     initDefaultSaveLocation();
   }
 
-  /* Constructor initilaize map with gui */
+  /**
+   * Constructor initilaize map with gui
+   */
   GameManager(boolean withGUI){
     usingGUI = withGUI;
     initializeMap(usingGUI);
@@ -111,9 +115,17 @@ public class GameManager {
 
   /**
    * getter for all players
+   * No privacy leaks concern (we want to be able to modify)
    */
   public Player[] getAllPlayers(){
     return players;
+  }
+
+  /**
+   * getter for number of players
+   */
+  public int getNumPlayers(){
+    return numPlayers;
   }
 
   /**
@@ -125,7 +137,8 @@ public class GameManager {
   }
 
   /**
-   * setter for country clicked
+   * getter for country clicked
+   * No privacy leaks concern (we want to be able to modify)
    * @return country
    */
   public Country getCountryClicked(){
@@ -134,6 +147,7 @@ public class GameManager {
 
   /**
    * gets the from country selected
+   * No privacy leaks concern (we want to be able to modify)
    */
   public Country getFromCountry(){
     return fromCountry;
@@ -212,7 +226,7 @@ public class GameManager {
   }
 
   /**
-   * Code to run when attack state is set after country click
+   * Code to run when fortify state is set after country click
    */
   private void fortifyState(){
     // Select country to move units from 
@@ -253,7 +267,6 @@ public class GameManager {
   }
 
 
-
   /**
    * determines if all countries are owned by someone
    * @return true is all countries are owned false if not
@@ -282,6 +295,7 @@ public class GameManager {
 
   /**
    * checks the game state during regular turn
+   * Removes player if eliminated or checks if game is over (player has won)
    */
   public void checkGameState(){
     if(turn){
@@ -332,6 +346,7 @@ public class GameManager {
     int i;
     int k=0;
 
+    // Create AI and Human players
     numPlayers = numHuman + numAI;
     players = new Player[numPlayers];
     for(i=0; i < numHuman; i++){
@@ -342,17 +357,13 @@ public class GameManager {
       k++;
     }
     
+    // Turn on legend after players have been created
     if(usingGUI){
       MainGUI.showLegend();
     }
   }
 
-  /**
-   * getter for number of players
-   */
-  public int getNumPlayers(){
-    return numPlayers;
-  }
+  
 
   /**
    * For running turn when an AI is the current player
@@ -393,8 +404,10 @@ public class GameManager {
       nextTurn();
       return;
     }
+    // Change turn icon on legend indicating current player
     MainGUI.getMapGUI().updateTurnIcon(currentPlayer);
 
+    // Save the game and calculate how many units player gets at beginning of turn
     if(turn){
       saveGame();
       calcDistributeUnits();
@@ -552,6 +565,7 @@ public class GameManager {
    */
   public void saveGame(){
     try {
+      // open file to save
       File f = new File(saveLocation);
       if(f.exists()) f.delete();
       f.getParentFile().mkdirs();
@@ -560,6 +574,7 @@ public class GameManager {
       FileOutputStream fileStream = new FileOutputStream(saveLocation);
       ObjectOutputStream objectStream = new ObjectOutputStream(fileStream);
 
+      // Create saveState object and write to file
       SaveState saveState = new SaveState(this);
       objectStream.writeObject(saveState);
 
@@ -584,6 +599,7 @@ public class GameManager {
       fileStream = new FileInputStream(saveFile.getAbsolutePath());
       objectStream = new ObjectInputStream(fileStream);
 
+      // load saved SaveState object
       SaveState saveState = (SaveState) objectStream.readObject();
 
       loadGameFromSaveState(saveState);
@@ -612,7 +628,7 @@ public class GameManager {
     int[] numUnitsPerCountry;
     ArrayList<Country> allCountries;
 
-    // Initialize saved players and turn
+    // Initialize saved players
     numPlayers = saveState.getNumSavedPlayers();
     playerNames = new String[numPlayers];
     ArrayList<PlayerSave> allSavedPlayers = saveState.getAllSavedPlayers();
@@ -626,10 +642,11 @@ public class GameManager {
     }
     initializePlayers(numHumanPlayers, numAIPlayers, playerNames);
 
+    // Intitialize turn
     currentPlayerIndex = saveState.getCurrentPlayerIndex();
     currentPlayer = players[currentPlayerIndex];
 
-    // Set country owners
+    // Set country to correct owners
     allCountries = map.getCountries();
     for(int i=0; i < numPlayers; i++){
       countriesOwnedID = allSavedPlayers.get(i).getCountriesOwned();
@@ -645,6 +662,7 @@ public class GameManager {
       }
     }
 
+    // Begin the game
     setTurnState();
     turnIndex--;
     nextTurn();
@@ -652,7 +670,7 @@ public class GameManager {
 
 
   /**
-   * automatically sets up the game.
+   * automatically sets up the game (was used for testing)
    * Creates players and sets all countries owned
    * to one player except one country
    */

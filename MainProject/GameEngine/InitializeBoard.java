@@ -34,6 +34,8 @@ import javafx.scene.input.MouseEvent;
 import java.util.*;
 
 public class InitializeBoard{
+
+  // Instance variables
   private boolean clicked;
   GameManager gameManager;
   private Pane initializeBoardPane;
@@ -121,15 +123,6 @@ public class InitializeBoard{
           currPlayer = gameManager.getCurrentPlayer();
           playerTurnLabel.setText(currPlayer.getName() + " Goes First!");
 
-          /* sleep for 1 second */
-          /*
-          try{
-            Thread.sleep(1000);
-          } catch (Exception e) {
-            System.out.println(e);
-          }
-          */
-
         }
     });
     initializeBoardPane.getChildren().add(randomizeTurnButton);
@@ -143,7 +136,7 @@ public class InitializeBoard{
    * of game has completed (called by GameManager)
    */
   public void continueCountrySelection(){
-    /* if all units distributed we're done */
+    // if all units distributed we're done the initial distribution
     if(allUnitsDistributed()){
         gameManager.clearState();
         initializeBoardPane.getChildren().clear();
@@ -153,11 +146,12 @@ public class InitializeBoard{
         return;
     }
     
-    /* if AI allow them to place unit or take country */
+    // if AI allow them to place unit or take country
     if(gameManager.getCurrentPlayer().getPlayerType().equals("AI")){
       return;
     }
     
+    // Display label telling player to select country
     if(gameManager.getCurrentPlayer() == currPlayer){
         return;
     }else{
@@ -185,43 +179,16 @@ public class InitializeBoard{
     int userChoice;
     Player players[];
     
-    /* CHANGE THIS */
     int numCountries = 24;
-    switch(gameManager.getNumPlayers()){
-      case 2: 
-        //numUnits = 7;
-        numUnits = (numCountries/gameManager.getNumPlayers()) + 2;
-        break;
-      case 3: 
-        //numUnits = 7;
-        numUnits = (numCountries/gameManager.getNumPlayers()) + 2;
-        break;
-      case 4: 
-        //numUnits = 5;
-        numUnits = (numCountries/gameManager.getNumPlayers()) + 2;
-        break;
-      case 5:
-        numUnits = (numCountries/gameManager.getNumPlayers()) + 2;
-      case 6:
-        numUnits = (numCountries/gameManager.getNumPlayers()) + 2;
-      default: 
-        numUnits = 5;
+    numUnits = (numCountries/gameManager.getNumPlayers())*2;
 
-      /*
-      case 2: numUnits = 40;
-      case 3: numUnits = 35;
-      case 4: numUnits = 30;
-      default: numUnits = 30;
-      */
-
-    }
-
-    /* Set initial number of units for each player */
+    // Set initial number of units for each player
     players = gameManager.getAllPlayers();
     for(i=0; i < players.length; i++){
       players[i].setAvailableUnits(numUnits);
     }
 
+    // Show country selection label
     countrySelectionPane.getChildren().add(MainGUI.getMapPane());
     MainGUI.getMapPane().toBack();
     selectedCountryLabel.setText(currPlayer.getName() + " Please Choose A Country To Take Ownership");

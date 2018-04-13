@@ -1,8 +1,7 @@
 /**
- * This is the main function for running the risk game.
- * it maintains the state of the game and It builds the 
- * stage and gets panes from other classes to add to the
- * scene.
+ * This is the main function for running the risk game GUI.
+ * Controls the main stage and loading of the different panes
+ * onto the root pane.
  */
 
 package GameEngine;
@@ -39,15 +38,19 @@ import javafx.event.ActionEvent;
 
 
 public class MainGUI extends Application { 
+
+  // Instance variables
   static private boolean autoSetUpGame = false;
   static private GameManager gameManager;
   static private WorldMapGUI mapGUI;
 
+  // Pane instance variables
   static private Pane currentPane;
   static private Pane nextPane;
   static private Pane root;
   static private HBox turnHBox;
 
+  // GUI instance variables
   static private InitializeBoard initializeBoard;
   static private Label countrySelectionLabel;
   static private Label gainedUnitsLabel;
@@ -102,6 +105,7 @@ public class MainGUI extends Application {
 
   /**
    * gets the game manager
+   * No privacy leaks concern (we want to be able to modify)
    */
   static public GameManager getGameManager(){
     return gameManager;
@@ -145,6 +149,7 @@ public class MainGUI extends Application {
 
   /**
    * getter for getting map GUI
+   * No privacy leaks concern (we want to be able to modify)
    */
   static public WorldMapGUI getMapGUI(){
     return mapGUI;
@@ -246,14 +251,11 @@ public class MainGUI extends Application {
 
   }
 
-  
-
   /**
    * initiates the combat
    */
   static public void startAttack(Country fromCountry, Country toCountry){
     Combat combat = new Combat(fromCountry, toCountry);
-    //CombatGUI combatGUI = new CombatGUI(combat);
     setPane(combat.getPane(), getMapPane());
     gameManager.clearState();
   }
@@ -373,6 +375,7 @@ public class MainGUI extends Application {
       }
     });
 
+
     /**
      * button to confirm num of units selection
      */
@@ -425,6 +428,7 @@ public class MainGUI extends Application {
     });
 
     
+    // Add all created buttons to Hbox
     turnHBox.getChildren().addAll(attackButton, fortifyButton, endTurnButton);
 
     /* pane for initialize board units */
@@ -456,7 +460,6 @@ public class MainGUI extends Application {
         public void handle(ActionEvent event) {
           FileChooser fileChooser = new FileChooser();
           fileChooser.setTitle("Select File To Save Game");
-          //Set extension filter
           FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("RISK files (*.risk)", "*.risk");
           fileChooser.getExtensionFilters().add(extFilter);
           File location = fileChooser.showSaveDialog(primaryStage);
