@@ -44,7 +44,7 @@ public class GameManager {
   /**
    * Constructor initializes the map
    */
-  GameManager(){
+  public GameManager(){
     initializeMap(usingGUI);
     initDefaultSaveLocation();
   }
@@ -52,7 +52,7 @@ public class GameManager {
   /**
    * Constructor initilaize map with gui
    */
-  GameManager(boolean withGUI){
+  public GameManager(boolean withGUI){
     usingGUI = withGUI;
     initializeMap(usingGUI);
     initDefaultSaveLocation();
@@ -465,8 +465,8 @@ public class GameManager {
 
     currentPlayer.setAvailableUnits(numNewUnits);
 
-    MainGUI.removePlaceUnitsGUIElements();
     if(usingGUI && !currentPlayer.getPlayerType().equals("AI")){
+      MainGUI.removePlaceUnitsGUIElements();
       setPlaceUnits();
       MainGUI.distributeUnitsTurn(currentPlayer);
     }
